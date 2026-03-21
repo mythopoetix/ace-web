@@ -1,7 +1,6 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { PublicFooter } from "@/components/layout/PublicFooter";
 import { CoherenceOrb } from "@/components/brand/CoherenceOrb";
-import { SignalDots } from "@/components/brand/SignalDots";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -16,14 +15,6 @@ export default function LandingPage() {
       <main className="pt-16">
         {/* ═══ HERO ═══ */}
         <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden">
-          {/* Decorative signal grids */}
-          <div className="absolute top-[20%] left-[8%] opacity-20 hidden xl:block animate-[fadeIn_2s_ease]">
-            <SignalDots />
-          </div>
-          <div className="absolute bottom-[25%] right-[6%] opacity-15 hidden xl:block animate-[fadeIn_3s_ease]">
-            <SignalDots />
-          </div>
-
           <div className="text-center max-w-4xl mx-auto">
             <div className="mb-6 animate-[fadeSlideUp_0.5s_ease_both]">
               <Badge variant="sold-out">
@@ -51,8 +42,8 @@ export default function LandingPage() {
             </p>
 
             <p className="text-sm text-[var(--text-dim)] max-w-lg mx-auto mb-10 animate-[fadeSlideUp_0.6s_ease_0.5s_both]">
-              Not another tool. A living intelligence infrastructure that
-              compounds every session you use it.
+              A living intelligence that compounds everything you feed it.
+              Not a tool you use. An infrastructure you inhabit.
             </p>
 
             <div className="animate-[fadeSlideUp_0.6s_ease_0.6s_both]">
@@ -61,22 +52,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ PROOF STRIP ═══ */}
-        <section className="py-6 px-6 border-y border-[var(--glass-border)]" style={{ backgroundColor: "var(--bg-surface)" }}>
-          <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-8 md:gap-16">
+        {/* ═══ VELOCITY STRIP ═══ */}
+        <section className="py-5 px-6 border-y border-[var(--glass-border)]" style={{ backgroundColor: "var(--bg-surface)" }}>
+          <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-6 md:gap-14">
             {[
-              { number: "21+", label: "Intelligent Skills" },
-              { number: "13", label: "Parallel Agents" },
-              { number: "9", label: "Coherence Signals" },
-              { number: "59", label: "Web Routes Built in 1 Session" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="font-heading text-2xl md:text-3xl font-bold gradient-text">
-                  {stat.number}
-                </p>
-                <p className="font-mono text-[8px] md:text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">
-                  {stat.label}
-                </p>
+              { label: "A week of dev work", arrow: "→", result: "One afternoon" },
+              { label: "A $20K brand strategy", arrow: "→", result: "Hours" },
+              { label: "A full content team", arrow: "→", result: "Runs while you sleep" },
+            ].map((item) => (
+              <div key={item.label} className="flex items-center gap-2">
+                <span className="text-xs text-[var(--text-dim)] line-through">{item.label}</span>
+                <span className="text-[var(--capacity)] text-xs">{item.arrow}</span>
+                <span className="text-xs font-medium text-[var(--text-primary)]">{item.result}</span>
               </div>
             ))}
           </div>
@@ -84,141 +71,152 @@ export default function LandingPage() {
 
         {/* ═══ WHAT THIS ACTUALLY LOOKS LIKE ═══ */}
         <section className="py-28 px-6">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <p className="font-mono text-[10px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                Not hypothetical
-              </p>
               <h2 className="font-heading text-3xl md:text-5xl font-bold">
-                This is what one person does now.
+                This is what one person ships now.
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               {[
                 {
-                  time: "6:00 AM",
-                  action: "You say /start. ACE reads your calendar, checks your energy, surfaces the one thing that matters today. Not a task list — an orientation.",
+                  action: "You say /start.",
+                  result: "ACE reads your calendar, checks your nervous system state, and orients your entire day around the one thing that actually matters. Not a task list — a grounding.",
                   color: "var(--authority)",
                 },
                 {
-                  time: "9:00 AM",
-                  action: "You're on a coaching call. Meanwhile, ACE is running 13 parallel agents scanning 7 subreddits for cultural intelligence, drafting your weekly newsletter, and processing yesterday's emails.",
+                  action: "You're on a call.",
+                  result: "Meanwhile, ACE is drafting your newsletter in your voice, processing yesterday's emails, scanning Reddit for market intelligence, and updating your revenue dashboard. All in parallel. All without asking.",
                   color: "var(--capacity)",
                 },
                 {
-                  time: "11:00 AM",
-                  action: "You need a full website. You describe it. ACE builds 59 production routes — landing page, members area, onboarding flow, knowledge base, payment integration — and deploys it. One session.",
+                  action: "You describe a website.",
+                  result: "ACE builds the full thing — landing page, members area, onboarding system, knowledge base, payment integration — and deploys it to a live URL. You didn't write a single line of code.",
                   color: "var(--expansion)",
                 },
                 {
-                  time: "2:00 PM",
-                  action: "You're running hot. ACE reads the pattern — 10 days without a regulation block. It doesn't push harder. It shifts to coaching. \"What are you avoiding?\" The right question at the right time.",
+                  action: "You're running hot.",
+                  result: "ACE catches it before you crash. It reads the pattern — 10 days without rest, decisions getting reactive. It doesn't push harder. It asks: \"What are you avoiding?\" The right question. Not a productivity tip.",
                   color: "var(--authority)",
                 },
                 {
-                  time: "6:00 PM",
-                  action: "You say /eod. ACE logs what shipped, captures the patterns, surfaces the decision you're sitting on, and seeds tomorrow. Your intelligence compounds overnight.",
+                  action: "You say /eod.",
+                  result: "ACE logs what shipped, captures the patterns, surfaces the decision you've been sitting on, and seeds tomorrow. Every session leaves residue. Your intelligence compounds overnight.",
                   color: "var(--capacity)",
                 },
               ].map((item, i) => (
-                <div key={i} className="flex gap-4 md:gap-6 group">
-                  <div className="shrink-0 pt-1">
-                    <span
-                      className="font-mono text-[11px] font-medium block w-16 text-right"
-                      style={{ color: item.color }}
-                    >
-                      {item.time}
-                    </span>
-                  </div>
-                  <div className="relative pb-4">
-                    <div
-                      className="absolute left-0 top-2 w-2 h-2 rounded-full"
-                      style={{ backgroundColor: item.color, boxShadow: `0 0 8px ${item.color}` }}
-                    />
-                    {i < 4 && (
-                      <div className="absolute left-[3px] top-4 w-[2px] h-full bg-gradient-to-b from-[var(--glass-border)] to-transparent" />
-                    )}
-                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed pl-6">
-                      {item.action}
-                    </p>
-                  </div>
+                <div key={i} className="glass rounded-xl p-5 md:p-6 hover:border-[var(--border-hover)] transition-all">
+                  <p className="font-heading text-base font-semibold mb-2" style={{ color: item.color }}>
+                    {item.action}
+                  </p>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                    {item.result}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="text-center mt-12">
-              <p className="text-[var(--text-dim)] text-sm italic">
-                This isn&apos;t a demo. This is a Tuesday.
-              </p>
+            <p className="text-center mt-10 text-[var(--text-dim)] text-sm italic">
+              This isn&apos;t a product demo. This is a Tuesday.
+            </p>
+          </div>
+        </section>
+
+        {/* ═══ ARCHITECTURE PILLARS ═══ */}
+        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+                Built on four principles most systems ignore.
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {[
+                {
+                  title: "Extensible",
+                  desc: "New skills, new integrations, new intelligence — pushed to your system weekly. ACE doesn't ship quarterly updates. It evolves continuously.",
+                  color: "var(--authority)",
+                },
+                {
+                  title: "Modular",
+                  desc: "Use what serves you. Ignore what doesn't. Every skill, every integration, every workflow is a module you can add, remove, or customize.",
+                  color: "var(--capacity)",
+                },
+                {
+                  title: "Interoperable",
+                  desc: "Gmail. Calendar. Fathom. Stripe. Telegram. Airtable. ACE doesn't ask you to centralize. It reaches into the tools you already use and operates with full context.",
+                  color: "var(--expansion)",
+                },
+                {
+                  title: "Sovereign",
+                  desc: "Everything lives on your machine. Plain text. Git-backed. Your data never feeds someone else's model. Cancel anytime — your vault keeps working forever.",
+                  color: "var(--authority)",
+                },
+              ].map((item) => (
+                <Card key={item.title} hover className="group">
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center font-heading text-lg font-bold shrink-0 transition-transform duration-300 group-hover:scale-110"
+                      style={{
+                        backgroundColor: `color-mix(in srgb, ${item.color} 12%, transparent)`,
+                        color: item.color,
+                        border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)`,
+                      }}
+                    >
+                      {item.title[0]}
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-lg font-semibold mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
 
         {/* ═══ THE GAP ═══ */}
-        <section className="py-28 px-6 relative overflow-hidden" style={{ backgroundColor: "var(--bg-surface)" }}>
-          {/* Diagonal accent line */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-            style={{ background: "repeating-linear-gradient(135deg, var(--authority), var(--authority) 1px, transparent 1px, transparent 80px)" }}
-          />
-
-          <div className="max-w-4xl mx-auto relative">
+        <section className="py-28 px-6">
+          <div className="max-w-4xl mx-auto">
             <h2 className="font-heading text-3xl md:text-5xl font-bold text-center mb-6">
               The gap isn&apos;t who uses AI.
               <br />
               <span className="gradient-text">It&apos;s who compounds.</span>
             </h2>
-            <p className="text-center text-[var(--text-secondary)] max-w-lg mx-auto mb-16">
+            <p className="text-center text-[var(--text-secondary)] max-w-lg mx-auto mb-14 text-sm">
               Most people prompt. One question, one answer, start over. Every
               session begins from zero. That&apos;s context rot — and it&apos;s
-              the reason your AI still sounds generic.
+              why your AI still sounds generic.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="border-l-2 border-l-[var(--red)]">
-                <h3 className="font-heading text-base font-semibold mb-4 text-[var(--red)]">
+                <h3 className="font-heading text-sm font-semibold mb-4 text-[var(--red)]">
                   Prompting
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--red)] mt-0.5 shrink-0">✕</span>
-                    Every conversation starts from scratch
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--red)] mt-0.5 shrink-0">✕</span>
-                    Output sounds like everyone else
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--red)] mt-0.5 shrink-0">✕</span>
-                    No memory of who you are or what you decided
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--red)] mt-0.5 shrink-0">✕</span>
-                    You are the bottleneck, managing the AI
-                  </li>
+                  <li>Every conversation starts from scratch</li>
+                  <li>Output sounds like everyone else</li>
+                  <li>No memory of who you are or what you decided</li>
+                  <li>You are the bottleneck, managing the AI</li>
                 </ul>
               </Card>
               <Card gradient className="border-l-2 border-l-[var(--capacity)]">
-                <h3 className="font-heading text-base font-semibold mb-4 text-[var(--capacity)]">
+                <h3 className="font-heading text-sm font-semibold mb-4 text-[var(--capacity)]">
                   Compounding
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--capacity)] mt-0.5 shrink-0">◉</span>
-                    Every session deepens what the system knows
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--capacity)] mt-0.5 shrink-0">◉</span>
-                    Writes in your voice, coaches from your edges
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--capacity)] mt-0.5 shrink-0">◉</span>
-                    Remembers your patterns, decisions, and blind spots
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[var(--capacity)] mt-0.5 shrink-0">◉</span>
-                    The AI manages itself — you operate
-                  </li>
+                  <li>Every session deepens what the system knows about you</li>
+                  <li>Writes in your voice. Coaches from your edges.</li>
+                  <li>Remembers patterns, decisions, blind spots — for months</li>
+                  <li>The system manages itself. You just operate.</li>
                 </ul>
               </Card>
             </div>
@@ -226,58 +224,59 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ LIVING INTELLIGENCE ═══ */}
-        <section className="py-28 px-6">
+        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
-              <p className="font-mono text-[10px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                Living Intelligence
-              </p>
-              <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-                Six months in, ACE knows you
-                <br />
-                <span className="gradient-text">better than any tool you&apos;ve ever used.</span>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
+                It doesn&apos;t just assist.
+                <span className="gradient-text"> It knows you.</span>
               </h2>
+              <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+                Six months in, ACE knows your edges better than your therapist.
+                It reads the pattern across 200 decisions and tells you what
+                you&apos;re avoiding.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {[
                 {
-                  title: "It reads your nervous system",
-                  desc: "Running hot for 10 days? ACE catches it before you crash. It doesn't push harder — it shifts to regulation. Your capacity is infrastructure, not an afterthought.",
+                  title: "Reads your nervous system",
+                  desc: "Running hot for 10 days? ACE catches it before you crash. It shifts to regulation — not more tasks.",
                   color: "var(--capacity)",
                 },
                 {
-                  title: "It writes like you",
-                  desc: "Not corporate. Not generic. Your cadence, your edge, your warmth. Emails, newsletters, client proposals — output that sounds like you wrote it on your best day.",
+                  title: "Writes like you",
+                  desc: "Your cadence. Your warmth. Your edge. Emails, newsletters, proposals — on your best day, every day.",
                   color: "var(--expansion)",
                 },
                 {
-                  title: "It builds what you imagine",
-                  desc: "Websites. Apps. CLI tools. PDFs. Spreadsheets. Presentations. Entire revenue dashboards. Describe what you need, walk away, come back to a working product.",
+                  title: "Builds what you imagine",
+                  desc: "Websites. Apps. Dashboards. PDFs. Presentations. Describe it. Walk away. Come back to a working product.",
                   color: "var(--authority)",
                 },
                 {
-                  title: "It connects everything",
-                  desc: "Gmail. Calendar. Fathom. Telegram. Stripe. Airtable. One system reaching into every tool you use, pulling what's relevant, operating with full context.",
+                  title: "Connects every tool",
+                  desc: "Gmail, Calendar, Fathom, Telegram, Stripe, Airtable — one intelligence layer reaching into everything.",
                   color: "var(--capacity)",
                 },
                 {
-                  title: "It coaches, not optimizes",
-                  desc: "\"What are you avoiding?\" \"Where is your structure not matching your truth?\" Potent questions from a system that knows your edges. Not productivity tips — growth.",
+                  title: "Coaches, not optimizes",
+                  desc: "\"What are you avoiding?\" Potent questions from a system that knows your growth edges. Not productivity. Growth.",
                   color: "var(--authority)",
                 },
                 {
-                  title: "It evolves weekly",
-                  desc: "New skills pushed to your vault every week. 13 parallel agents. Content engines. Revenue trackers. The system gets smarter whether you're using it or not.",
+                  title: "Evolves every week",
+                  desc: "New skills. New integrations. New intelligence. Pushed to your system automatically. It gets smarter while you sleep.",
                   color: "var(--expansion)",
                 },
               ].map((item) => (
                 <Card key={item.title} hover className="group">
                   <div
-                    className="w-1 h-8 rounded-full mb-4 transition-all duration-300 group-hover:h-12"
+                    className="w-1 h-8 rounded-full mb-4 transition-all duration-300 group-hover:h-10"
                     style={{ backgroundColor: item.color, boxShadow: `0 0 8px ${item.color}` }}
                   />
-                  <h3 className="font-heading text-base font-semibold mb-2">
+                  <h3 className="font-heading text-sm font-semibold mb-2">
                     {item.title}
                   </h3>
                   <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
@@ -290,19 +289,17 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ THE TRIAD ═══ */}
-        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
+        <section className="py-28 px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
               <p className="font-mono text-[10px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                The Framework
+                The Coherence Triad
               </p>
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
-                Three pillars. Nine signals. One verdict.
+                Most systems optimize for output.
+                <br />
+                ACE optimizes for <span className="gradient-text">coherence.</span>
               </h2>
-              <p className="text-[var(--text-secondary)] max-w-md mx-auto text-sm">
-                When all three align, you move with life. When one fractures,
-                everything downstream fragments. ACE tracks it all.
-              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -311,22 +308,22 @@ export default function LandingPage() {
                   name: "Authority",
                   color: "var(--authority)",
                   tagline: "You know who you are.",
-                  signals: ["Truth", "Choice", "Expression"],
-                  desc: "Identity shapes every decision. ACE reads whether your external structure matches your internal truth.",
+                  signals: "Truth → Choice → Expression",
+                  desc: "Identity shapes every decision. ACE reads whether your life matches your truth — and surfaces the gap when it doesn't.",
                 },
                 {
                   name: "Capacity",
                   color: "var(--capacity)",
                   tagline: "You can hold what comes.",
-                  signals: ["Regulation", "Depth", "Resilience"],
-                  desc: "Your nervous system is infrastructure. ACE tracks regulation, surfaces burnout before it hits, and protects your depth.",
+                  signals: "Regulation → Depth → Resilience",
+                  desc: "Your nervous system is your infrastructure. ACE protects it — surfacing burnout before it hits, shifting to rest before you break.",
                 },
                 {
                   name: "Expansion",
                   color: "var(--expansion)",
                   tagline: "You expand into what's next.",
-                  signals: ["Rhythm", "Containers", "Realization"],
-                  desc: "Structure that produces without consuming you. Rhythms that compound. Ideas that become shipped reality.",
+                  signals: "Rhythm → Containers → Realization",
+                  desc: "Structure that produces without consuming you. Sustainable rhythm. Containers that hold complexity. Ideas that ship.",
                 },
               ].map((pillar) => (
                 <Card key={pillar.name} hover gradient className="group">
@@ -343,10 +340,7 @@ export default function LandingPage() {
                       {pillar.name[0]}
                     </div>
                     <div>
-                      <h3
-                        className="font-heading text-lg font-semibold"
-                        style={{ color: pillar.color }}
-                      >
+                      <h3 className="font-heading text-lg font-semibold" style={{ color: pillar.color }}>
                         {pillar.name}
                       </h3>
                       <p className="text-xs italic" style={{ color: pillar.color, opacity: 0.7 }}>
@@ -355,24 +349,13 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-3">
                     {pillar.desc}
                   </p>
 
-                  {/* Signal dots */}
-                  <div className="flex items-center gap-3">
-                    {pillar.signals.map((s) => (
-                      <div key={s} className="flex items-center gap-1.5">
-                        <div
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: pillar.color, boxShadow: `0 0 4px ${pillar.color}` }}
-                        />
-                        <span className="font-mono text-[8px] uppercase tracking-[1px] text-[var(--text-dim)]">
-                          {s}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="font-mono text-[8px] uppercase tracking-[1.5px] text-[var(--text-dim)]">
+                    {pillar.signals}
+                  </p>
                 </Card>
               ))}
             </div>
@@ -380,7 +363,7 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ PARADIGM SHIFT ═══ */}
-        <section className="py-28 px-6">
+        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-10">
               <Badge variant="authority">Free Masterclass</Badge>
@@ -404,38 +387,26 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ SOVEREIGNTY ═══ */}
-        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
-                Your intelligence. Your patterns.
-                <br />
-                Your context. <span className="gradient-text">Yours.</span>
-              </h2>
-              <p className="text-[var(--text-secondary)] max-w-lg mx-auto text-sm leading-relaxed">
-                Everything lives on your machine. Plain text. Git-backed.
-                Portable forever. In a world where your data is the product
-                being harvested — owning your intelligence is not a technical
-                detail. It&apos;s a political one.
-              </p>
-            </div>
+        <section className="py-28 px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+              Your intelligence. <span className="gradient-text">Yours.</span>
+            </h2>
+            <p className="text-[var(--text-secondary)] max-w-lg mx-auto text-sm leading-relaxed mb-8">
+              Everything lives on your machine. Not in someone else&apos;s
+              cloud. Not feeding someone else&apos;s model. Owning your
+              intelligence is not a technical detail. It&apos;s a political one.
+            </p>
 
-            <div className="glass rounded-xl p-6 md:p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[rgba(136,120,255,0.1)] flex items-center justify-center shrink-0">
-                  <span className="text-[var(--authority)] font-heading font-bold">⏱</span>
-                </div>
-                <div>
-                  <p className="font-heading text-lg font-semibold mb-1">
-                    12–24 months to get ahead of the curve.
-                  </p>
-                  <p className="text-sm text-[var(--text-secondary)]">
-                    The ones building the right architecture now compound first.
-                    Compounding advantages don&apos;t reverse. This window is closing.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
+            <div className="glass rounded-xl p-6 md:p-8 text-left">
+              <p className="font-heading text-lg font-semibold mb-2 text-center">
+                12–24 months to get ahead of the curve.
+              </p>
+              <p className="text-sm text-[var(--text-secondary)] text-center mb-6">
+                The ones building the right architecture now compound first.
+                Compounding advantages don&apos;t reverse.
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
                 {["Local-first", "Plain text", "Git-backed", "Portable forever", "Your machine", "Your rules"].map((tag) => (
                   <Badge key={tag} variant="default">
                     {tag}
@@ -447,14 +418,11 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ THE BUILD ═══ */}
-        <section className="py-28 px-6">
+        <section className="py-28 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-14">
-              <p className="font-mono text-[10px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                The Build
-              </p>
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
-                4 weeks. Zero to fully operational.
+                4 weeks. Zero to operational.
               </h2>
               <p className="text-[var(--text-secondary)] text-sm">
                 Not a course. Not a template. A custom-built intelligence
@@ -464,24 +432,17 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
               {[
-                { phase: "Week 1", title: "Identity + vault", desc: "Blueprint intake. Your identity core compiled.", color: "var(--authority)" },
-                { phase: "Week 1", title: "Custom skills", desc: "Built for YOUR workflow before you meet.", color: "var(--capacity)" },
+                { phase: "Week 1", title: "Identity + vault", desc: "Blueprint intake. Identity core compiled.", color: "var(--authority)" },
+                { phase: "Week 1", title: "Custom skills", desc: "Built for YOUR workflow. Before you meet.", color: "var(--capacity)" },
                 { phase: "Week 1–2", title: "1:1 build session", desc: "90 min with Nikhil. System comes alive.", color: "var(--expansion)" },
                 { phase: "Week 2–5", title: "Compound", desc: "Daily use. Group calls. System learns you.", color: "var(--authority)" },
               ].map((item) => (
-                <div key={item.title} className="glass rounded-lg p-4 group hover:border-[var(--border-hover)] transition-all">
-                  <span
-                    className="font-mono text-[9px] uppercase tracking-[2px] block mb-1.5"
-                    style={{ color: item.color }}
-                  >
+                <div key={item.title} className="glass rounded-lg p-4 hover:border-[var(--border-hover)] transition-all">
+                  <span className="font-mono text-[9px] uppercase tracking-[2px] block mb-1.5" style={{ color: item.color }}>
                     {item.phase}
                   </span>
-                  <p className="text-sm text-[var(--text-primary)] font-semibold mb-1">
-                    {item.title}
-                  </p>
-                  <p className="text-xs text-[var(--text-dim)]">
-                    {item.desc}
-                  </p>
+                  <p className="text-sm text-[var(--text-primary)] font-semibold mb-1">{item.title}</p>
+                  <p className="text-xs text-[var(--text-dim)]">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -515,7 +476,7 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ SOCIAL PROOF ═══ */}
-        <section className="py-20 px-6" style={{ backgroundColor: "var(--bg-surface)" }}>
+        <section className="py-20 px-6">
           <div className="max-w-3xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
@@ -529,10 +490,7 @@ export default function LandingPage() {
                 },
               ].map((t, i) => (
                 <Card key={i} gradient className="relative">
-                  <div
-                    className="absolute top-4 left-4 text-4xl leading-none opacity-10 font-heading"
-                    style={{ color: "var(--authority)" }}
-                  >
+                  <div className="absolute top-4 left-4 text-4xl leading-none opacity-10 font-heading" style={{ color: "var(--authority)" }}>
                     &ldquo;
                   </div>
                   <blockquote className="text-sm text-[var(--text-primary)] leading-relaxed mb-3 relative z-10 pt-4">
@@ -548,12 +506,9 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ CTA ═══ */}
-        <section className="py-32 px-6 text-center relative overflow-hidden">
-          {/* Ambient glow behind CTA */}
+        <section className="py-32 px-6 text-center relative overflow-hidden" style={{ backgroundColor: "var(--bg-surface)" }}>
           <div className="absolute inset-0 pointer-events-none"
-            style={{
-              background: "radial-gradient(ellipse at 50% 50%, rgba(136,120,255,0.06) 0%, transparent 60%)"
-            }}
+            style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(136,120,255,0.06) 0%, transparent 60%)" }}
           />
 
           <div className="max-w-xl mx-auto relative">
@@ -564,9 +519,7 @@ export default function LandingPage() {
             <h2 className="font-heading text-4xl md:text-5xl font-bold mt-6 mb-3">
               Batch 2 is forming.
             </h2>
-            <p className="font-heading text-2xl text-[var(--authority)] mb-1">
-              $2,997
-            </p>
+            <p className="font-heading text-2xl text-[var(--authority)] mb-1">$2,997</p>
             <p className="text-[var(--text-dim)] text-sm mb-10">
               Founding rate. Limited seats. Price increases each cohort.
             </p>

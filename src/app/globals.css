@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════
+   ACE Design Tokens — Ported 1:1 from ace-desktop
+   ═══════════════════════════════════════════════════ */
+
+:root {
+  /* Backgrounds */
+  --bg-deep:      #080a12;
+  --bg-surface:   #0c0e18;
+  --bg-elevated:  #141828;
+  --bg-card:      #101420;
+
+  /* Borders */
+  --border:       rgba(140,120,255,0.10);
+  --border-hover: rgba(140,120,255,0.22);
+
+  /* Semantic Colors */
+  --gold:       #c8a0f0;
+  --gold-dim:   #7a60b0;
+  --green:      #60d8a8;
+  --ark:        #b080e0;
+  --blue-grey:  #70b0e0;
+  --red:        #e07080;
+
+  /* ACE Triad */
+  --authority:  #c8a0f0;
+  --capacity:   #60d8a8;
+  --expansion:  #e080a0;
+
+  /* Text */
+  --text-primary:    #e8e4f0;
+  --text-secondary:  #9898b8;
+  --text-dim:        #606080;
+
+  /* Neo-Glassmorphic */
+  --glow-primary:    rgba(140,120,255,0.15);
+  --glow-accent:     rgba(200,160,240,0.2);
+  --glass-bg:        rgba(16,20,36,0.6);
+  --glass-border:    rgba(140,120,255,0.08);
+  --glass-blur:      12px;
+  --gradient-accent:  linear-gradient(135deg, #8878ff, #c8a0f0, #60d8a8);
+  --gradient-glow:    linear-gradient(135deg, rgba(136,120,255,0.15), rgba(200,160,240,0.1), rgba(96,216,168,0.08));
+}
+
+/* ── Light Mode ── */
+.light {
+  --bg-deep:      #f0eef6;
+  --bg-surface:   #e8e6f0;
+  --bg-elevated:  #dddae8;
+  --bg-card:      #e2e0ec;
+  --border:       rgba(100,90,160,0.12);
+  --border-hover: rgba(100,90,160,0.24);
+  --gold:         #5a48c0;
+  --gold-dim:     #7a68d0;
+  --green:        #1a8a60;
+  --ark:          #7048b8;
+  --blue-grey:    #3060a8;
+  --red:          #c04858;
+  --text-primary:    #18162a;
+  --text-secondary:  #48466a;
+  --text-dim:        #8886a0;
+  --authority:    #5a48c0;
+  --capacity:     #1a8a60;
+  --expansion:    #c04878;
+  --glass-bg:     rgba(240,238,246,0.7);
+  --glass-border: rgba(100,90,160,0.08);
+  --glow-primary: rgba(90,72,192,0.1);
+  --glow-accent:  rgba(90,72,192,0.15);
+}
+
+/* ── Tailwind v4 Theme ── */
+@theme inline {
+  --color-bg-deep:      var(--bg-deep);
+  --color-bg-surface:   var(--bg-surface);
+  --color-bg-elevated:  var(--bg-elevated);
+  --color-bg-card:      var(--bg-card);
+  --color-authority:    var(--authority);
+  --color-capacity:     var(--capacity);
+  --color-expansion:    var(--expansion);
+  --color-gold:         var(--gold);
+  --color-gold-dim:     var(--gold-dim);
+  --color-ace-green:    var(--green);
+  --color-ark:          var(--ark);
+  --color-blue-grey:    var(--blue-grey);
+  --color-ace-red:      var(--red);
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-dim:       var(--text-dim);
+  --color-glass-bg:     var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ── Base Styles ── */
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+/* Ambient background radials */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(136,120,255,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(96,216,168,0.05) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 80%, rgba(224,112,160,0.04) 0%, transparent 40%);
+}
+
+.light body::before,
+body.light::before {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(90,72,192,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(26,138,96,0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 80%, rgba(192,72,120,0.03) 0%, transparent 40%);
+}
+
+/* ── Animations ── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes orbShift {
+  0%, 100% { background-position: 38% 38%; }
+  50% { background-position: 62% 62%; }
+}
+
+@keyframes orbRingSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbPulseRing {
+  0% { transform: scale(1); opacity: 0.6; border-color: rgba(136,120,255,0.5); }
+  70% { transform: scale(1.8); opacity: 0; border-color: rgba(96,216,168,0.3); }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes cc-orb-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.05); filter: brightness(1.15); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes widgetReveal {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes signalPulse {
+  0%, 100% { box-shadow: 0 0 4px currentColor; transform: scale(1); }
+  50% { box-shadow: 0 0 12px currentColor; transform: scale(1.15); }
+}
+
+@keyframes attention-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(224,112,128,0.6), 0 0 20px rgba(224,112,128,0.3); }
+  50% { transform: scale(1.15); box-shadow: 0 0 14px rgba(224,112,128,0.8), 0 0 28px rgba(224,112,128,0.4); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Utility classes ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-hover:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 20px var(--glow-primary);
+}
+
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.animate-widget-reveal {
+  animation: widgetReveal 0.35s ease both;
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.4s ease both;
+}
+
+.animate-breathe {
+  animation: breathe 2.5s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(140,120,255,0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140,120,255,0.3);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(90,72,192,0.12);
+}
+.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(90,72,192,0.25);
+}
+
+/* ══════════════════════════════════════
+   LIGHT MODE — Comprehensive Overrides
+   ══════════════════════════════════════ */
+
+/* Gradient text — stronger, more saturated */
+.light .gradient-text {
+  background: linear-gradient(135deg, #4030a8, #6838b0, #107848);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass cards — visible borders + subtle shadow instead of glow */
+.light .glass {
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(100,90,160,0.15);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(100,90,160,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.light .glass-hover:hover {
+  border-color: rgba(90,72,192,0.25);
+  box-shadow: 0 4px 16px rgba(90,72,192,0.1), 0 0 0 1px rgba(90,72,192,0.08);
+}
+
+/* Sidebar — crisp white-lavender with border */
+.light aside {
+  background: rgba(248,246,252,0.95) !important;
+  border-color: rgba(100,90,160,0.12) !important;
+}
+
+/* Header bar */
+.light header {
+  background: rgba(248,246,252,0.9) !important;
+  border-color: rgba(100,90,160,0.1) !important;
+}
+
+/* Public nav */
+.light nav.fixed > div {
+  background: rgba(248,246,252,0.92) !important;
+  border-color: rgba(100,90,160,0.1) !important;
+}
+
+/* Primary gradient button — deep, saturated */
+.light [class*="from-[#8878ff]"] {
+  background: linear-gradient(135deg, #4030a8, #5a38c0, #107848) !important;
+  box-shadow: 0 4px 16px rgba(64,48,168,0.3) !important;
+  color: white !important;
+}
+.light [class*="from-[#8878ff]"]:hover {
+  box-shadow: 0 6px 24px rgba(64,48,168,0.4) !important;
+  transform: scale(1.02);
+}
+
+/* Secondary/ghost buttons */
+.light button[class*="glass"],
+.light a[class*="glass"] {
+  background: rgba(255,255,255,0.7);
+}
+
+/* Inputs + textareas */
+.light input, .light textarea {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(100,90,160,0.15) !important;
+  color: var(--text-primary) !important;
+}
+.light input:focus, .light textarea:focus {
+  border-color: rgba(90,72,192,0.35) !important;
+  box-shadow: 0 0 0 3px rgba(90,72,192,0.08) !important;
+  background: rgba(255,255,255,0.95) !important;
+}
+.light input::placeholder, .light textarea::placeholder {
+  color: var(--text-dim) !important;
+}
+
+/* Section backgrounds — alternating */
+.light [style*="--bg-surface"] {
+  background-color: rgba(236,234,248,0.5) !important;
+}
+
+/* Badge overrides for readability */
+.light [class*="bg-[rgba(224,112,128"] {
+  background: rgba(192,72,88,0.1) !important;
+  border-color: rgba(192,72,88,0.25) !important;
+}
+
+/* Footer */
+.light footer {
+  border-color: rgba(100,90,160,0.1);
+}
+
+/* ══════════════════════════════════════
+   SHARED POLISH — Both Modes
+   ══════════════════════════════════════ */
+
+/* Stronger card borders on hover for both modes */
+.glass {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Subtle text selection color */
+::selection {
+  background: rgba(136,120,255,0.2);
+  color: var(--text-primary);
+}
+.light ::selection {
+  background: rgba(90,72,192,0.15);
+}
+
+/* Smooth page transitions */
+main {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Better focus outlines for accessibility */
+:focus-visible {
+  outline: 2px solid var(--authority);
+  outline-offset: 2px;
+}

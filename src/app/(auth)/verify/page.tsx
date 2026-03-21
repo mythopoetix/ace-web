@@ -16,7 +16,7 @@ export default function VerifyPage() {
         </p>
 
         <Card gradient className="mb-6">
-          <p className="font-heading text-lg font-semibold mb-1">Batch 2</p>
+          <p className="font-heading text-lg font-semibold mb-1">Cohort 2</p>
           <p className="text-2xl font-heading font-semibold text-[var(--authority)]">
             $2,997
           </p>

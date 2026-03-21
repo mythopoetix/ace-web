@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/Button";
 import { EmailCapture } from "@/components/landing/EmailCapture";
 
 const BETAS = [
-  { batch: 1, price: 2497, status: "sold-out" as const },
-  { batch: 2, price: 2997, status: "current" as const },
-  { batch: 3, price: 3497, status: "future" as const },
-  { batch: 4, price: 3997, status: "future" as const },
-  { batch: 5, price: 4997, status: "future" as const },
+  { cohort: 1, price: 2497, status: "sold-out" as const },
+  { cohort: 2, price: 2997, status: "current" as const },
+  { cohort: 3, price: 3497, status: "future" as const },
+  { cohort: 4, price: 3997, status: "future" as const },
+  { cohort: 5, price: 4997, status: "future" as const },
 ];
 
 const CALC_CATEGORIES = [
@@ -60,10 +60,10 @@ export default function PricingPage() {
                 background: "var(--gradient-accent)",
               }}
             />
-            {/* Batch markers */}
+            {/* Cohort markers */}
             {BETAS.map((beta, i) => (
               <div
-                key={beta.batch}
+                key={beta.cohort}
                 className="absolute top-1/2 -translate-y-1/2"
                 style={{ left: `${(i / (BETAS.length)) * 100 + 10}%` }}
               >
@@ -89,7 +89,7 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Batch cards */}
+          {/* Cohort cards */}
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
             {BETAS.map((beta) => {
               const isCurrent = beta.status === "current";
@@ -97,7 +97,7 @@ export default function PricingPage() {
 
               return (
                 <div
-                  key={beta.batch}
+                  key={beta.cohort}
                   className={`rounded-xl p-4 text-center transition-all ${
                     isCurrent
                       ? "glass ring-1 ring-[var(--capacity)] relative"
@@ -112,7 +112,7 @@ export default function PricingPage() {
                     </div>
                   )}
                   <p className="font-mono text-[8px] uppercase tracking-[2px] text-[var(--text-dim)] mb-1">
-                    {isSoldOut ? "Sold Out" : `Batch ${beta.batch}`}
+                    {isSoldOut ? "Sold Out" : `Cohort ${beta.cohort}`}
                   </p>
                   <p
                     className={`font-heading text-lg md:text-xl font-bold ${
@@ -339,7 +339,7 @@ export default function PricingPage() {
         {/* ═══ CTA ═══ */}
         <div className="text-center">
           <h3 className="font-heading text-2xl font-bold mb-3">
-            Batch 2 is open.
+            Cohort 2 is open.
           </h3>
           <p className="text-[var(--text-secondary)] text-sm mb-8 max-w-md mx-auto">
             Join the waitlist for first access when seats open.

@@ -42,7 +42,7 @@ export default function ParadigmShiftPage() {
             Ready to go deeper?
           </h2>
           <p className="text-[var(--text-secondary)] mb-8 max-w-lg mx-auto">
-            Enter your email to join the Batch 2 waitlist. You&apos;ll get first
+            Enter your email to join the Cohort 2 waitlist. You&apos;ll get first
             access when seats open — plus a follow-up sequence with case studies
             and methodology deep dives.
           </p>

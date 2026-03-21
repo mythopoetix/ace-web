@@ -25,7 +25,7 @@ export default function LandingPage() {
             <div className="mb-6 animate-[fadeSlideUp_0.5s_ease_both]">
               <Badge variant="sold-out">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] inline-block" />
-                Batch 1: Sold Out
+                Cohort 1: Sold Out
               </Badge>
             </div>
 
@@ -377,7 +377,7 @@ export default function LandingPage() {
                 The Paradigm Shift
               </h2>
               <p className="text-[var(--text-secondary)] text-sm">
-                The masterclass that sold out Batch 1. Watch the full replay.
+                The masterclass that sold out Cohort 1. Watch the full replay.
               </p>
             </div>
 
@@ -520,10 +520,10 @@ export default function LandingPage() {
           <div className="max-w-xl mx-auto relative">
             <Badge variant="sold-out">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] inline-block" />
-              Batch 1 ($2,497): Sold Out
+              Cohort 1 ($2,497): Sold Out
             </Badge>
             <h2 className="font-heading text-4xl md:text-5xl font-bold mt-6 mb-3">
-              Batch 2 is forming.
+              Cohort 2 is forming.
             </h2>
             <p className="font-heading text-2xl text-[var(--authority)] mb-1">$2,997</p>
             <p className="text-[var(--text-dim)] text-sm mb-10">

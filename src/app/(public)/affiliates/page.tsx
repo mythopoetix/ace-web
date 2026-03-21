@@ -30,7 +30,7 @@ export default function AffiliatesPage() {
           {[
             { value: "25%", label: "Commission per sale", color: "var(--capacity)" },
             { value: "90 days", label: "Cookie window", color: "var(--authority)" },
-            { value: "$749", label: "Per Batch 2 referral", color: "var(--expansion)" },
+            { value: "$749", label: "Per Cohort 2 referral", color: "var(--expansion)" },
           ].map((stat) => (
             <Card key={stat.label} gradient className="text-center">
               <p
@@ -144,12 +144,12 @@ export default function AffiliatesPage() {
               </thead>
               <tbody className="text-[var(--text-secondary)]">
                 <tr className="border-b border-[var(--glass-border)]">
-                  <td className="py-3">ACE Batch 2 (Current)</td>
+                  <td className="py-3">ACE Cohort 2 (Current)</td>
                   <td className="py-3">$2,997</td>
                   <td className="py-3 text-[var(--capacity)] font-medium">$749</td>
                 </tr>
                 <tr className="border-b border-[var(--glass-border)]">
-                  <td className="py-3">ACE Batch 3</td>
+                  <td className="py-3">ACE Cohort 3</td>
                   <td className="py-3">$3,997</td>
                   <td className="py-3 text-[var(--capacity)] font-medium">$999</td>
                 </tr>

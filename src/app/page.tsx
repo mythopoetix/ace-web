@@ -1,6 +1,8 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { PublicFooter } from "@/components/layout/PublicFooter";
 import { CoherenceOrb } from "@/components/brand/CoherenceOrb";
+import { EnergyField } from "@/components/brand/EnergyField";
+import { ScrollAnimations } from "@/components/providers/ScrollAnimations";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -11,11 +13,15 @@ export default function LandingPage() {
   return (
     <>
       <PublicNav />
+      <ScrollAnimations />
 
       <main className="pt-16">
         {/* ═══ HERO ═══ */}
         <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden">
-          <div className="text-center max-w-4xl mx-auto">
+          {/* Energy particle field */}
+          <EnergyField />
+
+          <div className="text-center max-w-4xl mx-auto relative z-10">
             <div className="mb-6 animate-[fadeSlideUp_0.5s_ease_both]">
               <Badge variant="sold-out">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] inline-block" />

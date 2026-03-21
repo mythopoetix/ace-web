@@ -21,49 +21,91 @@ export function ScrollAnimations() {
     }
     requestAnimationFrame(raf);
 
-    // Connect Lenis to ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // Scroll-triggered reveals for all sections
-    const sections = document.querySelectorAll("main > section");
+    // Dramatic scroll reveals
+    const sections = document.querySelectorAll("main > section, main > div.h-px");
     sections.forEach((section) => {
-      // Reveal section heading
-      const heading = section.querySelector("h2");
-      if (heading) {
+      // Headings — slide up with scale
+      const headings = section.querySelectorAll("h2, h1:not(.hero-title)");
+      headings.forEach((heading) => {
         gsap.fromTo(
           heading,
-          { y: 30, opacity: 0 },
+          { y: 40, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.8,
-            ease: "power2.out",
+            duration: 1,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: heading,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+
+      // Glass panels — rise up with blur
+      const panels = section.querySelectorAll(".glass");
+      panels.forEach((panel, i) => {
+        gsap.fromTo(
+          panel,
+          { y: 50, opacity: 0, scale: 0.97 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.9,
+            delay: i * 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: panel,
               start: "top 85%",
               toggleActions: "play none none none",
             },
           }
         );
-      }
+      });
 
-      // Reveal cards and glass elements with stagger
-      const cards = section.querySelectorAll(".glass, [class*='rounded-xl']");
-      if (cards.length > 0) {
+      // Open text paragraphs — fade slide
+      const paragraphs = section.querySelectorAll("p.reveal-text");
+      paragraphs.forEach((p, i) => {
         gsap.fromTo(
-          cards,
-          { y: 24, opacity: 0 },
+          p,
+          { y: 20, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.6,
-            stagger: 0.08,
+            duration: 0.7,
+            delay: 0.15 + i * 0.08,
             ease: "power2.out",
             scrollTrigger: {
+              trigger: p,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+
+      // Icon badges — pop in
+      const icons = section.querySelectorAll(".icon-badge");
+      if (icons.length > 0) {
+        gsap.fromTo(
+          icons,
+          { scale: 0, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.06,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
               trigger: section,
-              start: "top 75%",
+              start: "top 80%",
               toggleActions: "play none none none",
             },
           }
@@ -71,33 +113,45 @@ export function ScrollAnimations() {
       }
     });
 
-    // Counter animations for numbers
-    const counters = document.querySelectorAll("[data-counter]");
-    counters.forEach((el) => {
-      const target = parseInt(el.getAttribute("data-counter") || "0", 10);
-      const suffix = el.getAttribute("data-suffix") || "";
-      const prefix = el.getAttribute("data-prefix") || "";
-
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 85%",
-        onEnter: () => {
-          gsap.to(
-            { val: 0 },
-            {
-              val: target,
-              duration: 1.5,
-              ease: "power2.out",
-              onUpdate: function () {
-                (el as HTMLElement).textContent =
-                  prefix + Math.round(this.targets()[0].val).toLocaleString() + suffix;
-              },
-            }
-          );
-        },
-        once: true,
-      });
+    // Gradient accent strips — draw in from center
+    const strips = document.querySelectorAll(".accent-strip");
+    strips.forEach((strip) => {
+      gsap.fromTo(
+        strip,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: strip,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     });
+
+    // Desktop preview — parallax float
+    const preview = document.querySelector(".desktop-preview");
+    if (preview) {
+      gsap.fromTo(
+        preview,
+        { y: 60, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: preview,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }
 
     return () => {
       lenis.destroy();

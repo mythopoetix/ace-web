@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { PublicNav } from "@/components/layout/PublicNav";
 import { PublicFooter } from "@/components/layout/PublicFooter";
 import { CoherenceOrb } from "@/components/brand/CoherenceOrb";
 import { EnergyField } from "@/components/brand/EnergyField";
+import { LiveCommandCenter } from "@/components/brand/LiveCommandCenter";
+import { TerminalDemo } from "@/components/brand/TerminalDemo";
 import { ScrollAnimations } from "@/components/providers/ScrollAnimations";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -71,30 +72,37 @@ export default function LandingPage() {
         {/* Accent strip */}
         <div className="accent-strip h-px origin-center" style={{ background: "var(--gradient-accent)" }} />
 
-        {/* ═══ DESKTOP APP PREVIEW ═══ */}
+        {/* ═══ LIVE COMMAND CENTER ═══ */}
         <section className="py-24 px-6">
-          <div className="max-w-5xl mx-auto text-center">
-            <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-              The Interface
-            </p>
-            <h2 className="font-heading text-2xl md:text-3xl font-semibold mb-12">
-              Your command center. Always on. Always aware.
-            </h2>
-
-            {/* Desktop preview with glow frame */}
-            <div className="desktop-preview relative mx-auto max-w-4xl">
-              <div className="absolute -inset-1 rounded-2xl opacity-30 blur-xl pointer-events-none" style={{ background: "var(--gradient-accent)" }} />
-              <div className="relative rounded-xl overflow-hidden border border-[var(--glass-border)]" style={{ boxShadow: "0 0 40px rgba(136,120,255,0.08), 0 20px 60px rgba(0,0,0,0.3)" }}>
-                <Image
-                  src="/desktop-preview.png"
-                  alt="ACE Desktop — Command Center"
-                  width={1400}
-                  height={860}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
+                The Interface
+              </p>
+              <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+                Your command center. Always on. Always aware.
+              </h2>
             </div>
+
+            <div className="desktop-preview">
+              <LiveCommandCenter />
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ LIVE TERMINAL ═══ */}
+        <section className="py-4 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
+                Watch it work
+              </p>
+              <h2 className="font-heading text-xl md:text-2xl font-semibold">
+                One command. Full orientation.
+              </h2>
+            </div>
+
+            <TerminalDemo />
           </div>
         </section>
 

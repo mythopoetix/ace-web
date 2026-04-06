@@ -2187,7 +2187,7 @@
       .architect-grid { gap: 4rem; }
       .architect-photo-wrapper { max-width: 280px; margin: 0 auto; }
       .architect-name { font-size: 3.2rem; }
-      .architect-stats { gap: 3rem; }
+      .architect-stats { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
 
       /* FAQ */
       .faq { padding: 8rem 0; }
@@ -2208,7 +2208,7 @@
       .hero-quote-text { font-size: 1.4rem; }
       .testimonial-quote { font-size: 1.8rem; }
       .architect-photo-wrapper { max-width: 240px; }
-      .architect-stats { flex-direction: column; gap: 2rem; }
+      .architect-stats { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
       .science-card { padding: 2.4rem 2rem; }
     }
 
@@ -2244,11 +2244,15 @@
       margin-bottom: 2rem;
     }
     .architect-stats {
-      display: flex;
-      gap: 4rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
       margin-top: 4rem;
       padding-top: 3rem;
       border-top: 1px solid var(--border);
+    }
+    @media (max-width: 1024px) {
+      .architect-stats { grid-template-columns: repeat(2, 1fr); }
     }
     .architect-stat-value {
       font-family: var(--serif);
@@ -3601,12 +3605,20 @@
           </p>
           <div class="architect-stats reveal reveal-d4">
             <div>
-              <div class="architect-stat-value">9</div>
-              <div class="architect-stat-label">Founding clients</div>
+              <div class="architect-stat-value">7-Figure</div>
+              <div class="architect-stat-label">Entrepreneur</div>
             </div>
             <div>
-              <div class="architect-stat-value">30</div>
-              <div class="architect-stat-label">Days to first cohort sold out</div>
+              <div class="architect-stat-value">3x</div>
+              <div class="architect-stat-label">Founder</div>
+            </div>
+            <div>
+              <div class="architect-stat-value">5,000+</div>
+              <div class="architect-stat-label">Hours coaching</div>
+            </div>
+            <div>
+              <div class="architect-stat-value" style="font-size: 2.2rem;"><a href="https://www.amazon.com/GodForce-Liberate-Master-Reality-Unleash/dp/B0CF48VS71?sr=8-1" target="_blank" rel="noopener" style="color: var(--text); text-decoration: none; border-bottom: 1px solid var(--text-dim); transition: border-color 0.3s;">GodForce</a></div>
+              <div class="architect-stat-label">Best-selling author</div>
             </div>
           </div>
         </div>

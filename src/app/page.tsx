@@ -1,20 +1,11 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { PublicFooter } from "@/components/layout/PublicFooter";
-import { CoherenceOrb } from "@/components/brand/CoherenceOrb";
-import { EnergyField } from "@/components/brand/EnergyField";
 import { LiveCommandCenter } from "@/components/brand/LiveCommandCenter";
 import { TerminalDemo } from "@/components/brand/TerminalDemo";
 import { ScrollAnimations } from "@/components/providers/ScrollAnimations";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { EmailCapture } from "@/components/landing/EmailCapture";
 import { VideoEmbed } from "@/components/landing/VideoEmbed";
-import {
-  Zap, ArrowRight, Sunrise, Phone, Globe, Flame, Moon,
-  Activity, Pen, Hammer, Link2, MessageCircle, RefreshCw,
-  Shield, Puzzle, Network, Box,
-  Eye, Heart, Rocket, Play, Lock, GitBranch, HardDrive
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -25,196 +16,160 @@ export default function LandingPage() {
       <main className="pt-16">
 
         {/* ═══ HERO ═══ */}
-        <section className="relative min-h-[88vh] flex flex-col items-center justify-center px-6 overflow-hidden">
-          <EnergyField />
-          <div className="text-center max-w-2xl mx-auto relative z-10">
-            <div className="mb-5 animate-[fadeSlideUp_0.5s_ease_both]">
-              <Badge variant="sold-out">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] inline-block" />
-                Cohort 1: Sold Out
-              </Badge>
-            </div>
+        <section className="min-h-[92vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 overflow-hidden">
+          <div className="max-w-[1400px] mx-auto w-full">
+            <p className="reveal-up font-mono text-[10px] md:text-xs uppercase tracking-[4px] text-[var(--expansion)] mb-8 md:mb-12">
+              <span className="inline-block w-2 h-2 rounded-full bg-[var(--expansion)] mr-3 animate-breathe" />
+              Cohort 1: Sold Out
+            </p>
 
-            <div className="flex justify-center mb-8 animate-[fadeIn_1s_ease_both]">
-              <CoherenceOrb size="hero" />
-            </div>
-
-            <h1 className="hero-title font-heading text-4xl md:text-5xl font-semibold leading-[1.15] mb-4 animate-[fadeSlideUp_0.6s_ease_0.2s_both]">
-              <span className="gradient-text">One system</span>{" "}
-              to rule them all.
+            <h1 className="reveal-up reveal-up-d1 display-giant text-[clamp(3.5rem,10vw,9.5rem)] mb-6">
+              One system.
+              <br />
+              <span className="gradient-text">Total coherence.</span>
             </h1>
 
-            <p className="text-base text-[var(--text-secondary)] max-w-md mx-auto mb-3 leading-relaxed animate-[fadeSlideUp_0.6s_ease_0.35s_both]">
+            <p className="reveal-up reveal-up-d2 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl leading-relaxed mb-12">
               The AI operating system that knows your psychology, writes in your
               voice, coaches through your edges, and builds what you imagine.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3 mb-8 animate-[fadeSlideUp_0.6s_ease_0.45s_both]">
-              {[
-                { icon: Puzzle, label: "Extensible" },
-                { icon: Box, label: "Modular" },
-                { icon: Network, label: "Interoperable" },
-                { icon: Shield, label: "Sovereign" },
-              ].map(({ icon: Icon, label }) => (
-                <span key={label} className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[1.5px] text-[var(--text-dim)]">
-                  <Icon size={11} strokeWidth={1.5} className="opacity-50" />
+            <div className="reveal-up reveal-up-d3 flex flex-wrap gap-6 mb-14">
+              {["Extensible", "Modular", "Interoperable", "Sovereign"].map((label) => (
+                <span key={label} className="font-mono text-[10px] uppercase tracking-[3px] text-[var(--text-dim)] hover:text-[var(--text-secondary)] transition-colors duration-300">
                   {label}
                 </span>
               ))}
             </div>
 
-            <div className="animate-[fadeSlideUp_0.6s_ease_0.55s_both]">
+            <div className="reveal-up reveal-up-d4 max-w-md">
               <EmailCapture />
             </div>
           </div>
         </section>
 
-        {/* Accent strip */}
-        <div className="accent-strip h-px origin-center" style={{ background: "var(--gradient-accent)" }} />
-
-        {/* ═══ LIVE COMMAND CENTER ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                The Interface
-              </p>
-              <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-                Your command center. Always on. Always aware.
-              </h2>
-            </div>
-
-            <div className="desktop-preview">
-              <LiveCommandCenter />
-            </div>
+        {/* ═══ COMMAND CENTER ═══ */}
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              The Interface
+            </p>
+            <h2 className="display-giant text-3xl md:text-5xl lg:text-6xl mb-16">
+              Your command center.
+              <br />
+              <span className="text-[var(--text-dim)]">Always on. Always aware.</span>
+            </h2>
+            <LiveCommandCenter />
           </div>
         </section>
 
-        {/* ═══ LIVE TERMINAL ═══ */}
-        <section className="py-4 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)] mb-3">
-                Watch it work
-              </p>
-              <h2 className="font-heading text-xl md:text-2xl font-semibold">
-                One command. Full orientation.
-              </h2>
-            </div>
+        <hr className="sep max-w-[1400px] mx-auto" />
 
+        {/* ═══ TERMINAL ═══ */}
+        <section className="py-24 md:py-32 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              Watch it work
+            </p>
+            <h2 className="display-giant text-2xl md:text-4xl lg:text-5xl mb-14">
+              One command. Full orientation.
+            </h2>
             <TerminalDemo />
           </div>
         </section>
 
+        <hr className="sep max-w-[1400px] mx-auto" />
+
         {/* ═══ THE SHIFT ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass rounded-xl p-8 md:p-10 relative overflow-hidden">
-              <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(136,120,255,0.06), transparent 70%)" }} />
-
-              <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-12 relative">
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(200,160,240,0.1)", boxShadow: "0 0 12px rgba(200,160,240,0.08)" }}>
-                      <Zap size={14} className="text-[var(--authority)]" strokeWidth={1.5} />
-                    </div>
-                    <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">The Shift</p>
-                  </div>
-                  <h2 className="font-heading text-2xl md:text-3xl font-semibold leading-snug mb-5">
-                    What used to take weeks now takes hours.
-                  </h2>
-                  <p className="reveal-text text-sm text-[var(--text-secondary)] leading-relaxed">
-                    The constraint is no longer capability. It&apos;s architecture.
-                  </p>
-                </div>
-
-                <div className="space-y-5 flex flex-col justify-center">
-                  {[
-                    { before: "Week of dev work", after: "Afternoon", color: "var(--authority)" },
-                    { before: "$20K brand strategy", after: "Hours", color: "var(--capacity)" },
-                    { before: "Full content team", after: "Runs in parallel", color: "var(--expansion)" },
-                    { before: "Analysis in days", after: "Overnight", color: "var(--authority)" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <span className="text-xs text-[var(--text-dim)] line-through flex-1 text-right">{item.before}</span>
-                      <div className="icon-badge w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ backgroundColor: `color-mix(in srgb, ${item.color} 12%, transparent)` }}>
-                        <ArrowRight size={11} style={{ color: item.color }} strokeWidth={2} />
-                      </div>
-                      <span className="text-sm font-semibold flex-1" style={{ color: item.color }}>{item.after}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Accent strip */}
-        <div className="accent-strip h-px origin-center" style={{ background: "var(--gradient-accent)" }} />
-
-        {/* ═══ A DAY WITH ACE ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass rounded-xl p-8 md:p-10 relative overflow-hidden">
-              <div className="absolute -bottom-20 -right-20 w-60 h-60 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(96,216,168,0.05), transparent 70%)" }} />
-
-              <div className="flex items-center gap-2 mb-2 relative">
-                <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96,216,168,0.1)", boxShadow: "0 0 12px rgba(96,216,168,0.08)" }}>
-                  <Activity size={14} className="text-[var(--capacity)]" strokeWidth={1.5} />
-                </div>
-                <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">A day with ACE</p>
-              </div>
-              <h2 className="font-heading text-2xl md:text-3xl font-semibold mb-10 relative">
-                This isn&apos;t a demo. This is a Tuesday.
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+                The Shift
+              </p>
+              <h2 className="display-giant text-4xl md:text-5xl lg:text-6xl mb-6">
+                What used to take weeks now takes hours.
               </h2>
-
-              <div className="space-y-8 relative">
-                {[
-                  { icon: Sunrise, time: "6 AM", action: "/start", desc: "Reads your calendar, checks your nervous system, orients your day around the one thing that matters.", color: "var(--authority)" },
-                  { icon: Phone, time: "9 AM", action: "On a call", desc: "Meanwhile — newsletter drafted in your voice, emails processed, agents scanning Reddit, dashboard updated.", color: "var(--capacity)" },
-                  { icon: Globe, time: "11 AM", action: "\"Build me a website\"", desc: "Full landing page, members area, onboarding, knowledge base, payments. Deployed live. One session.", color: "var(--expansion)" },
-                  { icon: Flame, time: "2 PM", action: "Running hot", desc: "ACE catches the pattern — 10 days without rest. Asks: \"What are you avoiding?\"", color: "var(--authority)" },
-                  { icon: Moon, time: "6 PM", action: "/eod", desc: "Logs what shipped, captures patterns, surfaces the decision you've been sitting on.", color: "var(--capacity)" },
-                ].map((item, i) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={i} className="flex gap-5">
-                      <div className="w-14 shrink-0 text-right flex flex-col items-end gap-1.5">
-                        <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: `color-mix(in srgb, ${item.color} 10%, transparent)`, boxShadow: `0 0 10px color-mix(in srgb, ${item.color} 6%, transparent)` }}>
-                          <Icon size={13} style={{ color: item.color }} strokeWidth={1.5} />
-                        </div>
-                        <span className="font-mono text-[9px] text-[var(--text-dim)]">{item.time}</span>
-                      </div>
-                      <div className="relative pl-5 pb-2 border-l border-[var(--glass-border)]">
-                        <div className="absolute -left-[4px] top-1 w-[7px] h-[7px] rounded-full" style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}` }} />
-                        <span className="font-heading text-sm font-semibold" style={{ color: item.color }}>{item.action}</span>
-                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed mt-1">{item.desc}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ COMPOUNDING — OPEN TEXT ═══ */}
-        <section className="py-28 px-6">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(224,128,160,0.1)", boxShadow: "0 0 12px rgba(224,128,160,0.08)" }}>
-                <RefreshCw size={14} className="text-[var(--expansion)]" strokeWidth={1.5} />
-              </div>
-              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">
-                Compounding Intelligence
+              <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
+                The constraint is no longer capability. It&apos;s architecture.
               </p>
             </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-snug mb-6">
+
+            <div className="space-y-10 lg:pt-6">
+              {[
+                { before: "Week of dev work", after: "Afternoon", color: "var(--authority)" },
+                { before: "$20K brand strategy", after: "Hours", color: "var(--capacity)" },
+                { before: "Full content team", after: "Runs in parallel", color: "var(--expansion)" },
+                { before: "Analysis in days", after: "Overnight", color: "var(--authority)" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-6">
+                  <span className="text-base md:text-lg text-[var(--text-dim)] line-through flex-1 text-right">
+                    {item.before}
+                  </span>
+                  <ArrowRight size={16} style={{ color: item.color }} strokeWidth={1.5} className="shrink-0" />
+                  <span className="text-xl md:text-2xl font-heading font-bold flex-1" style={{ color: item.color }}>
+                    {item.after}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ A DAY WITH ACE ═══ */}
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              A day with ACE
+            </p>
+            <h2 className="display-giant text-4xl md:text-5xl lg:text-6xl mb-20">
+              This isn&apos;t a demo.
+              <br />
+              <span className="text-[var(--text-dim)]">This is a Tuesday.</span>
+            </h2>
+
+            <div className="space-y-16 md:space-y-20">
+              {[
+                { time: "6 AM", action: "/start", desc: "Reads your calendar, checks your nervous system, orients your day around the one thing that matters.", color: "var(--authority)" },
+                { time: "9 AM", action: "On a call", desc: "Meanwhile — newsletter drafted in your voice, emails processed, agents scanning Reddit, dashboard updated.", color: "var(--capacity)" },
+                { time: "11 AM", action: "\"Build me a website\"", desc: "Full landing page, members area, onboarding, knowledge base, payments. Deployed live. One session.", color: "var(--expansion)" },
+                { time: "2 PM", action: "Running hot", desc: "ACE catches the pattern — 10 days without rest. Asks: \"What are you avoiding?\"", color: "var(--authority)" },
+                { time: "6 PM", action: "/eod", desc: "Logs what shipped, captures patterns, surfaces the decision you've been sitting on.", color: "var(--capacity)" },
+              ].map((item, i) => (
+                <div key={i} className="grid grid-cols-1 md:grid-cols-[120px_1fr] gap-4 md:gap-12 group">
+                  <div className="md:text-right">
+                    <span className="display-giant text-3xl md:text-4xl text-[var(--text-dim)] group-hover:text-[var(--text-secondary)] transition-colors duration-500">
+                      {item.time}
+                    </span>
+                  </div>
+                  <div className="border-l-2 pl-8 md:pl-10 pb-2" style={{ borderColor: `color-mix(in srgb, ${item.color} 30%, transparent)` }}>
+                    <span className="font-heading text-xl md:text-2xl font-bold block mb-2 transition-colors duration-300" style={{ color: item.color }}>
+                      {item.action}
+                    </span>
+                    <p className="text-base text-[var(--text-secondary)] leading-relaxed max-w-xl">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <hr className="sep max-w-[1400px] mx-auto" />
+
+        {/* ═══ COMPOUNDING ═══ */}
+        <section className="py-28 md:py-44 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              Compounding Intelligence
+            </p>
+            <h2 className="display-giant text-4xl md:text-6xl lg:text-7xl mb-8">
               Most people prompt.
               <br />
               ACE <span className="gradient-text">compounds.</span>
             </h2>
-            <p className="reveal-text text-base text-[var(--text-secondary)] leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
               Six months in, it knows your edges better than your therapist. It writes in
               your cadence, coaches from your growth zones, and shifts to regulation when
               you&apos;re running hot. Every session leaves residue. Your intelligence
@@ -224,137 +179,117 @@ export default function LandingPage() {
         </section>
 
         {/* ═══ CAPABILITIES ═══ */}
-        <section className="py-4 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass rounded-xl overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-3">
-                {[
-                  { icon: Activity, title: "Reads your nervous system", desc: "Catches dysregulation before you crash. Shifts to coaching, not tasks.", color: "var(--capacity)" },
-                  { icon: Pen, title: "Writes in your voice", desc: "Your cadence, your warmth, your edge. On your best day, every day.", color: "var(--expansion)" },
-                  { icon: Hammer, title: "Builds what you imagine", desc: "Websites, apps, dashboards, PDFs. Describe it. Come back to a product.", color: "var(--authority)" },
-                  { icon: Link2, title: "Connects every tool", desc: "Gmail, Calendar, Fathom, Telegram, Stripe, Airtable. One intelligence layer.", color: "var(--capacity)" },
-                  { icon: MessageCircle, title: "Coaches, not optimizes", desc: "\"What are you avoiding?\" Growth from a system that knows your edges.", color: "var(--authority)" },
-                  { icon: RefreshCw, title: "Evolves every week", desc: "New skills pushed to your vault automatically. Gets smarter while you sleep.", color: "var(--expansion)" },
-                ].map((item, i) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={item.title} className={`p-6 hover:bg-[rgba(140,120,255,0.03)] transition-colors group cursor-default ${i < 3 ? "border-b border-[var(--glass-border)]" : ""} ${i % 3 !== 2 ? "md:border-r md:border-[var(--glass-border)]" : ""}`}>
-                      <div className="flex items-center gap-2.5 mb-3">
-                        <div className="icon-badge w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 group-hover:scale-110" style={{ backgroundColor: `color-mix(in srgb, ${item.color} 10%, transparent)`, boxShadow: `0 0 12px color-mix(in srgb, ${item.color} 8%, transparent), 0 0 0 1px color-mix(in srgb, ${item.color} 12%, transparent)` }}>
-                          <Icon size={15} style={{ color: item.color }} strokeWidth={1.5} />
-                        </div>
-                        <p className="font-heading text-sm font-medium">{item.title}</p>
-                      </div>
-                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed pl-[42px]">{item.desc}</p>
-                    </div>
-                  );
-                })}
-              </div>
+        <section className="py-24 md:py-32 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-16 md:gap-y-20">
+              {[
+                { title: "Reads your nervous system", desc: "Catches dysregulation before you crash. Shifts to coaching, not tasks.", color: "var(--capacity)" },
+                { title: "Writes in your voice", desc: "Your cadence, your warmth, your edge. On your best day, every day.", color: "var(--expansion)" },
+                { title: "Builds what you imagine", desc: "Websites, apps, dashboards, PDFs. Describe it. Come back to a product.", color: "var(--authority)" },
+                { title: "Connects every tool", desc: "Gmail, Calendar, Fathom, Telegram, Stripe, Airtable. One intelligence layer.", color: "var(--capacity)" },
+                { title: "Coaches, not optimizes", desc: "\"What are you avoiding?\" Growth from a system that knows your edges.", color: "var(--authority)" },
+                { title: "Evolves every week", desc: "New skills pushed to your vault automatically. Gets smarter while you sleep.", color: "var(--expansion)" },
+              ].map((item) => (
+                <div key={item.title} className="group cursor-default">
+                  <h3
+                    className="font-heading text-xl md:text-2xl font-bold mb-3 hover-triad"
+                    style={{ color: item.color }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="text-base text-[var(--text-secondary)] leading-relaxed group-hover:text-[var(--text-primary)] transition-colors duration-300">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Accent strip */}
-        <div className="accent-strip h-px origin-center mt-20" style={{ background: "var(--gradient-accent)" }} />
+        <hr className="sep max-w-[1400px] mx-auto" />
 
         {/* ═══ TRIAD ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass rounded-xl overflow-hidden relative">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(136,120,255,0.03), transparent 70%)" }} />
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              The Coherence Triad
+            </p>
+            <h2 className="display-giant text-3xl md:text-5xl lg:text-6xl mb-20">
+              Most systems optimize for output.
+              <br />
+              ACE optimizes for <span className="gradient-text">coherence.</span>
+            </h2>
 
-              <div className="p-6 md:p-8 border-b border-[var(--glass-border)] relative">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(200,160,240,0.1)", boxShadow: "0 0 12px rgba(200,160,240,0.06)" }}>
-                    <Eye size={14} className="text-[var(--authority)]" strokeWidth={1.5} />
-                  </div>
-                  <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">The Coherence Triad</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 lg:gap-20">
+              {[
+                { name: "Authority", tagline: "You know who you are.", signals: "Truth → Choice → Expression", desc: "The system reads whether your life matches your truth — and surfaces the gap.", color: "var(--authority)" },
+                { name: "Capacity", tagline: "You can hold what comes.", signals: "Regulation → Depth → Resilience", desc: "Your nervous system is infrastructure. ACE protects it.", color: "var(--capacity)" },
+                { name: "Expansion", tagline: "You expand into what's next.", signals: "Rhythm → Containers → Realization", desc: "Structure that produces without consuming you. Ideas that ship.", color: "var(--expansion)" },
+              ].map((p) => (
+                <div key={p.name} className="group">
+                  <h3
+                    className="display-giant text-4xl md:text-5xl lg:text-6xl mb-4 transition-opacity duration-500 group-hover:opacity-80"
+                    style={{ color: p.color }}
+                  >
+                    {p.name}
+                  </h3>
+                  <p className="text-base italic mb-4" style={{ color: p.color, opacity: 0.5 }}>
+                    {p.tagline}
+                  </p>
+                  <p className="text-base text-[var(--text-secondary)] leading-relaxed mb-5">
+                    {p.desc}
+                  </p>
+                  <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">
+                    {p.signals}
+                  </p>
                 </div>
-                <h2 className="font-heading text-xl md:text-2xl font-semibold">
-                  Most systems optimize for output. ACE optimizes for <span className="gradient-text">coherence.</span>
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 relative">
-                {[
-                  { icon: Eye, name: "Authority", tagline: "You know who you are.", signals: "Truth → Choice → Expression", desc: "The system reads whether your life matches your truth — and surfaces the gap.", color: "var(--authority)" },
-                  { icon: Heart, name: "Capacity", tagline: "You can hold what comes.", signals: "Regulation → Depth → Resilience", desc: "Your nervous system is infrastructure. ACE protects it.", color: "var(--capacity)" },
-                  { icon: Rocket, name: "Expansion", tagline: "You expand into what's next.", signals: "Rhythm → Containers → Realization", desc: "Structure that produces without consuming you. Ideas that ship.", color: "var(--expansion)" },
-                ].map((p, i) => {
-                  const Icon = p.icon;
-                  return (
-                    <div key={p.name} className={`p-6 md:p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-[var(--glass-border)]" : ""}`}>
-                      <div className="flex items-center gap-2.5 mb-3">
-                        <div className="icon-badge w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: `color-mix(in srgb, ${p.color} 12%, transparent)`, boxShadow: `0 0 16px color-mix(in srgb, ${p.color} 8%, transparent), 0 0 0 1px color-mix(in srgb, ${p.color} 15%, transparent)` }}>
-                          <Icon size={16} style={{ color: p.color }} strokeWidth={1.5} />
-                        </div>
-                        <span className="font-heading text-lg font-semibold" style={{ color: p.color }}>{p.name}</span>
-                      </div>
-                      <p className="text-xs italic mb-3" style={{ color: p.color, opacity: 0.6 }}>{p.tagline}</p>
-                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-3">{p.desc}</p>
-                      <p className="font-mono text-[7px] uppercase tracking-[1.5px] text-[var(--text-dim)]">{p.signals}</p>
-                    </div>
-                  );
-                })}
-              </div>
+              ))}
             </div>
           </div>
         </section>
+
+        <hr className="sep max-w-[1400px] mx-auto" />
 
         {/* ═══ VIDEO ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass rounded-xl p-8 md:p-10 relative overflow-hidden">
-              <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(200,160,240,0.05), transparent 70%)" }} />
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-8 items-center relative">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(200,160,240,0.1)" }}>
-                      <Play size={13} className="text-[var(--authority)]" strokeWidth={1.5} />
-                    </div>
-                    <Badge variant="authority">Free Masterclass</Badge>
-                  </div>
-                  <h2 className="font-heading text-xl md:text-2xl font-semibold mb-2">The Paradigm Shift</h2>
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5">60 minutes that sold out Cohort 1.</p>
-                  <EmailCapture />
-                </div>
-                <VideoEmbed url="https://player.vimeo.com/video/placeholder" title="The Paradigm Shift" />
-              </div>
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 items-center">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--authority)] mb-3">
+                Free Masterclass
+              </p>
+              <h2 className="display-giant text-3xl md:text-4xl lg:text-5xl mb-3">
+                The Paradigm Shift
+              </h2>
+              <p className="text-lg text-[var(--text-secondary)] leading-relaxed mb-8">
+                60 minutes that sold out Cohort 1.
+              </p>
+              <EmailCapture />
             </div>
+            <VideoEmbed url="https://player.vimeo.com/video/placeholder" title="The Paradigm Shift" />
           </div>
         </section>
 
-        {/* Accent strip */}
-        <div className="accent-strip h-px origin-center" style={{ background: "var(--gradient-accent)" }} />
+        <hr className="sep max-w-[1400px] mx-auto" />
 
-        {/* ═══ SOVEREIGNTY — OPEN TEXT ═══ */}
-        <section className="py-28 px-6">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(200,160,240,0.1)" }}>
-                <Lock size={14} className="text-[var(--authority)]" strokeWidth={1.5} />
-              </div>
-              <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">Sovereignty</p>
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-snug mb-6">
+        {/* ═══ SOVEREIGNTY ═══ */}
+        <section className="py-28 md:py-44 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              Sovereignty
+            </p>
+            <h2 className="display-giant text-4xl md:text-6xl lg:text-7xl mb-8">
               Your intelligence. Your patterns.
               <br />
               Your context. <span className="gradient-text">Yours.</span>
             </h2>
-            <p className="reveal-text text-base text-[var(--text-secondary)] leading-relaxed max-w-xl mb-8">
+            <p className="text-lg md:text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl mb-12">
               Everything lives on your machine. Not in someone else&apos;s cloud.
               Not feeding someone else&apos;s model. Owning your intelligence
               infrastructure is not a technical detail. It&apos;s a political one.
             </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { icon: HardDrive, label: "Local-first" },
-                { icon: GitBranch, label: "Git-backed" },
-                { icon: Shield, label: "Portable forever" },
-                { icon: Lock, label: "Your machine" },
-              ].map(({ icon: Icon, label }) => (
-                <span key={label} className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[1.5px] text-[var(--text-dim)] border border-[var(--border)] rounded px-2.5 py-1 hover:border-[var(--border-hover)] transition-colors">
-                  <Icon size={10} strokeWidth={1.5} className="opacity-50" />
+            <div className="flex flex-wrap gap-4">
+              {["Local-first", "Git-backed", "Portable forever", "Your machine"].map((label) => (
+                <span key={label} className="font-mono text-[10px] uppercase tracking-[3px] text-[var(--text-dim)] border border-[var(--border)] px-4 py-2 hover:border-[var(--border-hover)] hover:text-[var(--text-secondary)] transition-all duration-300">
                   {label}
                 </span>
               ))}
@@ -362,87 +297,102 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ BUILD + PROOF + CTA ═══ */}
-        <section className="py-24 px-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Build */}
-            <div className="glass rounded-xl p-8 md:p-10 relative overflow-hidden mb-20">
-              <div className="absolute -bottom-16 -left-16 w-40 h-40 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(96,216,168,0.04), transparent 70%)" }} />
-              <div className="flex items-center gap-2 mb-2 relative">
-                <div className="icon-badge w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96,216,168,0.1)" }}>
-                  <Rocket size={14} className="text-[var(--expansion)]" strokeWidth={1.5} />
-                </div>
-                <p className="font-mono text-[9px] uppercase tracking-[2px] text-[var(--text-dim)]">The Build</p>
-              </div>
-              <h2 className="font-heading text-xl md:text-2xl font-semibold mb-2 relative">4 weeks. Zero to operational.</h2>
-              <p className="text-sm text-[var(--text-secondary)] mb-8 relative">Custom-built around your identity, your tools, your workflow.</p>
+        {/* ═══ THE BUILD ═══ */}
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--text-dim)] mb-4">
+              The Build
+            </p>
+            <h2 className="display-giant text-3xl md:text-5xl lg:text-6xl mb-6">
+              4 weeks. Zero to operational.
+            </h2>
+            <p className="text-lg text-[var(--text-secondary)] mb-20 max-w-xl">
+              Custom-built around your identity, your tools, your workflow.
+            </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 relative">
-                {[
-                  { phase: "Week 1", title: "Identity + vault", desc: "Blueprint intake. Identity core compiled.", color: "var(--authority)" },
-                  { phase: "Week 1", title: "Custom skills", desc: "Built for your workflow. Before you meet.", color: "var(--capacity)" },
-                  { phase: "Week 1–2", title: "1:1 build session", desc: "90 min with Nikhil. System comes alive.", color: "var(--expansion)" },
-                  { phase: "Week 2–5", title: "Compound", desc: "Daily use. Group calls. System learns you.", color: "var(--authority)" },
-                ].map((item) => (
-                  <div key={item.title}>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="w-[6px] h-[6px] rounded-full" style={{ backgroundColor: item.color, boxShadow: `0 0 6px ${item.color}` }} />
-                      <span className="font-mono text-[8px] uppercase tracking-[1.5px]" style={{ color: item.color }}>{item.phase}</span>
-                    </div>
-                    <p className="text-sm font-medium mb-0.5">{item.title}</p>
-                    <p className="text-xs text-[var(--text-secondary)]">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-[var(--glass-border)] pt-5 relative">
-                <p className="font-mono text-[8px] uppercase tracking-[2px] text-[var(--text-dim)] mb-2">Included</p>
-                <div className="flex flex-wrap gap-x-5 gap-y-1">
-                  {["ACE vault + skills", "90-min 1:1 build", "4 weeks group calls", "Desktop app", "All integrations", "Asraya membership", "Video library", "Weekly updates"].map((item) => (
-                    <span key={item} className="text-xs text-[var(--text-secondary)]">{item}</span>
-                  ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+              {[
+                { phase: "Week 1", title: "Identity + vault", desc: "Blueprint intake. Identity core compiled.", color: "var(--authority)" },
+                { phase: "Week 1", title: "Custom skills", desc: "Built for your workflow. Before you meet.", color: "var(--capacity)" },
+                { phase: "Week 1–2", title: "1:1 build session", desc: "90 min with Nikhil. System comes alive.", color: "var(--expansion)" },
+                { phase: "Week 2–5", title: "Compound", desc: "Daily use. Group calls. System learns you.", color: "var(--authority)" },
+              ].map((item) => (
+                <div key={item.title}>
+                  <span className="font-mono text-[10px] uppercase tracking-[3px] block mb-3" style={{ color: item.color }}>
+                    {item.phase}
+                  </span>
+                  <h3 className="font-heading text-xl font-bold mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
-              </div>
+              ))}
             </div>
 
-            {/* Testimonials */}
-            <div className="max-w-3xl mx-auto space-y-12 mb-20">
+            <hr className="sep mb-8" />
+            <p className="font-mono text-[10px] uppercase tracking-[3px] text-[var(--text-dim)] mb-4">
+              Included
+            </p>
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              {["ACE vault + skills", "90-min 1:1 build", "4 weeks group calls", "Desktop app", "All integrations", "Asraya membership", "Video library", "Weekly updates"].map((item) => (
+                <span key={item} className="text-base text-[var(--text-secondary)]">{item}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <hr className="sep max-w-[1400px] mx-auto" />
+
+        {/* ═══ TESTIMONIALS ═══ */}
+        <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="space-y-20 md:space-y-28">
               {[
-                { quote: "ACE doesn't tell me what to do. It shows me who I am and lets me decide. That's the difference between productivity and sovereignty.", name: "Founding Member" },
-                { quote: "None of the systems I tried started with identity. ACE does — everything else falls into place.", name: "Founding Member" },
+                { quote: "ACE doesn't tell me what to do. It shows me who I am and lets me decide. That's the difference between productivity and sovereignty.", name: "Founding Member", align: "left" as const },
+                { quote: "None of the systems I tried started with identity. ACE does — everything else falls into place.", name: "Founding Member", align: "right" as const },
               ].map((t, i) => (
-                <div key={i} className={i === 1 ? "md:pl-16" : ""}>
-                  <p className="text-base md:text-lg text-[var(--text-primary)] leading-relaxed italic mb-2">
+                <div key={i} className={t.align === "right" ? "md:ml-auto md:max-w-3xl" : "md:max-w-3xl"}>
+                  <p className="font-heading text-2xl md:text-3xl lg:text-4xl font-light leading-snug italic text-[var(--text-primary)] mb-6">
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <span className="font-mono text-[8px] uppercase tracking-[2px] text-[var(--text-dim)]">
+                  <span className="font-mono text-[10px] uppercase tracking-[3px] text-[var(--text-dim)]">
                     {t.name} &middot; Cohort 1
                   </span>
                 </div>
               ))}
             </div>
-
-            {/* CTA */}
-            <div className="glass rounded-xl p-8 md:p-10 text-center relative overflow-hidden max-w-2xl mx-auto">
-              <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(136,120,255,0.06), transparent 60%)" }} />
-              <div className="relative">
-                <Badge variant="sold-out">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] inline-block" />
-                  Cohort 1: Sold Out
-                </Badge>
-                <h2 className="font-heading text-2xl md:text-3xl font-semibold mt-4 mb-2">Cohort 2 is forming.</h2>
-                <p className="font-heading text-xl text-[var(--authority)] mb-0.5">$2,997</p>
-                <p className="font-mono text-[8px] uppercase tracking-[1.5px] text-[var(--text-dim)] mb-7">
-                  Founding rate &middot; Limited seats &middot; Price increases each cohort
-                </p>
-                <EmailCapture />
-                <div className="mt-4">
-                  <Button variant="ghost" size="sm" href="/paradigm-shift">Watch the Paradigm Shift →</Button>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
+
+        <hr className="sep max-w-[1400px] mx-auto" />
+
+        {/* ═══ CTA ═══ */}
+        <section className="py-28 md:py-44 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[1400px] mx-auto text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[4px] text-[var(--expansion)] mb-6">
+              <span className="inline-block w-2 h-2 rounded-full bg-[var(--expansion)] mr-3 animate-breathe" />
+              Cohort 1: Sold Out
+            </p>
+            <h2 className="display-giant text-4xl md:text-6xl lg:text-7xl mb-4">
+              Cohort 2 is forming.
+            </h2>
+            <p className="display-giant text-5xl md:text-7xl lg:text-8xl mb-2" style={{ color: "var(--authority)" }}>
+              $2,997
+            </p>
+            <p className="font-mono text-[10px] uppercase tracking-[3px] text-[var(--text-dim)] mb-14">
+              Founding rate &middot; Limited seats &middot; Price increases each cohort
+            </p>
+            <div className="max-w-md mx-auto mb-8">
+              <EmailCapture />
+            </div>
+            <a href="/paradigm-shift" className="uline font-mono text-xs uppercase tracking-[3px] text-[var(--text-dim)] hover:text-[var(--text-secondary)] transition-colors duration-300">
+              Watch the Paradigm Shift
+            </a>
+          </div>
+        </section>
+
       </main>
 
       <PublicFooter />

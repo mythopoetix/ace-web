@@ -1,0 +1,3997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACE — Actualize Coherence Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js" as="script" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══ RESET ═══ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 10px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-subtle: #0e0e16;
+      --text: #e8e4f0;
+      --text-mid: #9898b8;
+      --text-dim: #4a4a66;
+      --authority: #c8a0f0;
+      --capacity: #60d8a8;
+      --expansion: #e080a0;
+      --border: rgba(200, 160, 240, 0.08);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    ::selection {
+      background: rgba(200, 160, 240, 0.2);
+      color: var(--text);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1.6rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ═══ SCROLLBAR ═══ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(200,160,240,0.12); border-radius: 2px; }
+
+    /* ═══ LAYOUT ═══ */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+    @media (min-width: 768px) { .container { padding: 0 8rem; } }
+    @media (min-width: 1200px) { .container { padding: 0 10rem; } }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 2.4rem 0;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 3.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--authority);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    /* System Live pill */
+    .system-live-pill {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #60d8a8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid rgba(96,216,168,0.2);
+      border-radius: 20px;
+      background: rgba(96,216,168,0.06);
+    }
+    .system-live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #60d8a8;
+      box-shadow: 0 0 6px rgba(96,216,168,0.5);
+      animation: livePulse 2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 0.6; box-shadow: 0 0 4px rgba(96,216,168,0.3); }
+      50% { opacity: 1; box-shadow: 0 0 10px rgba(96,216,168,0.6); }
+    }
+    @media (max-width: 768px) {
+      .system-live-pill { font-size: 0.65rem; padding: 3px 8px; }
+    }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-bottom: 4vh;
+      padding-top: 10rem;
+    }
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--expansion);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-label .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--expansion);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(5.5rem, 11vw, 14rem);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      margin-bottom: 4rem;
+    }
+    .hero h1 .line-2 {
+      display: block;
+      background: linear-gradient(135deg, var(--authority), var(--capacity));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.8rem;
+      color: var(--text-mid);
+      max-width: 56rem;
+      line-height: 1.7;
+      margin-bottom: 5rem;
+      font-weight: 300;
+    }
+    .hero-tags {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 5rem;
+    }
+    .hero-tags span {
+      font-family: var(--mono);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      transition: color 0.4s;
+    }
+    .hero-tags span:hover { color: var(--text-mid); }
+
+    /* ═══ EMAIL CAPTURE ═══ */
+    .email-form {
+      display: flex;
+      gap: 1px;
+      max-width: 44rem;
+    }
+    .email-form input {
+      flex: 1;
+      background: rgba(200, 160, 240, 0.04);
+      border: 1px solid var(--border);
+      border-right: none;
+      padding: 1.6rem 2rem;
+      font-family: var(--sans);
+      font-size: 1.4rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .email-form input::placeholder { color: var(--text-dim); }
+    .email-form input:focus {
+      border-color: rgba(200, 160, 240, 0.2);
+      background: rgba(200, 160, 240, 0.06);
+    }
+    .email-form button {
+      background: var(--authority);
+      border: 1px solid var(--authority);
+      padding: 1.6rem 3rem;
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--bg);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      font-weight: 500;
+    }
+    .email-form button:hover {
+      background: #d4b0f8;
+      transform: translateY(-1px);
+    }
+
+    /* ═══ SEPARATOR ═══ */
+    .sep {
+      height: 1px;
+      background: var(--border);
+      border: none;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ═══ SECTION SPACING ═══ */
+    section { padding: 14rem 0; }
+    @media (min-width: 768px) { section { padding: 18rem 0; } }
+
+    /* ═══ LABEL ═══ */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+    }
+
+    /* ═══ BIG HEADING ═══ */
+    .big-heading {
+      font-family: var(--serif);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+    }
+    .size-xl { font-size: clamp(3.2rem, 6vw, 7.2rem); }
+    .size-lg { font-size: clamp(2.8rem, 5vw, 5.6rem); }
+    .size-md { font-size: clamp(2.4rem, 3.5vw, 4rem); }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--authority), var(--capacity));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ═══ COMMAND CENTER ═══ */
+    /* ═══ INTERACTIVE MOCKUP ═══ */
+    .preview-frame {
+      /* Dark theme (default) */
+      --m-bg: #080a12;
+      --m-surface: #0a0c16;
+      --m-card: #101420;
+      --m-border: rgba(140,120,255,0.08);
+      --m-border-strong: rgba(140,120,255,0.12);
+      --m-text: #e8e4f0;
+      --m-text-mid: #9898b8;
+      --m-text-dim: #606080;
+      --m-glass: rgba(16,20,36,0.6);
+      --m-glow: rgba(140,120,255,0.04);
+      --m-nav-hover: rgba(140,120,255,0.06);
+      --m-nav-active: rgba(140,120,255,0.08);
+      --m-msg-user: linear-gradient(135deg, rgba(140,120,255,0.12), rgba(200,160,240,0.08));
+      --m-code-bg: rgba(140,120,255,0.08);
+
+      background: var(--m-bg);
+      border: 1px solid var(--m-border-strong);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 6rem;
+      aspect-ratio: 16 / 10;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 4px 60px rgba(140,120,255,0.08), 0 0 0 1px rgba(140,120,255,0.06);
+      transition: background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+    .preview-frame.light-mode {
+      --m-bg: #f4f2f8;
+      --m-surface: #eae6f2;
+      --m-card: #ffffff;
+      --m-border: rgba(140,120,255,0.12);
+      --m-border-strong: rgba(140,120,255,0.18);
+      --m-text: #1a1528;
+      --m-text-mid: #5a5478;
+      --m-text-dim: #8880a0;
+      --m-glass: rgba(244,242,248,0.8);
+      --m-glow: rgba(140,120,255,0.06);
+      --m-nav-hover: rgba(140,120,255,0.08);
+      --m-nav-active: rgba(140,120,255,0.12);
+      --m-msg-user: linear-gradient(135deg, rgba(140,120,255,0.08), rgba(200,160,240,0.06));
+      --m-code-bg: rgba(140,120,255,0.06);
+      background: var(--m-bg);
+      box-shadow: 0 4px 60px rgba(140,120,255,0.06), 0 0 0 1px rgba(140,120,255,0.1);
+    }
+    /* Titlebar */
+    .mock-titlebar {
+      height: 36px;
+      background: var(--m-surface);
+      border-bottom: 1px solid var(--m-border);
+      transition: background 0.8s ease, border-color 0.8s ease;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .mock-dots { display: flex; gap: 6px; }
+    .mock-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-dots span:nth-child(1) { background: #ff5f57; }
+    .mock-dots span:nth-child(2) { background: #febc2e; }
+    .mock-dots span:nth-child(3) { background: #28c840; }
+    .mock-titlebar-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .mock-intensity-icon { color: rgba(140,120,255,0.5); font-size: 11px; }
+    .mock-intensity-bar {
+      width: 120px; height: 6px;
+      background: rgba(140,120,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    .mock-intensity-fill {
+      width: 35%;
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #8878ff, #c8a0f0);
+      box-shadow: 0 0 8px rgba(140,120,255,0.3);
+    }
+    .mock-mode-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #c8a0f0;
+      background: rgba(200,160,240,0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(200,160,240,0.12);
+    }
+    .mock-theme-toggle {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--m-border-strong);
+      background: var(--m-nav-hover);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px;
+      color: var(--m-text-dim);
+      transition: background 0.3s, border-color 0.3s;
+      margin-left: 4px;
+    }
+    .mock-theme-toggle:hover { border-color: rgba(200,160,240,0.3); }
+    .mock-coherence-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #60d8a8;
+      box-shadow: 0 0 6px rgba(96,216,168,0.4);
+    }
+    /* Body */
+    .mock-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+    /* Sidebar */
+    .mock-sidebar {
+      width: 180px;
+      background: var(--m-surface);
+      border-right: 1px solid var(--m-border);
+      transition: background 0.8s ease, border-color 0.8s ease, width 0.6s ease, opacity 0.6s ease, padding 0.6s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 8px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .mock-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px 14px;
+    }
+    .mock-sidebar-logo svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .mock-sidebar-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .mock-sidebar-logo-text .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--m-text);
+      transition: color 0.8s ease;
+      letter-spacing: 0.04em;
+    }
+    .mock-sidebar-logo-text .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--m-text-dim);
+      transition: color 0.8s ease;
+    }
+    .mock-nav { list-style: none; padding: 0; margin: 0; }
+    .mock-nav li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--m-text-mid);
+      transition: background 0.15s, color 0.15s;
+      position: relative;
+    }
+    .mock-nav li:hover { background: var(--m-nav-hover); color: var(--m-text); }
+    .mock-nav li.active {
+      background: var(--m-nav-active);
+      color: var(--m-text);
+    }
+    .mock-nav li.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 4px; bottom: 4px;
+      width: 3px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, #8878ff, #c8a0f0);
+      box-shadow: 0 0 8px rgba(140,120,255,0.3);
+    }
+    .mock-nav-icon {
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+    .mock-nav li.active .mock-nav-icon { opacity: 1; }
+    .mock-sidebar-commands {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid rgba(140,120,255,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .mock-cmd-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--m-text-mid);
+      background: var(--m-nav-hover);
+      padding: 3px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--m-border);
+      transition: background 0.8s ease, border-color 0.8s ease, color 0.8s ease;
+    }
+    .mock-sidebar-stats {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--m-border);
+    }
+    .mock-stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--m-text-dim);
+      padding: 2px 8px;
+      transition: color 0.8s ease;
+    }
+    .mock-stat-val { color: var(--m-text-mid); transition: color 0.8s ease; }
+    /* Main content area */
+    .mock-main {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .mock-atm-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 80%, var(--m-glow) 0%, transparent 70%);
+      transition: background 0.8s ease;
+      pointer-events: none;
+      animation: mockAtmBreathe 8s ease-in-out infinite;
+    }
+    @keyframes mockAtmBreathe {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    /* Dashboard view */
+    .mock-view { position: absolute; inset: 0; padding: 16px 20px; overflow-y: auto; transition: opacity 0.3s ease; }
+    .mock-view.hidden { opacity: 0; pointer-events: none; }
+    .mock-greeting-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--m-text-dim);
+      transition: color 0.8s ease;
+      margin-bottom: 4px;
+    }
+    .mock-greeting {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--m-text);
+      transition: color 0.8s ease;
+      margin-bottom: 10px;
+    }
+    .mock-tags { display: flex; gap: 6px; margin-bottom: 14px; }
+    .mock-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .mock-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .mock-stat-card {
+      background: var(--m-card);
+      border: 1px solid var(--m-border);
+      transition: background 0.8s ease, border-color 0.8s ease;
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .mock-stat-card .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--m-text-dim);
+      transition: color 0.8s ease;
+      margin-bottom: 4px;
+    }
+    .mock-stat-card .value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--m-text);
+      transition: color 0.8s ease;
+    }
+    .mock-triad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .mock-triad-card {
+      background: var(--m-card);
+      border: 1px solid var(--m-border);
+      transition: background 0.8s ease, border-color 0.8s ease;
+      border-radius: 6px;
+      padding: 10px;
+      border-top: 2px solid;
+    }
+    .mock-triad-card .card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mock-triad-card .card-label .dots { display: flex; gap: 3px; }
+    .mock-triad-card .card-label .dots span {
+      width: 5px; height: 5px; border-radius: 50%;
+    }
+    .mock-outcome-item {
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(140,120,255,0.04);
+    }
+    .mock-outcome-item:last-child { border-bottom: none; }
+    .mock-outcome-title {
+      font-size: 10px;
+      color: var(--m-text);
+      transition: color 0.8s ease;
+      margin-bottom: 3px;
+    }
+    .mock-outcome-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mock-outcome-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .mock-progress-bar {
+      height: 3px;
+      background: var(--m-border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .mock-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+    .mock-followup-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--m-border);
+      font-size: 9px;
+    }
+    .mock-followup-item:last-child { border-bottom: none; }
+    .mock-followup-name { color: #c8a0f0; }
+    .mock-followup-topic { color: var(--m-text-mid); flex: 1; margin-left: 6px; transition: color 0.8s ease; }
+    .mock-followup-due {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--m-text-dim);
+      transition: color 0.8s ease;
+    }
+    /* Chat view */
+    .mock-chat {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .mock-messages {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mock-msg {
+      max-width: 72%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .mock-msg-user {
+      align-self: flex-end;
+      background: var(--m-msg-user);
+      border: 1px solid var(--m-border-strong);
+      color: var(--m-text);
+      transition: background 0.8s ease, border-color 0.8s ease, color 0.8s ease;
+      border-bottom-right-radius: 4px;
+    }
+    .mock-msg-assistant {
+      align-self: flex-start;
+      background: transparent;
+      color: var(--m-text-mid);
+      transition: color 0.8s ease;
+      max-width: 90%;
+    }
+    .mock-msg-assistant strong { color: var(--m-text); transition: color 0.8s ease; }
+    .mock-msg-assistant code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: var(--m-code-bg);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #c8a0f0;
+    }
+    .mock-typing {
+      display: flex;
+      gap: 4px;
+      padding: 10px 14px;
+      align-self: flex-start;
+    }
+    .mock-typing span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(140,120,255,0.3);
+      animation: mockTyping 1.2s ease-in-out infinite;
+    }
+    .mock-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .mock-typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes mockTyping {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-3px); }
+    }
+    .mock-chat-input {
+      padding: 10px 14px;
+      border-top: 1px solid var(--m-border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .mock-chat-textarea {
+      flex: 1;
+      background: var(--m-glass);
+      border: 1px solid var(--m-border-strong);
+      transition: background 0.8s ease, border-color 0.8s ease;
+      border-radius: 10px;
+      padding: 8px 12px;
+      color: var(--m-text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      resize: none;
+      outline: none;
+      height: 34px;
+    }
+    .mock-chat-send {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(200,160,240,0.1);
+      border: 1px solid rgba(200,160,240,0.12);
+      transition: background 0.8s ease, border-color 0.8s ease;
+      color: #c8a0f0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    /* ═══ ZOOM FOCUS ═══ */
+    .mock-body {
+      transform-origin: top left;
+      will-change: transform;
+    }
+
+    /* ═══ DECK PREVIEW ═══ */
+    .mock-deck-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 8px;
+      padding: 8px;
+      background: var(--m-card);
+      border: 1px solid var(--m-border);
+      border-radius: 6px;
+      transition: background 0.8s ease, border-color 0.8s ease;
+    }
+    .mock-slide {
+      aspect-ratio: 16 / 10;
+      border-radius: 3px;
+      background: var(--m-surface);
+      border: 1px solid var(--m-border);
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: background 0.8s ease, border-color 0.8s ease;
+    }
+    .mock-slide-title {
+      height: 2px;
+      width: 60%;
+      border-radius: 1px;
+      margin-bottom: 2px;
+    }
+    .mock-slide-line {
+      height: 1px;
+      border-radius: 1px;
+      background: var(--m-text-dim);
+      opacity: 0.3;
+      margin-top: 1px;
+    }
+    .mock-slide-bar {
+      height: 8px;
+      border-radius: 2px;
+      margin-top: auto;
+      opacity: 0.5;
+    }
+    .mock-slide-circle {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin: auto;
+      opacity: 0.6;
+    }
+
+    /* ═══ COHERENCE OUTCOME ═══ */
+    .mock-coherence-dot.glowing {
+      animation: coherenceGlow 1.5s ease-in-out 3;
+    }
+    @keyframes coherenceGlow {
+      0%, 100% { box-shadow: 0 0 6px rgba(96,216,168,0.4); transform: scale(1); }
+      50% { box-shadow: 0 0 16px 4px rgba(96,216,168,0.6); transform: scale(1.8); }
+    }
+    .mock-coherence-ring {
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(96,216,168,0.3);
+      top: 50%; right: 38px;
+      transform: translate(50%, -50%) scale(0);
+      pointer-events: none;
+    }
+
+    /* ═══ BREATH VIEW ═══ */
+    .mock-breath {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--m-bg);
+      transition: background 0.8s ease;
+      z-index: 2;
+    }
+    .mock-breath-orb-wrap {
+      position: relative;
+      width: 100px; height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock-breath-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(96,216,168,0.12);
+    }
+    .mock-breath-ring-outer { width: 96px; height: 96px; }
+    .mock-breath-ring-inner { width: 68px; height: 68px; }
+    .mock-breath-orb {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 38%, #60d8a8, rgba(96,216,168,0.3) 60%, transparent 100%);
+      box-shadow: 0 0 20px rgba(96,216,168,0.2);
+    }
+    .mock-breath-phase {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #60d8a8;
+      margin-top: 18px;
+    }
+    .mock-breath-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--m-text-dim);
+      margin-top: 6px;
+      transition: color 0.8s ease;
+    }
+    .mock-breath-protocol {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--m-text-dim);
+      margin-top: 14px;
+      padding: 3px 10px;
+      border: 1px solid rgba(96,216,168,0.15);
+      border-radius: 4px;
+      transition: color 0.8s ease, border-color 0.8s ease;
+    }
+
+    /* ═══ INTENTION ═══ */
+    .mock-intention-word {
+      display: inline;
+      opacity: 0;
+    }
+    .mock-msg-intention {
+      position: relative;
+      overflow: hidden;
+    }
+    .mock-msg-intention .shimmer-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(200,160,240,0.12) 50%, transparent 100%);
+      transform: translateX(-100%);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .mock-msg-locked {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #c8a0f0;
+      opacity: 0;
+      padding: 6px 0 2px;
+    }
+
+    /* ═══ COHERENCE CULMINATION ═══ */
+    .mock-triad-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .mock-triad-ring-auth { width: 120px; height: 120px; border-color: #c8a0f0; }
+    .mock-triad-ring-cap  { width: 120px; height: 120px; border-color: #60d8a8; }
+    .mock-triad-ring-exp  { width: 120px; height: 120px; border-color: #e080a0; }
+    .mock-coherence-score {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: transparent;
+      background: linear-gradient(135deg, #8878ff, #c8a0f0, #60d8a8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      opacity: 0;
+      margin-top: 14px;
+    }
+    .mock-coherence-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--m-text-dim);
+      opacity: 0;
+      margin-top: 4px;
+      transition: color 0.8s ease;
+    }
+    .mock-breath-orb.coherent {
+      background: radial-gradient(circle at 40% 38%, #8878ff 0%, #c8a0f0 40%, #60d8a8 70%, transparent 100%);
+      box-shadow: 0 0 30px rgba(140,120,255,0.3), 0 0 60px rgba(96,216,168,0.15);
+    }
+
+    /* ═══ SESSION SUMMARY ═══ */
+    .mock-summary {
+      position: absolute;
+      inset: 0;
+      background: var(--m-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 3;
+      transition: background 0.8s ease;
+    }
+    .mock-summary-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--m-text-dim);
+      margin-bottom: 6px;
+      transition: color 0.8s ease;
+    }
+    .mock-summary-time {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--m-text);
+      margin-bottom: 18px;
+      transition: color 0.8s ease;
+    }
+    .mock-summary-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      max-width: 320px;
+    }
+    .mock-summary-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--m-border);
+      font-size: 10px;
+      line-height: 1.5;
+      transition: border-color 0.8s ease;
+    }
+    .mock-summary-item:last-child { border-bottom: none; }
+    .mock-summary-verb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+      width: 62px;
+    }
+    .mock-summary-desc {
+      color: var(--m-text-mid);
+      transition: color 0.8s ease;
+    }
+    .mock-summary-coherence {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 12px;
+    }
+    .mock-summary-coh-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--m-text-dim);
+      transition: color 0.8s ease;
+    }
+    .mock-summary-coh-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 300;
+      background: linear-gradient(135deg, #8878ff, #c8a0f0, #60d8a8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .mock-summary-tagline {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--m-text-dim);
+      margin-top: 18px;
+      transition: color 0.8s ease;
+    }
+
+    /* ═══ BREATH PROMPT ═══ */
+    .mock-breath-prompt {
+      background: var(--m-card);
+      border: 1px solid rgba(96,216,168,0.15);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 6px 0;
+      transition: background 0.8s ease, border-color 0.8s ease;
+    }
+    .mock-breath-prompt-text {
+      font-size: 12px;
+      color: var(--m-text-mid);
+      line-height: 1.5;
+      margin-bottom: 10px;
+      transition: color 0.8s ease;
+    }
+    .mock-breath-prompt-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #60d8a8;
+      background: rgba(96,216,168,0.08);
+      border: 1px solid rgba(96,216,168,0.2);
+      border-radius: 6px;
+      padding: 7px 14px;
+      cursor: pointer;
+    }
+    .mock-breath-prompt-btn .bp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #60d8a8;
+      animation: mockSomaticPulse 2s ease-in-out infinite;
+    }
+
+    /* ═══ AGENT & ARTIFACT SCENE STYLES ═══ */
+    .mock-agents-row {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    .mock-agent-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--m-text-mid);
+      background: var(--m-card);
+      border: 1px solid var(--m-border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      transition: border-color 0.4s, box-shadow 0.4s, background 0.8s ease;
+    }
+    .mock-agent-pill.active {
+      border-color: rgba(200,160,240,0.3);
+      box-shadow: 0 0 10px rgba(200,160,240,0.1);
+    }
+    .mock-agent-pill.done {
+      border-color: rgba(96,216,168,0.3);
+    }
+    .mock-agent-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--m-text-dim);
+      transition: background 0.3s;
+    }
+    .mock-agent-pill.active .mock-agent-dot {
+      background: #c8a0f0;
+      animation: mockAgentPulse 1s ease-in-out infinite;
+    }
+    .mock-agent-pill.done .mock-agent-dot {
+      background: #60d8a8;
+      animation: none;
+    }
+    @keyframes mockAgentPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .mock-agent-status {
+      font-size: 8px;
+      color: var(--m-text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      margin: 4px 0 6px;
+      transition: color 0.8s ease;
+    }
+    .mock-artifact-card {
+      background: var(--m-card);
+      border: 1px solid rgba(96,216,168,0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      transition: background 0.8s ease, border-color 0.8s ease;
+    }
+    .mock-artifact-icon {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      background: rgba(96,216,168,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .mock-artifact-info { flex: 1; }
+    .mock-artifact-name {
+      font-size: 11px;
+      color: var(--m-text);
+      font-weight: 500;
+      transition: color 0.8s ease;
+    }
+    .mock-artifact-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--m-text-dim);
+      margin-top: 2px;
+      transition: color 0.8s ease;
+    }
+    .mock-artifact-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: #60d8a8;
+      background: rgba(96,216,168,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .mock-coaching-msg {
+      color: var(--m-text-mid);
+      font-size: 13px;
+      line-height: 1.6;
+      font-style: italic;
+      padding: 12px 16px;
+      border-left: 2px solid #e080a0;
+      margin: 8px 0;
+      background: rgba(224,128,160,0.04);
+      border-radius: 0 8px 8px 0;
+      transition: color 0.8s ease, background 0.8s ease;
+    }
+    .mock-somatic-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: #e080a0;
+      margin-top: 6px;
+    }
+    .mock-somatic-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #e080a0;
+      animation: mockSomaticPulse 2s ease-in-out infinite;
+    }
+    @keyframes mockSomaticPulse {
+      0%, 100% { opacity: 0.4; box-shadow: 0 0 0 0 rgba(224,128,160,0); }
+      50% { opacity: 1; box-shadow: 0 0 8px 2px rgba(224,128,160,0.3); }
+    }
+
+    /* Responsive mockup scaling */
+    @media (max-width: 768px) {
+      .mock-sidebar { width: 44px; padding: 8px 4px; }
+      .mock-sidebar-logo-text, .mock-sidebar-commands,
+      .mock-sidebar-stats, .mock-nav li span { display: none; }
+      .mock-nav li { justify-content: center; padding: 8px; }
+      .mock-greeting { font-size: 14px; }
+      .mock-triad-grid { grid-template-columns: 1fr; }
+      .mock-stats-row { grid-template-columns: 1fr; }
+      .mock-stat-card .value { font-size: 14px; }
+    }
+
+    /* ═══ SHIFT ═══ */
+    .shift-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8rem;
+      align-items: start;
+    }
+    @media (min-width: 900px) { .shift-grid { grid-template-columns: 1.2fr 1fr; } }
+
+    .shift-pairs { display: flex; flex-direction: column; gap: 4rem; }
+    .shift-pair {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .shift-before {
+      font-size: 1.6rem;
+      color: var(--text-dim);
+      text-decoration: line-through;
+      flex: 1;
+      text-align: right;
+    }
+    .shift-arrow {
+      width: 24px;
+      height: 1px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .shift-arrow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+    .shift-after {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 400;
+      flex: 1;
+    }
+
+    /* ═══ DAY TIMELINE ═══ */
+    .day-rows { display: flex; flex-direction: column; gap: 8rem; }
+    .day-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      .day-row { grid-template-columns: 14rem 1fr; gap: 6rem; }
+    }
+    .day-time {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5vw, 5rem);
+      color: var(--text-dim);
+      line-height: 1;
+      transition: color 0.5s;
+    }
+    .day-row:hover .day-time { color: var(--text-mid); }
+    .day-content {
+      border-left: 2px solid;
+      padding-left: 3rem;
+    }
+    .day-action {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      margin-bottom: 0.8rem;
+    }
+    .day-desc {
+      font-size: 1.6rem;
+      color: var(--text-mid);
+      max-width: 50rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ═══ CAPABILITIES ═══ */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6rem;
+    }
+    @media (min-width: 768px) { .cap-grid { grid-template-columns: 1fr 1fr; gap: 6rem 10rem; } }
+    @media (min-width: 1100px) { .cap-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .cap-item { cursor: default; }
+    .cap-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 2.5vw, 2.6rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      transition: opacity 0.3s;
+    }
+    .cap-item:hover .cap-title { opacity: 0.7; }
+    .cap-desc {
+      font-size: 1.5rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      font-weight: 300;
+      transition: color 0.3s;
+    }
+    .cap-item:hover .cap-desc { color: var(--text); }
+
+    /* ═══ TRIAD ═══ */
+    .triad-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8rem;
+    }
+    @media (min-width: 900px) { .triad-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6rem; } }
+
+    .triad-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 5vw, 6rem);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: opacity 0.4s;
+    }
+    .triad-col:hover .triad-name { opacity: 0.75; }
+    .triad-tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.8rem;
+      opacity: 0.4;
+      margin-bottom: 2rem;
+    }
+    .triad-desc {
+      font-size: 1.5rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+    .triad-signals {
+      font-family: var(--mono);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ═══ VIDEO ═══ */
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    @media (min-width: 900px) { .video-grid { grid-template-columns: 1fr 1.5fr; gap: 8rem; } }
+
+    .video-placeholder {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .play-btn {
+      width: 6rem;
+      height: 6rem;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 160, 240, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .play-btn:hover {
+      border-color: var(--authority);
+      transform: scale(1.08);
+    }
+    .play-btn svg { margin-left: 3px; }
+
+    /* ═══ PRINCIPLES GRID ═══ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+      margin-top: 5rem;
+    }
+    @media (max-width: 768px) { .principles-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; } }
+    .principle-item {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .principle-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 1.8rem;
+    }
+    .principle-icon svg {
+      width: 100%; height: 100%;
+    }
+    .principle-name {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #8878ff, #c8a0f0, #60d8a8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .principle-desc {
+      font-size: 1.3rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ═══ BUILD ═══ */
+    .build-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+    @media (min-width: 768px) { .build-grid { grid-template-columns: 1fr 1fr; gap: 5rem 8rem; } }
+    @media (min-width: 1100px) { .build-grid { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4rem; } }
+
+    .build-phase {
+      font-family: var(--mono);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.2rem;
+    }
+    .build-title {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+    }
+    .build-desc {
+      font-size: 1.4rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .included-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 3rem;
+    }
+    .included-list span {
+      font-size: 1.5rem;
+      color: var(--text-mid);
+      font-weight: 300;
+    }
+
+    /* ═══ KNOWLEDGE GRAPH ═══ */
+    .compound-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      margin-top: 5rem;
+    }
+    @media (max-width: 768px) { .compound-grid { grid-template-columns: 1fr; } }
+    .graph-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .graph-wrap svg { width: 100%; height: 100%; }
+    .graph-edge {
+      stroke: rgba(140,120,255,0.12);
+      stroke-width: 1;
+      transition: stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease;
+    }
+    .graph-edge.highlighted {
+      stroke: url(#graphGrad);
+      stroke-width: 1.5;
+      opacity: 1;
+    }
+    .graph-node {
+      cursor: pointer;
+      transition: filter 0.3s ease;
+    }
+    .graph-node:hover { filter: drop-shadow(0 0 8px rgba(200,160,240,0.5)); }
+    .graph-node-circle {
+      transition: r 0.3s ease, opacity 0.3s ease;
+    }
+    .graph-node:hover .graph-node-circle { r: 7; }
+    .graph-node-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      fill: var(--text-dim);
+      transition: fill 0.3s ease;
+    }
+    .graph-node:hover .graph-node-label { fill: var(--text); }
+    .graph-tooltip {
+      position: absolute;
+      background: rgba(12,14,24,0.95);
+      border: 1px solid rgba(140,120,255,0.15);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      max-width: 200px;
+      line-height: 1.5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    .graph-tooltip.visible { opacity: 1; }
+
+    /* ═══ ROADMAP ═══ */
+    .roadmap-track {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-left: 2.4rem;
+      margin-top: 6rem;
+    }
+    .roadmap-track::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--authority), var(--capacity), var(--expansion), rgba(200,160,240,0.1));
+    }
+    .roadmap-item {
+      position: relative;
+      padding: 2.5rem 0;
+    }
+    .roadmap-dot {
+      position: absolute;
+      left: -2.4rem;
+      top: 2.8rem;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid;
+    }
+    .roadmap-dot.now {
+      background: var(--authority);
+      border-color: var(--authority);
+      box-shadow: 0 0 10px rgba(200,160,240,0.4);
+    }
+    .roadmap-when {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.6rem;
+    }
+    .roadmap-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      margin-bottom: 0.6rem;
+    }
+    .roadmap-desc {
+      font-size: 1.4rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ═══ TESTIMONIALS ═══ */
+    .testimonials { display: flex; flex-direction: column; gap: 12rem; }
+    .testimonial-quote {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 3.5vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1.35;
+      font-style: italic;
+      margin-bottom: 2.5rem;
+    }
+    .testimonial-attr {
+      font-family: var(--mono);
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ═══ CTA ═══ */
+    .cta {
+      text-align: center;
+      padding: 18rem 0 14rem;
+    }
+    .cta-price {
+      font-family: var(--serif);
+      font-size: clamp(6rem, 12vw, 12rem);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--authority);
+      margin-bottom: 1rem;
+    }
+    .cta .email-form {
+      margin: 0 auto;
+    }
+    .cta-link {
+      display: inline-block;
+      margin-top: 3rem;
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .cta-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--text-dim);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+    }
+    .cta-link:hover { color: var(--text-mid); }
+    .cta-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+      background: var(--text-mid);
+    }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 6rem 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .footer-left {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      color: var(--text);
+    }
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 1rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--text-mid); }
+
+    /* ═══ ANIMATIONS ═══ */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    .reveal-d5 { transition-delay: 0.40s; }
+
+    /* ═══ AMBIENT GLOW ═══ */
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(120px);
+      opacity: 0.35;
+      will-change: transform;
+    }
+    .glow-1 {
+      top: -10%;
+      left: -5%;
+      background: rgba(200, 160, 240, 0.08);
+    }
+    .glow-2 {
+      top: 40%;
+      right: -10%;
+      background: rgba(96, 216, 168, 0.06);
+    }
+    .glow-3 {
+      bottom: -5%;
+      left: 30%;
+      background: rgba(224, 128, 160, 0.05);
+    }
+    @media (max-width: 768px) {
+      .glow { width: 400px; height: 400px; }
+    }
+    #mouseGlow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(80px);
+      opacity: 0;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(200, 160, 240, 0.15) 0%, rgba(200, 160, 240, 0.06) 40%, transparent 70%);
+      will-change: transform;
+    }
+
+    /* ═══ HERO IGNITION ═══ */
+    #heroMark { position: relative; z-index: 2; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; }
+    .pulse-ring {
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+    .pulse-ring-auth { border-color: rgba(160,144,255,0.5); }
+    .pulse-ring-cap  { border-color: rgba(200,160,240,0.5); }
+    .pulse-ring-exp  { border-color: rgba(128,232,184,0.5); }
+    @media (max-width: 768px) {
+      .pulse-ring { width: 120px; height: 120px; }
+    }
+    #heroMarkSvg { width: 180px; height: 180px; }
+    @media (max-width: 768px) {
+      #heroMarkSvg { width: 120px; height: 120px; }
+    }
+    #animMark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; }
+    #animMarkSvg { width: min(300px, 55vw); height: min(300px, 55vw); }
+    @media (max-width: 768px) {
+      #animMarkSvg { width: min(220px, 60vw); height: min(220px, 60vw); }
+    }
+    @keyframes markBreathe {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(136,120,255,0.3)) drop-shadow(0 0 50px rgba(200,160,240,0.12)); }
+      50% { filter: drop-shadow(0 0 30px rgba(136,120,255,0.5)) drop-shadow(0 0 70px rgba(200,160,240,0.2)); }
+    }
+    .mark-breathing { animation: markBreathe 3s ease-in-out infinite; }
+    #orbAuth.orb-converging { box-shadow: 0 0 40px 15px rgba(160,144,255,0.3); }
+    #orbCap.orb-converging { box-shadow: 0 0 40px 15px rgba(200,160,240,0.3); }
+    #orbExp.orb-converging { box-shadow: 0 0 40px 15px rgba(128,232,184,0.3); }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient glows -->
+  <div class="glow glow-1" style="opacity:0;"></div>
+  <div class="glow glow-2" style="opacity:0;"></div>
+  <div class="glow glow-3" style="opacity:0;"></div>
+  <div id="mouseGlow"></div>
+
+  <!-- ═══ HERO IGNITION ORBS ═══ -->
+  <div id="ignitionOrbs" style="position:fixed;inset:0;z-index:99;pointer-events:none;overflow:hidden;">
+    <div id="orbAuth" style="position:absolute;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#a090ff 0%,rgba(160,144,255,0.3) 60%,transparent 100%);opacity:0;filter:blur(2px);"></div>
+    <div id="orbCap" style="position:absolute;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#c8a0f0 0%,rgba(200,160,240,0.3) 60%,transparent 100%);opacity:0;filter:blur(2px);"></div>
+    <div id="orbExp" style="position:absolute;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#80e8b8 0%,rgba(128,232,184,0.3) 60%,transparent 100%);opacity:0;filter:blur(2px);"></div>
+    <div id="shockwave" style="position:absolute;top:50%;left:50%;width:400px;height:400px;border-radius:50%;border:1.5px solid rgba(200,160,240,0.4);transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;"></div>
+    <div id="animMark">
+      <svg id="animMarkSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 20px rgba(136,120,255,0.3)) drop-shadow(0 0 50px rgba(200,160,240,0.12));">
+        <defs>
+          <radialGradient id="animMarkGrad" cx="40%" cy="38%" r="65%">
+            <stop offset="0%" stop-color="#8878ff"/>
+            <stop offset="45%" stop-color="#c8a0f0"/>
+            <stop offset="100%" stop-color="#60d8a8"/>
+          </radialGradient>
+          <radialGradient id="animCenterOrbGrad" cx="50%" cy="45%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+            <stop offset="35%" stop-color="rgba(240,235,255,0.7)"/>
+            <stop offset="65%" stop-color="rgba(200,180,240,0.3)"/>
+            <stop offset="100%" stop-color="rgba(136,120,255,0)"/>
+          </radialGradient>
+        </defs>
+        <path id="animMarkStroke" fill="none" stroke="url(#animMarkGrad)" stroke-width="1.5" d="M 50.00,16.00 Q 54.33,47.50 79.44,67.00 Q 50.00,55.00 20.56,67.00 Q 45.67,47.50 50.00,16.00 Z" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity="0"/>
+        <path id="animMarkFill" fill="url(#animMarkGrad)" d="M 50.00,16.00 Q 54.33,47.50 79.44,67.00 Q 50.00,55.00 20.56,67.00 Q 45.67,47.50 50.00,16.00 Z" opacity="0"/>
+        <circle id="animCenterGlow" cx="50" cy="50" r="10" fill="url(#animCenterOrbGrad)" opacity="0"/>
+        <circle id="animCenterPoint" cx="50" cy="49" r="3.5" fill="white" opacity="0"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav id="nav">
+    <div class="container">
+      <a href="#" class="nav-logo">ACE</a>
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#triad">The Triad</a></li>
+        <li><a href="#video">Masterclass</a></li>
+        <li><a href="#pricing">Apply</a></li>
+      </ul>
+      <span class="system-live-pill"><span class="system-live-dot"></span> System Live</span>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="container">
+      <div id="heroMark" style="opacity:0;display:flex;justify-content:center;">
+        <div class="pulse-ring pulse-ring-auth" id="pulseRing1"></div>
+        <div class="pulse-ring pulse-ring-cap" id="pulseRing2"></div>
+        <div class="pulse-ring pulse-ring-exp" id="pulseRing3"></div>
+        <svg id="heroMarkSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 20px rgba(136,120,255,0.3)) drop-shadow(0 0 50px rgba(200,160,240,0.12));">
+          <defs>
+            <radialGradient id="heroMarkGrad" cx="40%" cy="38%" r="65%">
+              <stop offset="0%" stop-color="#8878ff"/>
+              <stop offset="45%" stop-color="#c8a0f0"/>
+              <stop offset="100%" stop-color="#60d8a8"/>
+            </radialGradient>
+            <radialGradient id="heroCenterOrb" cx="50%" cy="45%" r="50%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+              <stop offset="35%" stop-color="rgba(240,235,255,0.7)"/>
+              <stop offset="65%" stop-color="rgba(200,180,240,0.3)"/>
+              <stop offset="100%" stop-color="rgba(136,120,255,0)"/>
+            </radialGradient>
+          </defs>
+          <path id="heroMarkFill" fill="url(#heroMarkGrad)" d="M 50.00,16.00 Q 54.33,47.50 79.44,67.00 Q 50.00,55.00 20.56,67.00 Q 45.67,47.50 50.00,16.00 Z" opacity="0.95"/>
+          <circle id="heroCenterGlow" cx="50" cy="50" r="10" fill="url(#heroCenterOrb)" opacity="0.9"/>
+          <circle id="heroCenterPoint" cx="50" cy="49" r="3.5" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      <div id="heroText" style="width:100%;opacity:0;">
+        <div class="hero-label" id="heroLabel" style="opacity:0;transform:translateY(30px);">
+          <span class="dot"></span>
+          Built for you. By invitation.
+        </div>
+        <h1 id="heroH1" style="opacity:0;transform:translateY(40px);">
+          One system.
+          <span class="line-2">Total coherence.</span>
+        </h1>
+        <p class="hero-sub" id="heroSub" style="opacity:0;transform:translateY(30px);">
+          The AI operating system that knows your psychology, learns your
+          voice, coaches through your edges, and builds what you imagine.
+        </p>
+        <p id="heroPos" style="opacity:0;transform:translateY(20px);font-family:var(--mono);font-size:1rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-dim);margin-bottom:2rem;">
+          For founders, coaches, and builders who refuse to choose between depth and speed.
+        </p>
+        <div class="hero-tags" id="heroTags" style="opacity:0;transform:translateY(20px);">
+        </div>
+        <form class="email-form" id="heroForm" style="opacity:0;transform:translateY(20px);" onsubmit="return false">
+          <input type="email" placeholder="your@email.com" />
+          <button type="submit">Request Access</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ COMMAND CENTER ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">The Interface</p>
+      <h2 class="big-heading size-xl reveal reveal-d1">
+        Your command center.<br />
+        <span style="color: var(--text-dim)">Always on. Always aware.</span>
+      </h2>
+      <div class="preview-frame reveal reveal-d2">
+        <!-- Titlebar -->
+        <div class="mock-titlebar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-titlebar-center">
+            <span class="mock-intensity-icon">≋</span>
+            <div class="mock-intensity-bar"><div class="mock-intensity-fill"></div></div>
+            <span class="mock-mode-chip">execute</span>
+            <span class="mock-coherence-dot"></span>
+            <span class="mock-theme-toggle" id="mockThemeToggle" title="Toggle theme">◐</span>
+          </div>
+        </div>
+        <!-- Body -->
+        <div class="mock-body">
+          <!-- Sidebar -->
+          <div class="mock-sidebar">
+            <div class="mock-sidebar-logo">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="mockMarkGrad" cx="40%" cy="38%" r="65%">
+                    <stop offset="0%" stop-color="#8878ff"/>
+                    <stop offset="45%" stop-color="#c8a0f0"/>
+                    <stop offset="100%" stop-color="#60d8a8"/>
+                  </radialGradient>
+                  <radialGradient id="mockCenterOrb" cx="50%" cy="45%" r="50%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+                    <stop offset="35%" stop-color="rgba(240,235,255,0.7)"/>
+                    <stop offset="65%" stop-color="rgba(200,180,240,0.3)"/>
+                    <stop offset="100%" stop-color="rgba(136,120,255,0)"/>
+                  </radialGradient>
+                </defs>
+                <path fill="url(#mockMarkGrad)" d="M 50.00,16.00 Q 54.33,47.50 79.44,67.00 Q 50.00,55.00 20.56,67.00 Q 45.67,47.50 50.00,16.00 Z"/>
+                <circle cx="50" cy="50" r="10" fill="url(#mockCenterOrb)" opacity="0.9"/>
+                <circle cx="50" cy="49" r="3.5" fill="white" opacity="0.9"/>
+              </svg>
+              <div class="mock-sidebar-logo-text">
+                <span class="name">ACE</span>
+                <span class="sub">Coherence Engine</span>
+              </div>
+            </div>
+            <ul class="mock-nav" id="mockNav">
+              <li class="active" data-view="dashboard">
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg></span>
+                <span>Home</span>
+              </li>
+              <li data-view="chat">
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><polyline points="4,5 8,5"/><polyline points="4,8 11,8"/><polyline points="4,11 9,11"/><rect x="1" y="2" width="14" height="12" rx="2"/></svg></span>
+                <span>Terminal</span>
+              </li>
+              <li>
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="5" cy="5" r="2"/><circle cx="11" cy="5" r="2"/><circle cx="8" cy="11" r="2"/><line x1="6.5" y1="6" x2="9.5" y2="6"/><line x1="6" y1="9.5" x2="5.5" y2="6.5"/><line x1="10" y1="9.5" x2="10.5" y2="6.5"/></svg></span>
+                <span>Agents</span>
+              </li>
+              <li>
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="3" y1="4" x2="13" y2="4"/><line x1="3" y1="7" x2="10" y2="7"/><line x1="3" y1="10" x2="13" y2="10"/><line x1="3" y1="13" x2="8" y2="13"/></svg></span>
+                <span>Vault</span>
+              </li>
+              <li>
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="4" cy="12" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="12" r="2"/><line x1="5.5" y1="11" x2="10.5" y2="5"/><line x1="10" y1="12" x2="6" y2="12"/></svg></span>
+                <span>People</span>
+              </li>
+              <li>
+                <span class="mock-nav-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="5.5"/><path d="M8,3 C8,3 10,6 10,8 C10,10 8,13 8,13" opacity="0.5"/><line x1="3" y1="8" x2="13" y2="8" opacity="0.3"/></svg></span>
+                <span>Breath</span>
+              </li>
+            </ul>
+            <div class="mock-sidebar-commands">
+              <span class="mock-cmd-pill">/start</span>
+              <span class="mock-cmd-pill">/pulse</span>
+              <span class="mock-cmd-pill">/eod</span>
+            </div>
+            <div class="mock-sidebar-stats">
+              <div class="mock-stat-row"><span>Sessions</span><span class="mock-stat-val">14</span></div>
+              <div class="mock-stat-row"><span>Tokens</span><span class="mock-stat-val">847K</span></div>
+              <div class="mock-stat-row"><span>Context</span><span class="mock-stat-val" style="color:#60d8a8">38%</span></div>
+            </div>
+          </div>
+          <!-- Main -->
+          <div class="mock-main">
+            <div class="mock-atm-glow"></div>
+            <!-- Dashboard view -->
+            <div class="mock-view" id="mockDashboard">
+              <div class="mock-greeting-time">Fri 04 Apr · 9:14 AM</div>
+              <div class="mock-greeting">Good morning, Marc.</div>
+              <div class="mock-tags">
+                <span class="mock-tag" style="color:#c8a0f0;border-color:rgba(200,160,240,0.2);background:rgba(200,160,240,0.06);">execute</span>
+                <span class="mock-tag" style="color:#60d8a8;border-color:rgba(96,216,168,0.2);background:rgba(96,216,168,0.06);">high energy</span>
+                <span class="mock-tag" style="color:#606080;border-color:rgba(96,96,128,0.2);background:rgba(96,96,128,0.06);">W15</span>
+              </div>
+              <div class="mock-stats-row">
+                <div class="mock-stat-card">
+                  <div class="label">Sessions today</div>
+                  <div class="value">3</div>
+                </div>
+                <div class="mock-stat-card">
+                  <div class="label">Tokens (24h)</div>
+                  <div class="value">214K</div>
+                </div>
+                <div class="mock-stat-card">
+                  <div class="label">Coherence</div>
+                  <div class="value" style="color:#60d8a8">0.87</div>
+                </div>
+              </div>
+              <div class="mock-triad-grid">
+                <!-- Authority -->
+                <div class="mock-triad-card" style="border-top-color:#70b0e0;">
+                  <div class="card-label" style="color:#70b0e0;">
+                    <span>Authority</span>
+                    <div class="dots">
+                      <span style="background:#60d8a8"></span>
+                      <span style="background:#60d8a8"></span>
+                      <span style="background:#c8a040"></span>
+                    </div>
+                  </div>
+                  <div class="mock-outcome-item">
+                    <div class="mock-outcome-title">Ship desktop to first clients</div>
+                    <div class="mock-outcome-meta">
+                      <span class="mock-outcome-badge" style="color:#60d8a8;background:rgba(96,216,168,0.1);">on track</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#606080;">8 days</span>
+                    </div>
+                    <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:65%;background:#60d8a8;"></div></div>
+                  </div>
+                  <div class="mock-outcome-item">
+                    <div class="mock-outcome-title">Land 3 ACE clients by May</div>
+                    <div class="mock-outcome-meta">
+                      <span class="mock-outcome-badge" style="color:#c8a040;background:rgba(200,160,64,0.1);">at risk</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#606080;">26 days</span>
+                    </div>
+                    <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:33%;background:#c8a040;"></div></div>
+                  </div>
+                </div>
+                <!-- Capacity -->
+                <div class="mock-triad-card" style="border-top-color:#b080e0;">
+                  <div class="card-label" style="color:#b080e0;">
+                    <span>Capacity</span>
+                    <div class="dots">
+                      <span style="background:#60d8a8"></span>
+                      <span style="background:#c8a040"></span>
+                      <span style="background:#60d8a8"></span>
+                    </div>
+                  </div>
+                  <div class="mock-followup-item">
+                    <span class="mock-followup-name">Sarah</span>
+                    <span class="mock-followup-topic">Brand deck review</span>
+                    <span class="mock-followup-due">today</span>
+                  </div>
+                  <div class="mock-followup-item">
+                    <span class="mock-followup-name">Lane</span>
+                    <span class="mock-followup-topic">Partnership terms</span>
+                    <span class="mock-followup-due">Apr 7</span>
+                  </div>
+                  <div class="mock-followup-item">
+                    <span class="mock-followup-name">Joe</span>
+                    <span class="mock-followup-topic">Desktop build test</span>
+                    <span class="mock-followup-due">Apr 12</span>
+                  </div>
+                </div>
+                <!-- Expansion -->
+                <div class="mock-triad-card" style="border-top-color:#c8a0f0;">
+                  <div class="card-label" style="color:#c8a0f0;">
+                    <span>Expansion</span>
+                    <div class="dots">
+                      <span style="background:#60d8a8"></span>
+                      <span style="background:#60d8a8"></span>
+                      <span style="background:#60d8a8"></span>
+                    </div>
+                  </div>
+                  <div class="mock-outcome-item">
+                    <div class="mock-outcome-title">Newsletter — Sunday send</div>
+                    <div class="mock-outcome-meta">
+                      <span class="mock-outcome-badge" style="color:#60d8a8;background:rgba(96,216,168,0.1);">drafted</span>
+                    </div>
+                  </div>
+                  <div class="mock-outcome-item">
+                    <div class="mock-outcome-title">Masterclass 2 — outline</div>
+                    <div class="mock-outcome-meta">
+                      <span class="mock-outcome-badge" style="color:#70b0e0;background:rgba(112,176,224,0.1);">in progress</span>
+                    </div>
+                  </div>
+                  <div class="mock-outcome-item">
+                    <div class="mock-outcome-title">Pipeline: $18.2K active</div>
+                    <div class="mock-outcome-meta">
+                      <span class="mock-outcome-badge" style="color:#c8a0f0;background:rgba(200,160,240,0.1);">3 deals</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Summary view -->
+            <div class="mock-view hidden" id="mockSummary">
+              <div class="mock-summary">
+                <div class="mock-summary-header">Session Complete</div>
+                <div class="mock-summary-time">3 hours</div>
+                <ul class="mock-summary-list" id="summaryList"></ul>
+                <div class="mock-summary-coherence">
+                  <span class="mock-summary-coh-label">Coherence</span>
+                  <span class="mock-summary-coh-val">0.87 → 0.93</span>
+                </div>
+                <div class="mock-summary-tagline">One system. Total coherence.</div>
+              </div>
+            </div>
+            <!-- Breath view -->
+            <div class="mock-view hidden" id="mockBreath">
+              <div class="mock-breath">
+                <div class="mock-breath-orb-wrap">
+                  <div class="mock-breath-ring mock-breath-ring-outer"></div>
+                  <div class="mock-breath-ring mock-breath-ring-inner"></div>
+                  <div class="mock-triad-ring mock-triad-ring-auth" id="triadRingAuth"></div>
+                  <div class="mock-triad-ring mock-triad-ring-cap" id="triadRingCap"></div>
+                  <div class="mock-triad-ring mock-triad-ring-exp" id="triadRingExp"></div>
+                  <div class="mock-breath-orb" id="mockBreathOrb"></div>
+                  <svg id="mockBreathMark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:70px;height:70px;opacity:0;filter:drop-shadow(0 0 20px rgba(136,120,255,0.4)) drop-shadow(0 0 50px rgba(200,160,240,0.15));">
+                    <defs>
+                      <radialGradient id="breathMarkGrad" cx="40%" cy="38%" r="65%">
+                        <stop offset="0%" stop-color="#8878ff"/>
+                        <stop offset="45%" stop-color="#c8a0f0"/>
+                        <stop offset="100%" stop-color="#60d8a8"/>
+                      </radialGradient>
+                      <radialGradient id="breathCenterOrb" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+                        <stop offset="35%" stop-color="rgba(240,235,255,0.7)"/>
+                        <stop offset="65%" stop-color="rgba(200,180,240,0.3)"/>
+                        <stop offset="100%" stop-color="rgba(136,120,255,0)"/>
+                      </radialGradient>
+                    </defs>
+                    <path fill="url(#breathMarkGrad)" d="M 50.00,16.00 Q 54.33,47.50 79.44,67.00 Q 50.00,55.00 20.56,67.00 Q 45.67,47.50 50.00,16.00 Z"/>
+                    <circle cx="50" cy="50" r="10" fill="url(#breathCenterOrb)" opacity="0.9"/>
+                    <circle cx="50" cy="49" r="3.5" fill="white" opacity="0.9"/>
+                  </svg>
+                </div>
+                <div class="mock-breath-phase" id="mockBreathPhase">Inhale</div>
+                <div class="mock-coherence-score" id="mockCoherenceScore">0.93</div>
+                <div class="mock-coherence-label" id="mockCoherenceLabel">Coherence Restored</div>
+                <div class="mock-breath-counter" id="mockBreathCounter">Cycle 1 of 3</div>
+                <div class="mock-breath-protocol" id="mockBreathProtocol">Cyclic Sighing</div>
+              </div>
+            </div>
+            <!-- Chat view -->
+            <div class="mock-view hidden" id="mockChat">
+              <div class="mock-chat">
+                <div class="mock-messages">
+                  <div class="mock-msg mock-msg-user">Draft a follow-up email to Sarah about the brand deck — warm but direct, mention the Friday deadline.</div>
+                  <div class="mock-msg mock-msg-assistant">
+                    <strong>Subject: Brand deck — quick check-in</strong><br/><br/>
+                    Hey Sarah,<br/><br/>
+                    Hope your week's been good. Wanted to loop back on the brand deck — I've got the final review slotted for Friday, so if there are any last tweaks on your end, now's the window.<br/><br/>
+                    No rush on anything major. Just want to make sure we're aligned before I lock it in.<br/><br/>
+                    Talk soon.
+                  </div>
+                  <div class="mock-msg mock-msg-user">Perfect. Queue it for 9am tomorrow and log the follow-up.</div>
+                  <div class="mock-typing"><span></span><span></span><span></span></div>
+                </div>
+                <div class="mock-chat-input">
+                  <div class="mock-chat-textarea" contenteditable="false" style="display:flex;align-items:center;color:#606080;">Ask ACE anything...</div>
+                  <div class="mock-chat-send">↑</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-d3" style="display:flex;justify-content:center;margin-top:2.5rem;">
+        <span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--capacity);padding:8px 20px;border:1px solid rgba(96,216,168,0.25);border-radius:6px;background:rgba(96,216,168,0.06);">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--capacity);box-shadow:0 0 8px rgba(96,216,168,0.4);"></span>
+          Alpha Preview &middot; Desktop shipping April 2026
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ THE SHIFT ═══ -->
+  <section id="how">
+    <div class="container">
+      <div class="shift-grid">
+        <div>
+          <p class="section-label reveal">The Shift</p>
+          <h2 class="big-heading size-xl reveal reveal-d1">
+            What used to take weeks now takes hours.
+          </h2>
+          <p class="reveal reveal-d2" style="font-size: 1.7rem; color: var(--text-mid); margin-top: 2.5rem; font-weight: 300; line-height: 1.7;">
+            The constraint is no longer capability. It&rsquo;s architecture.
+          </p>
+        </div>
+        <div class="shift-pairs" style="padding-top: 2rem;">
+          <div class="shift-pair reveal">
+            <span class="shift-before">Week of dev work</span>
+            <div class="shift-arrow" style="background: var(--authority)"></div>
+            <span class="shift-after" style="color: var(--authority)">Afternoon</span>
+          </div>
+          <div class="shift-pair reveal reveal-d1">
+            <span class="shift-before">Brand strategy</span>
+            <div class="shift-arrow" style="background: var(--capacity)"></div>
+            <span class="shift-after" style="color: var(--capacity)">Hours</span>
+          </div>
+          <div class="shift-pair reveal reveal-d2">
+            <span class="shift-before">Full content team</span>
+            <div class="shift-arrow" style="background: var(--expansion)"></div>
+            <span class="shift-after" style="color: var(--expansion)">Runs in parallel</span>
+          </div>
+          <div class="shift-pair reveal reveal-d3">
+            <span class="shift-before">Analysis in days</span>
+            <div class="shift-arrow" style="background: var(--authority)"></div>
+            <span class="shift-after" style="color: var(--authority)">Overnight</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ A DAY WITH ACE ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">A day with ACE</p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 10rem;">
+        This isn&rsquo;t a demo.<br />
+        <span style="color: var(--text-dim)">This is a Tuesday.</span>
+      </h2>
+
+      <div class="day-rows">
+        <div class="day-row reveal">
+          <div class="day-time">6 AM</div>
+          <div class="day-content" style="border-color: color-mix(in srgb, var(--authority) 30%, transparent);">
+            <div class="day-action" style="color: var(--authority)">/start</div>
+            <p class="day-desc">Reads your calendar, checks your nervous system, orients your day around the one thing that matters.</p>
+          </div>
+        </div>
+        <div class="day-row reveal">
+          <div class="day-time">9 AM</div>
+          <div class="day-content" style="border-color: color-mix(in srgb, var(--capacity) 30%, transparent);">
+            <div class="day-action" style="color: var(--capacity)">On a call</div>
+            <p class="day-desc">Meanwhile &mdash; newsletter drafted and queued, emails processed, agents scanning Reddit, dashboard updated.</p>
+          </div>
+        </div>
+        <div class="day-row reveal">
+          <div class="day-time">11 AM</div>
+          <div class="day-content" style="border-color: color-mix(in srgb, var(--expansion) 30%, transparent);">
+            <div class="day-action" style="color: var(--expansion)">&ldquo;Build me a website&rdquo;</div>
+            <p class="day-desc">Full landing page. Deployed live. One session.</p>
+          </div>
+        </div>
+        <div class="day-row reveal">
+          <div class="day-time">2 PM</div>
+          <div class="day-content" style="border-color: color-mix(in srgb, var(--authority) 30%, transparent);">
+            <div class="day-action" style="color: var(--authority)">Running hot</div>
+            <p class="day-desc">ACE catches the pattern &mdash; third time this month. Asks: &ldquo;What are you avoiding?&rdquo;</p>
+          </div>
+        </div>
+        <div class="day-row reveal">
+          <div class="day-time">6 PM</div>
+          <div class="day-content" style="border-color: color-mix(in srgb, var(--capacity) 30%, transparent);">
+            <div class="day-action" style="color: var(--capacity)">/eod</div>
+            <p class="day-desc">Logs what shipped, captures patterns, surfaces the decision you&rsquo;ve been sitting on.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ COMPOUNDING ═══ -->
+  <section>
+    <div class="container">
+      <div class="compound-grid">
+        <div>
+          <p class="section-label reveal">Compounding Intelligence</p>
+          <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 3rem;">
+            Most people prompt.<br />
+            ACE <span class="gradient-text">compounds.</span>
+          </h2>
+          <p class="reveal reveal-d2" style="font-size: 1.8rem; color: var(--text-mid); line-height: 1.8; font-weight: 300;">
+            Six months in, it knows your edges better than your therapist. It maps
+            your business, your relationships, your decisions, your patterns &mdash; and
+            coaches from your growth zones. It shifts to regulation when
+            you&rsquo;re running hot. Every session leaves residue. Your intelligence
+            infrastructure deepens overnight.
+          </p>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <p class="reveal reveal-d2" style="font-family:var(--mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-dim);margin-bottom:1.5rem;text-align:center;">Your patterns, mapped. Hover to explore.</p>
+        <div class="graph-wrap reveal reveal-d3" id="knowledgeGraph" style="position:relative;">
+          <div class="graph-tooltip" id="graphTooltip"></div>
+          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="graphGrad" x1="0" y1="0" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#8878ff"/>
+                <stop offset="45%" stop-color="#c8a0f0"/>
+                <stop offset="100%" stop-color="#60d8a8"/>
+              </linearGradient>
+            </defs>
+            <!-- Edges (connections) -->
+            <g id="graphEdges">
+              <line class="graph-edge" x1="150" y1="60" x2="80" y2="110" data-nodes="identity,voice"/>
+              <line class="graph-edge" x1="150" y1="60" x2="220" y2="110" data-nodes="identity,patterns"/>
+              <line class="graph-edge" x1="150" y1="60" x2="150" y2="140" data-nodes="identity,values"/>
+              <line class="graph-edge" x1="80" y1="110" x2="45" y2="180" data-nodes="voice,content"/>
+              <line class="graph-edge" x1="80" y1="110" x2="150" y2="140" data-nodes="voice,values"/>
+              <line class="graph-edge" x1="220" y1="110" x2="255" y2="180" data-nodes="patterns,coaching"/>
+              <line class="graph-edge" x1="220" y1="110" x2="150" y2="140" data-nodes="patterns,values"/>
+              <line class="graph-edge" x1="150" y1="140" x2="100" y2="200" data-nodes="values,decisions"/>
+              <line class="graph-edge" x1="150" y1="140" x2="200" y2="200" data-nodes="values,rhythm"/>
+              <line class="graph-edge" x1="45" y1="180" x2="100" y2="200" data-nodes="content,decisions"/>
+              <line class="graph-edge" x1="255" y1="180" x2="200" y2="200" data-nodes="coaching,rhythm"/>
+              <line class="graph-edge" x1="255" y1="180" x2="220" y2="250" data-nodes="coaching,regulation"/>
+              <line class="graph-edge" x1="100" y1="200" x2="80" y2="250" data-nodes="decisions,building"/>
+              <line class="graph-edge" x1="200" y1="200" x2="220" y2="250" data-nodes="rhythm,regulation"/>
+              <line class="graph-edge" x1="200" y1="200" x2="150" y2="260" data-nodes="rhythm,people"/>
+              <line class="graph-edge" x1="80" y1="250" x2="150" y2="260" data-nodes="building,people"/>
+              <line class="graph-edge" x1="45" y1="180" x2="80" y2="250" data-nodes="content,building"/>
+              <line class="graph-edge" x1="100" y1="200" x2="200" y2="200" data-nodes="decisions,rhythm"/>
+              <line class="graph-edge" x1="220" y1="250" x2="150" y2="260" data-nodes="regulation,people"/>
+            </g>
+            <!-- Nodes -->
+            <g id="graphNodes">
+              <g class="graph-node" data-id="identity" data-tip="The core. Who you are shapes every output the system produces.">
+                <circle class="graph-node-circle" cx="150" cy="60" r="9" fill="url(#graphGrad)"/>
+                <text class="graph-node-label" x="150" y="44" text-anchor="middle">Identity</text>
+              </g>
+              <g class="graph-node" data-id="voice" data-tip="Your cadence, warmth, and edge — captured and refined over time.">
+                <circle class="graph-node-circle" cx="80" cy="110" r="7" fill="#c8a0f0"/>
+                <text class="graph-node-label" x="66" y="104" text-anchor="end">Voice</text>
+              </g>
+              <g class="graph-node" data-id="patterns" data-tip="Recurring behaviors the system detects — avoidance, momentum, edges.">
+                <circle class="graph-node-circle" cx="220" cy="110" r="7" fill="#8878ff"/>
+                <text class="graph-node-label" x="234" y="104" text-anchor="start">Patterns</text>
+              </g>
+              <g class="graph-node" data-id="values" data-tip="What matters to you. The filter for every decision and priority.">
+                <circle class="graph-node-circle" cx="150" cy="140" r="5" fill="#c8a0f0" opacity="0.8"/>
+                <text class="graph-node-label" x="162" y="136" text-anchor="start">Values</text>
+              </g>
+              <g class="graph-node" data-id="content" data-tip="Newsletters, posts, decks — written in your voice, on your schedule.">
+                <circle class="graph-node-circle" cx="45" cy="180" r="5" fill="#60d8a8"/>
+                <text class="graph-node-label" x="33" y="175" text-anchor="end">Content</text>
+              </g>
+              <g class="graph-node" data-id="coaching" data-tip="Growth edges surfaced. The system asks what you're avoiding.">
+                <circle class="graph-node-circle" cx="255" cy="180" r="6" fill="#e080a0"/>
+                <text class="graph-node-label" x="268" y="175" text-anchor="start">Coaching</text>
+              </g>
+              <g class="graph-node" data-id="decisions" data-tip="Every choice logged. Context builds. Future decisions get sharper.">
+                <circle class="graph-node-circle" cx="100" cy="200" r="4" fill="#8878ff" opacity="0.8"/>
+                <text class="graph-node-label" x="88" y="212" text-anchor="end">Decisions</text>
+              </g>
+              <g class="graph-node" data-id="rhythm" data-tip="Daily execution patterns. When you build, when you rest, what compounds.">
+                <circle class="graph-node-circle" cx="200" cy="200" r="4" fill="#60d8a8" opacity="0.8"/>
+                <text class="graph-node-label" x="212" y="212" text-anchor="start">Rhythm</text>
+              </g>
+              <g class="graph-node" data-id="building" data-tip="Websites, apps, systems — described and delivered in one session.">
+                <circle class="graph-node-circle" cx="80" cy="250" r="5.5" fill="#c8a0f0" opacity="0.7"/>
+                <text class="graph-node-label" x="66" y="264" text-anchor="end">Building</text>
+              </g>
+              <g class="graph-node" data-id="regulation" data-tip="Nervous system awareness. Breath, intensity, recovery tracking.">
+                <circle class="graph-node-circle" cx="220" cy="250" r="5.5" fill="#e080a0" opacity="0.7"/>
+                <text class="graph-node-label" x="234" y="264" text-anchor="start">Regulation</text>
+              </g>
+              <g class="graph-node" data-id="people" data-tip="Your network mapped. Follow-ups, commitments, relationship intelligence.">
+                <circle class="graph-node-circle" cx="150" cy="260" r="7" fill="url(#graphGrad)" opacity="0.7"/>
+                <text class="graph-node-label" x="150" y="278" text-anchor="middle">People</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPABILITIES ═══ -->
+  <section>
+    <div class="container">
+      <div class="cap-grid">
+        <div class="cap-item reveal">
+          <h3 class="cap-title" style="color: var(--capacity)">Reads your nervous system</h3>
+          <p class="cap-desc">Catches dysregulation before you crash. Shifts to coaching, not tasks.</p>
+        </div>
+        <div class="cap-item reveal reveal-d1">
+          <h3 class="cap-title" style="color: var(--expansion)">Learns your voice</h3>
+          <p class="cap-desc">Your cadence, your warmth, your edge. Getting closer every session.</p>
+        </div>
+        <div class="cap-item reveal reveal-d2">
+          <h3 class="cap-title" style="color: var(--authority)">Builds what you imagine</h3>
+          <p class="cap-desc">Websites, apps, dashboards, PDFs. Describe it. Come back to a product.</p>
+        </div>
+        <div class="cap-item reveal reveal-d3">
+          <h3 class="cap-title" style="color: var(--capacity)">Connects every tool</h3>
+          <p class="cap-desc">Gmail, Calendar, Fathom, Telegram, Stripe, Airtable. One intelligence layer.</p>
+        </div>
+        <div class="cap-item reveal reveal-d4">
+          <h3 class="cap-title" style="color: var(--authority)">Coaches, not optimizes</h3>
+          <p class="cap-desc">&ldquo;What are you avoiding?&rdquo; Growth from a system that knows your edges.</p>
+        </div>
+        <div class="cap-item reveal reveal-d5">
+          <h3 class="cap-title" style="color: var(--expansion)">Evolves every week</h3>
+          <p class="cap-desc">New skills pushed to your vault automatically. Gets smarter while you sleep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ TRIAD ═══ -->
+  <section id="triad">
+    <div class="container">
+      <p class="section-label reveal">The Coherence Triad</p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 10rem;">
+        Most systems optimize for output.<br />
+        ACE optimizes for <span class="gradient-text">coherence.</span>
+      </h2>
+
+      <div class="triad-grid">
+        <div class="triad-col reveal">
+          <h3 class="triad-name" style="color: var(--authority)">Authority</h3>
+          <p class="triad-tagline" style="color: var(--authority)">You know who you are.</p>
+          <p class="triad-desc">The system reads whether your life matches your truth &mdash; and surfaces the gap.</p>
+          <p class="triad-signals">Truth &rarr; Choice &rarr; Expression</p>
+        </div>
+        <div class="triad-col reveal reveal-d1">
+          <h3 class="triad-name" style="color: var(--capacity)">Capacity</h3>
+          <p class="triad-tagline" style="color: var(--capacity)">You can hold what comes.</p>
+          <p class="triad-desc">Your nervous system is infrastructure. ACE protects it.</p>
+          <p class="triad-signals">Regulation &rarr; Depth &rarr; Resilience</p>
+        </div>
+        <div class="triad-col reveal reveal-d2">
+          <h3 class="triad-name" style="color: var(--expansion)">Expansion</h3>
+          <p class="triad-tagline" style="color: var(--expansion)">You expand into what&rsquo;s next.</p>
+          <p class="triad-desc">Structure that produces without consuming you. Ideas that ship.</p>
+          <p class="triad-signals">Rhythm &rarr; Containers &rarr; Realization</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ VIDEO ═══ -->
+  <section id="video">
+    <div class="container">
+      <div class="video-grid">
+        <div>
+          <p class="section-label reveal" style="color: var(--authority)">Free Masterclass</p>
+          <h2 class="big-heading size-lg reveal reveal-d1" style="margin-bottom: 1.5rem;">The Paradigm Shift</h2>
+          <p class="reveal reveal-d2" style="font-size: 1.7rem; color: var(--text-mid); margin-bottom: 4rem; font-weight: 300;">60 minutes that sold out Cohort 1.</p>
+          <form class="email-form reveal reveal-d3" onsubmit="return false">
+            <input type="email" placeholder="your@email.com" />
+            <button type="submit">Watch</button>
+          </form>
+        </div>
+        <div class="video-placeholder reveal">
+          <div class="play-btn">
+            <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
+              <path d="M2 1.5L16 10L2 18.5V1.5Z" stroke="var(--authority)" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ PRINCIPLES ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">The Principles</p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 3.5rem;">
+        Your intelligence. Your patterns.<br />
+        Your context. <span class="gradient-text">Yours.</span>
+      </h2>
+      <p class="reveal reveal-d2" style="font-size: 1.8rem; color: var(--text-mid); max-width: 64rem; line-height: 1.8; font-weight: 300;">
+        Everything lives on your machine. Not in someone else&rsquo;s cloud.
+        Not feeding someone else&rsquo;s model. Owning your intelligence
+        infrastructure is not a technical detail. It&rsquo;s a political one.
+      </p>
+      <div class="principles-grid">
+        <!-- Sovereign: hexagon shield with center point -->
+        <div class="principle-item reveal">
+          <div class="principle-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="gIco1" x1="0" y1="0" x2="48" y2="48"><stop offset="0%" stop-color="#8878ff"/><stop offset="45%" stop-color="#c8a0f0"/><stop offset="100%" stop-color="#60d8a8"/></linearGradient></defs>
+              <path d="M24 4 L40 13 L40 35 L24 44 L8 35 L8 13 Z" stroke="url(#gIco1)" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M24 12 L33 17 L33 31 L24 36 L15 31 L15 17 Z" stroke="url(#gIco1)" stroke-width="1" stroke-linejoin="round" opacity="0.3"/>
+              <circle cx="24" cy="24" r="3" fill="url(#gIco1)" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="principle-name">Sovereign</div>
+          <div class="principle-desc">Local-first. Git-backed. Your machine, your data, your intelligence. Always.</div>
+        </div>
+        <!-- Modular: 2x2 grid of equal squares with uniform gaps -->
+        <div class="principle-item reveal reveal-d1">
+          <div class="principle-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="gIco2" x1="0" y1="0" x2="48" y2="48"><stop offset="0%" stop-color="#8878ff"/><stop offset="45%" stop-color="#c8a0f0"/><stop offset="100%" stop-color="#60d8a8"/></linearGradient></defs>
+              <rect x="6" y="6" width="16" height="16" rx="3" stroke="url(#gIco2)" stroke-width="1.5"/>
+              <rect x="26" y="6" width="16" height="16" rx="3" stroke="url(#gIco2)" stroke-width="1.5"/>
+              <rect x="6" y="26" width="16" height="16" rx="3" stroke="url(#gIco2)" stroke-width="1.5"/>
+              <rect x="26" y="26" width="16" height="16" rx="3" stroke="url(#gIco2)" stroke-width="1.5" opacity="0.35" stroke-dasharray="3 2"/>
+              <circle cx="14" cy="14" r="2" fill="url(#gIco2)" opacity="0.5"/>
+              <circle cx="34" cy="14" r="2" fill="url(#gIco2)" opacity="0.5"/>
+              <circle cx="14" cy="34" r="2" fill="url(#gIco2)" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="principle-name">Modular</div>
+          <div class="principle-desc">Every skill, every integration, every workflow — a composable building block.</div>
+        </div>
+        <!-- Interoperable: 4 nodes in square, all connected through center -->
+        <div class="principle-item reveal reveal-d2">
+          <div class="principle-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="gIco3" x1="0" y1="0" x2="48" y2="48"><stop offset="0%" stop-color="#8878ff"/><stop offset="45%" stop-color="#c8a0f0"/><stop offset="100%" stop-color="#60d8a8"/></linearGradient></defs>
+              <!-- Center hub -->
+              <circle cx="24" cy="24" r="4" stroke="url(#gIco3)" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="1.5" fill="url(#gIco3)"/>
+              <!-- 4 outer nodes, symmetrical -->
+              <circle cx="10" cy="10" r="3" stroke="url(#gIco3)" stroke-width="1.5"/>
+              <circle cx="38" cy="10" r="3" stroke="url(#gIco3)" stroke-width="1.5"/>
+              <circle cx="10" cy="38" r="3" stroke="url(#gIco3)" stroke-width="1.5"/>
+              <circle cx="38" cy="38" r="3" stroke="url(#gIco3)" stroke-width="1.5"/>
+              <!-- Connection lines to center -->
+              <line x1="12.5" y1="12.5" x2="21" y2="21" stroke="url(#gIco3)" stroke-width="1" opacity="0.5"/>
+              <line x1="35.5" y1="12.5" x2="27" y2="21" stroke="url(#gIco3)" stroke-width="1" opacity="0.5"/>
+              <line x1="12.5" y1="35.5" x2="21" y2="27" stroke="url(#gIco3)" stroke-width="1" opacity="0.5"/>
+              <line x1="35.5" y1="35.5" x2="27" y2="27" stroke="url(#gIco3)" stroke-width="1" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="principle-name">Interoperable</div>
+          <div class="principle-desc">Gmail, Calendar, Stripe, Telegram, Airtable — one intelligence layer across all your tools.</div>
+        </div>
+        <!-- Extensible: 3 concentric circles, evenly spaced -->
+        <div class="principle-item reveal reveal-d3">
+          <div class="principle-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="gIco4" x1="0" y1="0" x2="48" y2="48"><stop offset="0%" stop-color="#8878ff"/><stop offset="45%" stop-color="#c8a0f0"/><stop offset="100%" stop-color="#60d8a8"/></linearGradient></defs>
+              <circle cx="24" cy="24" r="3" fill="url(#gIco4)"/>
+              <circle cx="24" cy="24" r="10" stroke="url(#gIco4)" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="17" stroke="url(#gIco4)" stroke-width="1.5" opacity="0.5"/>
+              <circle cx="24" cy="24" r="22" stroke="url(#gIco4)" stroke-width="1" opacity="0.25" stroke-dasharray="4 3"/>
+              <!-- Growth arrows at cardinal points -->
+              <path d="M24 2 L24 0" stroke="url(#gIco4)" stroke-width="1" opacity="0.25"/>
+              <path d="M46 24 L48 24" stroke="url(#gIco4)" stroke-width="1" opacity="0.25"/>
+            </svg>
+          </div>
+          <div class="principle-name">Extensible</div>
+          <div class="principle-desc">New skills ship weekly. Your system grows while you sleep.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ THE BUILD ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">The Build</p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 2rem;">
+        Blueprint to live system. Days, not months.
+      </h2>
+      <p class="reveal reveal-d2" style="font-size: 1.7rem; color: var(--text-mid); margin-bottom: 8rem; font-weight: 300;">
+        Custom-built around your identity, your tools, your workflow. Once your Blueprint lands, the system builds fast.
+      </p>
+
+      <div class="build-grid" style="margin-bottom: 8rem;">
+        <div class="reveal">
+          <p class="build-phase" style="color: var(--authority)">Day 1</p>
+          <h3 class="build-title">Blueprint</h3>
+          <p class="build-desc">Identity intake. Voice, values, edges, tools. The foundation.</p>
+        </div>
+        <div class="reveal reveal-d1">
+          <p class="build-phase" style="color: var(--capacity)">Day 2&ndash;3</p>
+          <h3 class="build-title">System build</h3>
+          <p class="build-desc">Vault, skills, and integrations — assembled before you arrive.</p>
+        </div>
+        <div class="reveal reveal-d2">
+          <p class="build-phase" style="color: var(--expansion)">Day 4&ndash;5</p>
+          <h3 class="build-title">1:1 build session</h3>
+          <p class="build-desc">90 min with Nikhil. System comes alive in your hands.</p>
+        </div>
+        <div class="reveal reveal-d3">
+          <p class="build-phase" style="color: var(--authority)">Ongoing</p>
+          <h3 class="build-title">Compound</h3>
+          <p class="build-desc">Daily use. Weekly updates. The system learns you and grows.</p>
+        </div>
+      </div>
+
+      <hr class="sep" style="margin-bottom: 5rem;" />
+      <p class="section-label reveal" style="margin-bottom: 3rem;">Founding Members Receive</p>
+      <div class="build-grid" style="margin-bottom: 4rem;">
+        <div class="reveal" style="text-align:center;">
+          <h3 class="build-title">Custom vault + skills</h3>
+          <p class="build-desc">Built around your identity</p>
+        </div>
+        <div class="reveal reveal-d1" style="text-align:center;">
+          <h3 class="build-title">1:1 build session</h3>
+          <p class="build-desc">90 min with Nikhil</p>
+        </div>
+        <div class="reveal reveal-d2" style="text-align:center;">
+          <h3 class="build-title">Desktop app</h3>
+          <p class="build-desc">Native + all integrations</p>
+        </div>
+        <div class="reveal reveal-d3" style="text-align:center;">
+          <h3 class="build-title">Live build calls</h3>
+          <p class="build-desc">Exclusive access</p>
+        </div>
+      </div>
+      <div class="build-grid" style="margin-bottom: 0;">
+        <div class="reveal" style="text-align:center;">
+          <h3 class="build-title">Lifetime updates</h3>
+          <p class="build-desc">Every new skill, every upgrade</p>
+        </div>
+        <div class="reveal reveal-d1" style="text-align:center;">
+          <h3 class="build-title">Founding network</h3>
+          <p class="build-desc">Access to the inner circle</p>
+        </div>
+        <div class="reveal reveal-d2" style="text-align:center;">
+          <h3 class="build-title">Video library</h3>
+          <p class="build-desc">Sessions + masterclasses</p>
+        </div>
+        <div class="reveal reveal-d3" style="text-align:center;">
+          <h3 class="build-title">Compounding system</h3>
+          <p class="build-desc">Gets smarter while you sleep</p>
+        </div>
+      </div>
+      <p class="reveal" style="font-family:var(--mono);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-dim);margin-top:4rem;text-align:center;opacity:0.6;">
+        Founding members lock in lifetime access &middot; Future clients subscribe
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ ROADMAP ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">The Trajectory</p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 2rem;">
+        Every week, the system deepens.<br />
+        <span style="color: var(--text-dim)">Here&rsquo;s what&rsquo;s coming.</span>
+      </h2>
+      <div class="roadmap-track">
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot now"></div>
+          <div class="roadmap-when" style="color: var(--authority);">Now</div>
+          <div class="roadmap-title">Custom vault + skills + 1:1 builds</div>
+          <div class="roadmap-desc">Identity core, voice profile, daily commands, integrations. Your system, live.</div>
+        </div>
+        <div class="roadmap-item reveal reveal-d1">
+          <div class="roadmap-dot" style="border-color: var(--capacity);"></div>
+          <div class="roadmap-when" style="color: var(--capacity);">Q2 2026</div>
+          <div class="roadmap-title">Desktop app + HRV coherence + agent fleet</div>
+          <div class="roadmap-desc">Native app with somatic atmosphere. Heart rate variability integration. Multi-agent parallel execution.</div>
+        </div>
+        <div class="roadmap-item reveal reveal-d2">
+          <div class="roadmap-dot" style="border-color: var(--expansion);"></div>
+          <div class="roadmap-when" style="color: var(--expansion);">Q3 2026</div>
+          <div class="roadmap-title">Sovereign mode + AI planning canvas</div>
+          <div class="roadmap-desc">Run fully local with Ollama models. Visual strategy canvas with node-based planning.</div>
+        </div>
+        <div class="roadmap-item reveal reveal-d3">
+          <div class="roadmap-dot" style="border-color: var(--text-dim);"></div>
+          <div class="roadmap-when" style="color: var(--text-dim);">Q4 2026</div>
+          <div class="roadmap-title">Network intelligence + real-time coherence</div>
+          <div class="roadmap-desc">Community signal layer. Live biometric coherence tracking. Your intelligence infrastructure, compounding.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section>
+    <div class="container">
+      <div class="testimonials">
+        <div class="reveal" style="max-width: 80rem;">
+          <p class="testimonial-quote">
+            &ldquo;ACE has overdelivered on every expectation I could have had. In one month, it has allowed me to create more meaningful, valuable content across five major projects than I could have ever imagined.&rdquo;
+          </p>
+          <span class="testimonial-attr">Marc Cooper &middot; Founding Member &middot; 18 days in</span>
+        </div>
+        <div class="reveal" style="max-width: 80rem; margin-left: auto;">
+          <p class="testimonial-quote">
+            &ldquo;Day one I ran /start, understood the loop, and just kept going. By day three we had a live dashboard. The Triad isn&rsquo;t abstract anymore. I can feel the difference between an authority day and a capacity day.&rdquo;
+          </p>
+          <span class="testimonial-attr">Craig Young &middot; Founding Member &middot; 3 days in</span>
+        </div>
+        <div class="reveal" style="max-width: 80rem;">
+          <p class="testimonial-quote">
+            &ldquo;My normal habits and ways I distract myself are almost non-existent, because I have this pathway now. It&rsquo;s just this real velocity of being able to put it together, package it, and start serving the world. It&rsquo;s only been a week &mdash; how the system&rsquo;s integrating into my life is profound.&rdquo;
+          </p>
+          <span class="testimonial-attr">Joe Hawley &middot; Founding Member &middot; 1 week in</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta" id="pricing">
+    <div class="container">
+      <p class="hero-label reveal" style="justify-content: center;">
+        <span class="dot"></span>
+        Now Accepting Founding Clients
+      </p>
+      <h2 class="big-heading size-xl reveal reveal-d1" style="margin-bottom: 2rem;">
+        Built around you. Not for everyone.
+      </h2>
+      <p class="reveal reveal-d2" style="font-family: var(--mono); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-dim); margin-bottom: 2rem;">
+        Cohort 1: Sold out &middot; 9 founding clients built
+      </p>
+      <p class="reveal reveal-d3" style="font-family: var(--mono); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-dim); margin-bottom: 6rem; opacity: 0.6;">
+        Limited seats &middot; By invitation &middot; Custom build
+      </p>
+      <form class="email-form reveal reveal-d4" onsubmit="return false">
+        <input type="email" placeholder="your@email.com" />
+        <button type="submit">Request Access</button>
+      </form>
+      <a href="#video" class="cta-link reveal reveal-d5">Watch the Paradigm Shift</a>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="container footer-inner">
+      <span class="footer-left">ACE</span>
+      <ul class="footer-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#triad">The Triad</a></li>
+        <li><a href="#video">Masterclass</a></li>
+      </ul>
+      <span class="footer-right">An Innova Atelier system &middot; &copy; 2026</span>
+    </div>
+  </footer>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>
+  <script>
+    // ═══ INTERACTIVE MOCKUP ═══
+    ;(function() {
+      const frame = document.querySelector('.preview-frame')
+      const navItems = document.querySelectorAll('#mockNav li')
+      const dashView = document.getElementById('mockDashboard')
+      const chatView = document.getElementById('mockChat')
+      const breathView = document.getElementById('mockBreath')
+      const summaryView = document.getElementById('mockSummary')
+      const themeToggle = document.getElementById('mockThemeToggle')
+      let autoPlayActive = false
+      let autoPlayTimer = null
+      let autoPlayPaused = false
+
+      // ── Manual nav ──
+      function switchView(viewName) {
+        navItems.forEach(l => l.classList.remove('active'))
+        const target = document.querySelector(`#mockNav li[data-view="${viewName}"]`)
+        if (target) target.classList.add('active')
+        dashView.classList.add('hidden')
+        chatView.classList.add('hidden')
+        breathView.classList.add('hidden')
+        summaryView.classList.add('hidden')
+        if (viewName === 'dashboard') dashView.classList.remove('hidden')
+        else if (viewName === 'chat') chatView.classList.remove('hidden')
+        else if (viewName === 'breath') breathView.classList.remove('hidden')
+        else if (viewName === 'summary') summaryView.classList.remove('hidden')
+      }
+
+      document.getElementById('mockNav').addEventListener('click', (e) => {
+        const li = e.target.closest('li[data-view]')
+        if (!li) return
+        pauseAutoPlay()
+        switchView(li.dataset.view)
+      })
+
+      // ── Theme toggle ──
+      function toggleTheme() {
+        frame.classList.toggle('light-mode')
+        themeToggle.textContent = frame.classList.contains('light-mode') ? '◑' : '◐'
+      }
+      themeToggle.addEventListener('click', () => {
+        pauseAutoPlay()
+        toggleTheme()
+      })
+
+      // ── Auto-play pause ──
+      function pauseAutoPlay() {
+        autoPlayPaused = true
+        if (autoPlayTimer) { clearTimeout(autoPlayTimer); autoPlayTimer = null }
+      }
+
+      // ── Typewriter effect ──
+      function typeText(el, text, speed) {
+        return new Promise(resolve => {
+          el.textContent = ''
+          el.style.opacity = '1'
+          let i = 0
+          const timer = setInterval(() => {
+            if (autoPlayPaused) { clearInterval(timer); resolve(); return }
+            el.textContent += text[i]
+            i++
+            if (i >= text.length) { clearInterval(timer); resolve() }
+          }, speed)
+        })
+      }
+
+      // ── Counter animation ──
+      function countUp(el, target, suffix) {
+        suffix = suffix || ''
+        const duration = 1200
+        const start = performance.now()
+        function step(now) {
+          const progress = Math.min((now - start) / duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 3) // ease-out cubic
+          el.textContent = Math.round(target * eased) + suffix
+          if (progress < 1) requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+      }
+
+      // ── Scene orchestration ──
+      function delay(ms) {
+        return new Promise(resolve => {
+          autoPlayTimer = setTimeout(resolve, ms)
+        })
+      }
+      function check() { return !autoPlayPaused }
+
+      // Dynamic chat content injection (reuse DOM, no bloat)
+      const mockBody = frame.querySelector('.mock-body')
+      const coherenceDot = frame.querySelector('.mock-coherence-dot')
+
+      function setChatContent(html) {
+        const msgArea = chatView.querySelector('.mock-messages')
+        msgArea.innerHTML = html
+      }
+
+      const zoomTargets = {
+        dashboard:  { scale: 1.25, x: '-8%',  y: '3%' },
+        chat:       { scale: 1, x: '0%', y: '0%' },
+        artifact:   { scale: 1, x: '0%', y: '0%' },
+        coaching:   { scale: 1.3,  x: '-11%', y: '-5%' },
+      }
+
+      const mockSidebar = frame.querySelector('.mock-sidebar')
+
+      function zoomTo(zone) {
+        if (typeof Motion === 'undefined') return
+        const { animate: mAnimate } = Motion
+
+        // Hide sidebar for chat/artifact scenes, show for others
+        if (zone === 'chat' || zone === 'artifact') {
+          mockSidebar.style.width = '0px'
+          mockSidebar.style.opacity = '0'
+          mockSidebar.style.padding = '0'
+        } else {
+          mockSidebar.style.width = '180px'
+          mockSidebar.style.opacity = '1'
+          mockSidebar.style.padding = '12px 8px'
+        }
+
+        if (!zone) {
+          mAnimate(mockBody, { scale: 1, x: '0%', y: '0%' },
+            { duration: 1.0, ease: [0.16, 1, 0.3, 1] })
+        } else {
+          const t = zoomTargets[zone]
+          mAnimate(mockBody, { scale: t.scale, x: t.x, y: t.y },
+            { duration: 1.2, ease: [0.16, 1, 0.3, 1] })
+        }
+      }
+
+      async function runAutoPlay() {
+        if (autoPlayPaused) return
+        autoPlayActive = true
+        zoomTo(null) // safety reset
+
+        const { animate } = Motion
+        const statValues = dashView.querySelectorAll('.mock-stat-card .value')
+        const triadCards = dashView.querySelectorAll('.mock-triad-card')
+        const statCards = dashView.querySelectorAll('.mock-stat-card')
+        const intensityFill = frame.querySelector('.mock-intensity-fill')
+        const modeChip = frame.querySelector('.mock-mode-chip')
+
+        // ════════════════════════════════════════════
+        // SCENE 1: Dashboard comes alive (0–3s)
+        // ════════════════════════════════════════════
+        switchView('dashboard')
+        if (frame.classList.contains('light-mode')) toggleTheme()
+
+        statCards.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(8px)' })
+        triadCards.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(12px)' })
+
+        // Reset coherence to starting value
+        const coherenceVal = statValues[2]
+        if (statValues[0]) countUp(statValues[0], 3, '')
+        if (statValues[1]) countUp(statValues[1], 214, 'K')
+        if (coherenceVal) { coherenceVal.textContent = '0.87'; coherenceVal.style.color = '#60d8a8' }
+
+        for (let i = 0; i < statCards.length; i++) {
+          if (!check()) return
+          animate(statCards[i], { opacity: [0, 1], y: [8, 0] },
+            { duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 })
+        }
+        await delay(600); if (!check()) return
+
+        for (let i = 0; i < triadCards.length; i++) {
+          if (!check()) return
+          animate(triadCards[i], { opacity: [0, 1], y: [12, 0] },
+            { duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: i * 0.15 })
+        }
+        await delay(1800); if (!check()) return
+
+        // Follow-up pulse
+        const firstFollowup = dashView.querySelector('.mock-followup-item')
+        if (firstFollowup) {
+          animate(firstFollowup, {
+            boxShadow: ['0 0 0 0 rgba(200,160,240,0)', '0 0 12px 2px rgba(200,160,240,0.25)', '0 0 0 0 rgba(200,160,240,0)']
+          }, { duration: 1.5, ease: 'easeInOut' })
+        }
+        await delay(2000); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 1b: Intention Setting
+        // ═══════��════════════════════════════════════
+        const intentionWords = 'I want to close the Aurora deal this week. Everything I build today serves that.'.split(' ')
+        const intentionHTML = intentionWords.map((w, i) =>
+          `<span class="mock-intention-word" data-idx="${i}">${w} </span>`
+        ).join('')
+
+        setChatContent(`
+          <div class="mock-msg mock-msg-user mock-msg-intention" style="opacity:1">${intentionHTML}<div class="shimmer-overlay"></div></div>
+          <div class="mock-msg-locked" id="mockLocked" style="opacity:0;padding:10px 14px;">
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="color:#60d8a8;">●</span> Intention locked</span>
+          </div>
+          <div class="mock-msg mock-msg-assistant" id="mockLockedReply" style="opacity:0">
+            <strong>Locked in.</strong> I see the Aurora partnership deck is due Thursday. Want me to build it now? I can pull last week's revenue data and match your brand system.
+          </div>
+        `)
+
+        switchView('chat')
+        zoomTo('chat') // zoom in for the entire work block
+        await delay(300); if (!check()) return
+
+        // Words reveal one by one
+        const wordSpans = chatView.querySelectorAll('.mock-intention-word')
+        for (let i = 0; i < wordSpans.length; i++) {
+          if (!check()) return
+          animate(wordSpans[i], { opacity: [0, 1] },
+            { duration: 0.15, ease: 'easeOut' })
+          await delay(80)
+        }
+        await delay(400); if (!check()) return
+
+        // Shimmer across the intention message
+        const shimmer = chatView.querySelector('.shimmer-overlay')
+        if (shimmer) {
+          animate(shimmer, { x: ['-100%', '200%'] },
+            { duration: 1.0, ease: [0.16, 1, 0.3, 1] })
+        }
+
+        // Intensity bar climbs as intention activates
+        animate(intensityFill, { width: ['35%', '48%'] }, { duration: 1.2, ease: 'easeInOut' })
+        await delay(1000); if (!check()) return
+
+        // "Intention locked" badge
+        const lockedBadge = document.getElementById('mockLocked')
+        animate(lockedBadge, { opacity: [0, 1], y: [6, 0] },
+          { duration: 0.4, ease: [0.16, 1, 0.3, 1] })
+        await delay(600); if (!check()) return
+
+        // ACE responds
+        const lockedReply = document.getElementById('mockLockedReply')
+        animate(lockedReply, { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+        await delay(2000); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 2: Build request — "Create a brand deck"
+        // ════════════════════════════════════════════
+        setChatContent(`
+          <div class="mock-msg mock-msg-user" style="opacity:0">Yes. 12 slides, our voice. Include the revenue projections and Aurora's positioning.</div>
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            <strong>Launching 3 agents.</strong> I'll research Aurora's brand positioning, design the deck in your visual system, and pull revenue data from the analytics database.
+          </div>
+          <div id="agentScene" style="opacity:0">
+            <div class="mock-agents-row">
+              <div class="mock-agent-pill" id="agentResearch"><span class="mock-agent-dot"></span> Research</div>
+              <div class="mock-agent-pill" id="agentDesign"><span class="mock-agent-dot"></span> Design</div>
+              <div class="mock-agent-pill" id="agentData"><span class="mock-agent-dot"></span> Data</div>
+            </div>
+            <div class="mock-agent-status" id="agentStatus">Initializing agents...</div>
+          </div>
+          <div id="artifactScene" style="opacity:0"></div>
+        `)
+
+        switchView('chat')
+        await delay(400); if (!check()) return
+
+        // User request slides in
+        const buildMsgs = chatView.querySelectorAll('.mock-msg')
+        animate(buildMsgs[0], { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.4, ease: [0.16, 1, 0.3, 1] })
+        await delay(1200); if (!check()) return
+
+        // Assistant response
+        animate(buildMsgs[1], { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+        await delay(800); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 3: Multi-agent orchestration (6–12s)
+        // ════════════════════════════════════════════
+        const agentScene = document.getElementById('agentScene')
+        const agentStatus = document.getElementById('agentStatus')
+        const agentResearch = document.getElementById('agentResearch')
+        const agentDesign = document.getElementById('agentDesign')
+        const agentData = document.getElementById('agentData')
+
+        animate(agentScene, { opacity: [0, 1], y: [8, 0] },
+          { duration: 0.4, ease: [0.16, 1, 0.3, 1] })
+        await delay(400); if (!check()) return
+
+        // All agents activate
+        agentResearch.classList.add('active')
+        agentDesign.classList.add('active')
+        agentData.classList.add('active')
+        agentStatus.textContent = 'All agents running in parallel...'
+        await delay(1200); if (!check()) return
+
+        // Data agent finishes first
+        agentData.classList.remove('active')
+        agentData.classList.add('done')
+        agentStatus.textContent = 'Revenue data pulled — 3 quarters, 4 projections'
+        await delay(1000); if (!check()) return
+
+        // Research finishes
+        agentResearch.classList.remove('active')
+        agentResearch.classList.add('done')
+        agentStatus.textContent = 'Aurora positioning mapped — 6 differentiators found'
+        await delay(1000); if (!check()) return
+
+        // Design finishes
+        agentDesign.classList.remove('active')
+        agentDesign.classList.add('done')
+        agentStatus.textContent = 'Deck compiled — 12 slides in your visual system'
+        await delay(800); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 4: Artifact + Deck Preview (12–17s)
+        // ════════════════════════════════════════════
+        const artifactScene = document.getElementById('artifactScene')
+        artifactScene.innerHTML = `
+          <div class="mock-artifact-card" style="opacity:0;transform:translateY(10px)">
+            <div class="mock-artifact-icon">📄</div>
+            <div class="mock-artifact-info">
+              <div class="mock-artifact-name">aurora-brand-deck.pdf</div>
+              <div class="mock-artifact-meta">12 slides · Brand + Revenue · 2.4 MB</div>
+            </div>
+            <span class="mock-artifact-badge">Saved</span>
+          </div>
+          <div class="mock-deck-grid" style="opacity:0;transform:translateY(8px)">
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#c8a0f0"></div>
+              <div class="mock-slide-line" style="width:80%"></div>
+              <div class="mock-slide-line" style="width:60%"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#70b0e0;width:45%"></div>
+              <div class="mock-slide-line" style="width:90%"></div>
+              <div class="mock-slide-line" style="width:70%"></div>
+              <div class="mock-slide-line" style="width:50%"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#60d8a8;width:50%"></div>
+              <div class="mock-slide-bar" style="background:linear-gradient(90deg,#8878ff,#c8a0f0,#60d8a8);height:10px"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#e080a0;width:40%"></div>
+              <div class="mock-slide-circle" style="background:#c8a0f0"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#c8a0f0;width:55%"></div>
+              <div class="mock-slide-bar" style="background:#70b0e0;width:70%;height:6px"></div>
+              <div class="mock-slide-bar" style="background:#60d8a8;width:50%;height:6px"></div>
+              <div class="mock-slide-bar" style="background:#c8a0f0;width:85%;height:6px"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#60d8a8;width:35%"></div>
+              <div class="mock-slide-line" style="width:75%"></div>
+              <div class="mock-slide-line" style="width:55%"></div>
+              <div class="mock-slide-bar" style="background:linear-gradient(90deg,#8878ff,#60d8a8);height:8px;margin-top:2px"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#70b0e0;width:50%"></div>
+              <div class="mock-slide-circle" style="background:#e080a0;width:10px;height:10px"></div>
+            </div>
+            <div class="mock-slide">
+              <div class="mock-slide-title" style="background:#c8a0f0;width:70%"></div>
+              <div class="mock-slide-line" style="width:85%"></div>
+              <div class="mock-slide-line" style="width:65%"></div>
+              <div class="mock-slide-line" style="width:45%"></div>
+            </div>
+          </div>
+        `
+        const artifactCard = artifactScene.querySelector('.mock-artifact-card')
+        const deckGrid = artifactScene.querySelector('.mock-deck-grid')
+        animate(artifactCard, { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+        artifactScene.style.opacity = '1'
+
+        // Success glow on artifact
+        await delay(400); if (!check()) return
+        animate(artifactCard, {
+          boxShadow: ['0 0 0 0 rgba(96,216,168,0)', '0 0 16px 3px rgba(96,216,168,0.2)', '0 0 4px 1px rgba(96,216,168,0.08)']
+        }, { duration: 1.0, ease: 'easeOut' })
+        await delay(800); if (!check()) return
+
+        // Deck preview slides stagger in
+        animate(deckGrid, { opacity: [0, 1], y: [8, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+        const slides = deckGrid.querySelectorAll('.mock-slide')
+        for (let i = 0; i < slides.length; i++) {
+          animate(slides[i], { opacity: [0, 1], scale: [0.8, 1] },
+            { duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 })
+        }
+        await delay(3000); if (!check()) return
+
+        zoomTo(null) // zoom out — shift from work to reflection
+        await delay(800); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 5: Coaching / Regulation
+        // ═══════════════════════════���════════════════
+        // Atmosphere warms
+        animate(intensityFill, { width: ['48%', '72%'] }, { duration: 1.5, ease: 'easeInOut' })
+        intensityFill.style.background = 'linear-gradient(90deg, #c8a060, #e08070)'
+        modeChip.textContent = 'nourish'
+        modeChip.style.color = '#e080a0'
+        modeChip.style.borderColor = 'rgba(224,128,160,0.2)'
+        modeChip.style.background = 'rgba(224,128,160,0.08)'
+        await delay(800); if (!check()) return
+
+        setChatContent(`
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            <div class="mock-somatic-indicator"><span class="mock-somatic-dot"></span> Capacity signal detected</div>
+          </div>
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            I've noticed a pattern. This is the third time this month you've pushed past your capacity window without a break. Each time, the thing you're avoiding gets bigger.
+          </div>
+          <div class="mock-coaching-msg" style="opacity:0">
+            You've been in execute mode for 3 hours straight. Intensity just crossed 70%. Before the next build — what are you avoiding by staying busy?
+          </div>
+          <div class="mock-msg mock-msg-user" style="opacity:0">...honestly, the investor email. I keep putting it off.</div>
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            That tracks. Avoidance spikes around external evaluation — three times this month, always after a build high. The pattern is consistent.
+          </div>
+        `)
+
+        await delay(300); if (!check()) return
+
+        const coachMsgs = chatView.querySelectorAll('.mock-msg, .mock-coaching-msg')
+        for (let i = 0; i < coachMsgs.length; i++) {
+          if (!check()) return
+          animate(coachMsgs[i], { opacity: [0, 1], y: [10, 0] },
+            { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+          await delay(i === 1 ? 2000 : 1400)
+          if (!check()) return
+        }
+        await delay(1200); if (!check()) return
+
+        // ── Breath recommendation + approval ──
+        const breathPrompt = document.createElement('div')
+        breathPrompt.className = 'mock-breath-prompt'
+        breathPrompt.style.opacity = '0'
+        breathPrompt.innerHTML = `
+          <div class="mock-breath-prompt-text">Your intensity is elevated and a pattern has been identified. I recommend 3 cycles of cyclic sighing to bring you back into coherence before continuing.</div>
+          <div class="mock-breath-prompt-btn"><span class="bp-dot"></span> Begin Breath</div>
+        `
+        chatView.querySelector('.mock-messages').appendChild(breathPrompt)
+        animate(breathPrompt, { opacity: [0, 1], y: [8, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+        await delay(2000); if (!check()) return
+
+        // Simulate button press — flash the button
+        const bpBtn = breathPrompt.querySelector('.mock-breath-prompt-btn')
+        if (bpBtn) {
+          bpBtn.style.background = 'rgba(96,216,168,0.2)'
+          bpBtn.style.borderColor = 'rgba(96,216,168,0.4)'
+        }
+        await delay(600); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 5b: Breath / Regulation
+        // ════════════════════════════════════════════
+        switchView('breath')
+        const breathOrb = document.getElementById('mockBreathOrb')
+        const breathPhase = document.getElementById('mockBreathPhase')
+        const breathCounter = document.getElementById('mockBreathCounter')
+        const breathRingOuter = breathView.querySelector('.mock-breath-ring-outer')
+        const breathRingInner = breathView.querySelector('.mock-breath-ring-inner')
+
+        // 3 breath cycles: inhale (expand) → exhale (contract)
+        for (let cycle = 1; cycle <= 3; cycle++) {
+          if (!check()) return
+          breathCounter.textContent = `Cycle ${cycle} of 3`
+
+          // Inhale — expand
+          breathPhase.textContent = 'Inhale'
+          animate(breathOrb, { scale: [0.6, 1.6] },
+            { duration: 1.4, ease: [0.16, 1, 0.3, 1] })
+          animate(breathRingInner, { scale: [0.9, 1.1], opacity: [0.3, 0.6] },
+            { duration: 1.4, ease: [0.16, 1, 0.3, 1] })
+          animate(breathRingOuter, { scale: [0.95, 1.08], opacity: [0.2, 0.4] },
+            { duration: 1.4, ease: [0.16, 1, 0.3, 1] })
+          await delay(1500); if (!check()) return
+
+          // Exhale — contract (longer, slower)
+          breathPhase.textContent = 'Exhale'
+          animate(breathOrb, { scale: [1.6, 0.6] },
+            { duration: 1.8, ease: [0.4, 0, 0.2, 1] })
+          animate(breathRingInner, { scale: [1.1, 0.9], opacity: [0.6, 0.3] },
+            { duration: 1.8, ease: [0.4, 0, 0.2, 1] })
+          animate(breathRingOuter, { scale: [1.08, 0.95], opacity: [0.4, 0.2] },
+            { duration: 1.8, ease: [0.4, 0, 0.2, 1] })
+          await delay(1900); if (!check()) return
+        }
+
+        breathPhase.textContent = 'Complete'
+        await delay(600); if (!check()) return
+
+        // ── Coherence culmination ──
+        // Hide counter and protocol
+        animate(breathCounter, { opacity: 0 }, { duration: 0.3 })
+        const breathProtocol = document.getElementById('mockBreathProtocol')
+        animate(breathProtocol, { opacity: 0 }, { duration: 0.3 })
+        await delay(400); if (!check()) return
+
+        // Orb pulses bigger
+        animate(breathOrb, { scale: [0.6, 1.2] },
+          { duration: 0.8, ease: [0.16, 1, 0.3, 1] })
+        await delay(600); if (!check()) return
+
+        // Three triad rings expand outward from the orb
+        const triadRingAuth = document.getElementById('triadRingAuth')
+        const triadRingCap = document.getElementById('triadRingCap')
+        const triadRingExp = document.getElementById('triadRingExp')
+
+        // Rings expand outward, staggered
+        animate(triadRingAuth, { scale: [0.3, 2.5], opacity: [0.8, 0] },
+          { duration: 1.4, ease: [0.16, 1, 0.3, 1] })
+        animate(triadRingCap, { scale: [0.3, 2.5], opacity: [0.8, 0] },
+          { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 })
+        animate(triadRingExp, { scale: [0.3, 2.5], opacity: [0.8, 0] },
+          { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.3 })
+        await delay(800); if (!check()) return
+
+        // Rings converge back inward to the orb
+        animate(triadRingAuth, { scale: [2.0, 0.8], opacity: [0, 0.7] },
+          { duration: 1.0, ease: [0.4, 0, 0.2, 1] })
+        animate(triadRingCap, { scale: [2.0, 0.8], opacity: [0, 0.7] },
+          { duration: 1.0, ease: [0.4, 0, 0.2, 1], delay: 0.1 })
+        animate(triadRingExp, { scale: [2.0, 0.8], opacity: [0, 0.7] },
+          { duration: 1.0, ease: [0.4, 0, 0.2, 1], delay: 0.2 })
+        await delay(800); if (!check()) return
+
+        // Rings merge — fade rings, orb fades out, ACE mark fades in
+        animate(triadRingAuth, { opacity: 0 }, { duration: 0.4 })
+        animate(triadRingCap, { opacity: 0 }, { duration: 0.4 })
+        animate(triadRingExp, { opacity: 0 }, { duration: 0.4 })
+
+        // Orb shrinks and fades, ACE mark blooms from center
+        const breathMark = document.getElementById('mockBreathMark')
+        animate(breathOrb, { scale: [1.2, 0.3], opacity: [1, 0] },
+          { duration: 0.6, ease: [0.4, 0, 0.2, 1] })
+        animate(breathMark, { opacity: [0, 1], scale: [0.4, 1] },
+          { duration: 0.8, type: 'spring', stiffness: 150, damping: 18, delay: 0.2 })
+        await delay(800); if (!check()) return
+
+        // ACE mark glows and breathes
+        animate(breathMark, {
+          filter: [
+            'drop-shadow(0 0 20px rgba(136,120,255,0.4)) drop-shadow(0 0 50px rgba(200,160,240,0.15))',
+            'drop-shadow(0 0 35px rgba(136,120,255,0.7)) drop-shadow(0 0 70px rgba(200,160,240,0.3))',
+            'drop-shadow(0 0 20px rgba(136,120,255,0.4)) drop-shadow(0 0 50px rgba(200,160,240,0.15))'
+          ],
+          scale: [1, 1.08, 1]
+        }, { duration: 2.0, ease: 'easeInOut' })
+        await delay(500); if (!check()) return
+
+        // Phase label fades
+        animate(breathPhase, { opacity: [1, 0] }, { duration: 0.2 })
+        await delay(250); if (!check()) return
+        breathPhase.textContent = ''
+
+        // Score reveals
+        const cohScore = document.getElementById('mockCoherenceScore')
+        const cohLabel = document.getElementById('mockCoherenceLabel')
+        animate(cohScore, { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.6, ease: [0.16, 1, 0.3, 1] })
+        await delay(400); if (!check()) return
+        animate(cohLabel, { opacity: [0, 1], y: [6, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+
+        // Intensity bar drops to healthy, mode shifts
+        animate(intensityFill, { width: ['72%', '28%'] }, { duration: 1.2, ease: 'easeInOut' })
+        intensityFill.style.background = 'linear-gradient(90deg, #60d8a8, #8878ff)'
+        modeChip.textContent = 'grounded'
+        modeChip.style.color = '#60d8a8'
+        modeChip.style.borderColor = 'rgba(96,216,168,0.2)'
+        modeChip.style.background = 'rgba(96,216,168,0.08)'
+
+        // Coherence dot in titlebar glows
+        coherenceDot.classList.add('glowing')
+        await delay(3000); if (!check()) return
+        coherenceDot.classList.remove('glowing')
+
+        // Reset breath view for next loop
+        breathOrb.style.opacity = '1'
+        breathOrb.style.transform = ''
+        breathMark.style.opacity = '0'
+        breathMark.style.transform = ''
+        cohScore.style.opacity = '0'
+        cohLabel.style.opacity = '0'
+        breathPhase.textContent = 'Inhale'
+        breathPhase.style.opacity = '1'
+        breathCounter.style.opacity = '1'
+        breathProtocol.style.opacity = '1'
+
+        await delay(800); if (!check()) return
+
+        // ── Post-coherence: delight + email closure ──
+        setChatContent(`
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            Grounded. Intensity down to 28%.<br><br>By the way — Sarah moved your Thursday meeting to Friday. I've already adjusted the deck timeline.
+          </div>
+          <div class="mock-msg mock-msg-user" style="opacity:0">OK let's do the investor email.</div>
+          <div class="mock-msg mock-msg-assistant" style="opacity:0">
+            Done. Drafted in your voice, three paragraphs. Direct, no hedging.<br><br><strong>12 minutes.</strong> The thing you were avoiding.
+          </div>
+        `)
+        switchView('chat')
+        await delay(300); if (!check()) return
+        const closeMsgs = chatView.querySelectorAll('.mock-msg')
+        for (let i = 0; i < closeMsgs.length; i++) {
+          if (!check()) return
+          animate(closeMsgs[i], { opacity: [0, 1], y: [10, 0] },
+            { duration: 0.5, ease: [0.16, 1, 0.3, 1] })
+          await delay(1400)
+          if (!check()) return
+        }
+        await delay(1500); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 6: Session Summary
+        // ════════════════════════════════════════════
+        switchView('summary')
+        mockSidebar.style.width = '180px'
+        mockSidebar.style.opacity = '1'
+        mockSidebar.style.padding = '12px 8px'
+
+        const summaryItems = [
+          { verb: 'Intention', desc: 'Close Aurora deal this week', color: '#c8a0f0' },
+          { verb: 'Built', desc: 'Aurora brand deck — 12 slides, 3 agents', color: '#60d8a8' },
+          { verb: 'Built', desc: 'Follow-up email sequence — 3 emails queued', color: '#60d8a8' },
+          { verb: 'Built', desc: 'Partnership one-pager — projections + terms', color: '#60d8a8' },
+          { verb: 'Processed', desc: '14 emails triaged, 3 replies sent', color: '#70b0e0' },
+          { verb: 'Scheduled', desc: '2 meetings booked via Cal.com', color: '#70b0e0' },
+          { verb: 'Coached', desc: 'Avoidance pattern — 3rd occurrence identified', color: '#e080a0' },
+          { verb: 'Regulated', desc: 'Cyclic sighing — coherence restored', color: '#e080a0' },
+          { verb: 'Resolved', desc: 'Investor email — 12 minutes', color: '#c8a0f0' },
+        ]
+
+        const summaryList = document.getElementById('summaryList')
+        summaryList.innerHTML = ''
+
+        for (let i = 0; i < summaryItems.length; i++) {
+          if (!check()) return
+          const item = summaryItems[i]
+          const li = document.createElement('li')
+          li.className = 'mock-summary-item'
+          li.style.opacity = '0'
+          li.innerHTML = `<span class="mock-summary-verb" style="color:${item.color}">${item.verb}</span><span class="mock-summary-desc">${item.desc}</span>`
+          summaryList.appendChild(li)
+          animate(li, { opacity: [0, 1], y: [6, 0] },
+            { duration: 0.3, ease: [0.16, 1, 0.3, 1] })
+          await delay(300); if (!check()) return
+        }
+
+        await delay(5000); if (!check()) return
+
+        // ════════════════════════════════════════════
+        // SCENE 7: Light mode + Dashboard with improved coherence
+        // ════════════════════════════════════════════
+        toggleTheme()
+        await delay(1200); if (!check()) return
+
+        switchView('dashboard')
+        statCards.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none' })
+        triadCards.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none' })
+
+        // Coherence score counts up from 0.87 → 0.93
+        if (coherenceVal) {
+          const startVal = 0.87
+          const endVal = 0.93
+          const dur = 1500
+          const startTime = performance.now()
+          function stepCoherence(now) {
+            const p = Math.min((now - startTime) / dur, 1)
+            const eased = 1 - Math.pow(1 - p, 3)
+            coherenceVal.textContent = (startVal + (endVal - startVal) * eased).toFixed(2)
+            if (p < 1) requestAnimationFrame(stepCoherence)
+          }
+          requestAnimationFrame(stepCoherence)
+        }
+
+        // Reset intensity to normal execute mode
+        intensityFill.style.background = 'linear-gradient(90deg, #8878ff, #c8a0f0)'
+        animate(intensityFill, { width: ['28%', '35%'] }, { duration: 1.0, ease: 'easeInOut' })
+        modeChip.textContent = 'execute'
+        modeChip.style.color = '#c8a0f0'
+        modeChip.style.borderColor = 'rgba(200,160,240,0.12)'
+        modeChip.style.background = 'rgba(200,160,240,0.08)'
+
+        await delay(3500); if (!check()) return
+
+        // Back to dark
+        toggleTheme()
+        await delay(2000); if (!check()) return
+
+        // Reset chat for next loop
+        setChatContent(`
+          <div class="mock-msg mock-msg-user">Draft a follow-up email to Sarah about the brand deck — warm but direct, mention the Friday deadline.</div>
+          <div class="mock-msg mock-msg-assistant">
+            <strong>Subject: Brand deck — quick check-in</strong><br/><br/>
+            Hey Sarah,<br/><br/>
+            Hope your week's been good. Wanted to loop back on the brand deck — I've got the final review slotted for Friday, so if there are any last tweaks on your end, now's the window.<br/><br/>
+            No rush on anything major. Just want to make sure we're aligned before I lock it in.<br/><br/>
+            Talk soon.
+          </div>
+          <div class="mock-msg mock-msg-user">Perfect. Queue it for 9am tomorrow and log the follow-up.</div>
+          <div class="mock-typing"><span></span><span></span><span></span></div>
+        `)
+
+        // ── LOOP ──
+        zoomTo(null)
+        await delay(500); if (!check()) return
+        autoPlayActive = false
+        runAutoPlay()
+      }
+
+      // ── IntersectionObserver trigger ──
+      const mockObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !autoPlayActive && !autoPlayPaused) {
+            // Small delay so the reveal animation finishes first
+            setTimeout(() => {
+              if (!autoPlayPaused) runAutoPlay()
+            }, 800)
+          }
+        })
+      }, { threshold: 0.4 })
+      mockObserver.observe(frame)
+
+    })()
+
+
+
+    // ═══ KNOWLEDGE GRAPH INTERACTION ═══
+    ;(function() {
+      const graph = document.getElementById('knowledgeGraph')
+      if (!graph) return
+      const edges = graph.querySelectorAll('.graph-edge')
+      const nodes = graph.querySelectorAll('.graph-node')
+      const tooltip = document.getElementById('graphTooltip')
+      const svg = graph.querySelector('svg')
+
+      nodes.forEach(node => {
+        const id = node.dataset.id
+        node.addEventListener('mouseenter', (e) => {
+          // Highlight connections
+          edges.forEach(edge => {
+            const connected = edge.dataset.nodes.split(',')
+            if (connected.includes(id)) {
+              edge.classList.add('highlighted')
+            } else {
+              edge.style.opacity = '0.04'
+            }
+          })
+          nodes.forEach(n => {
+            if (n === node) return
+            const isConnected = Array.from(edges).some(e => {
+              const c = e.dataset.nodes.split(',')
+              return c.includes(id) && c.includes(n.dataset.id)
+            })
+            if (!isConnected) n.style.opacity = '0.25'
+          })
+          // Show tooltip
+          if (node.dataset.tip && tooltip) {
+            tooltip.textContent = node.dataset.tip
+            const circle = node.querySelector('circle')
+            const cx = parseFloat(circle.getAttribute('cx'))
+            const cy = parseFloat(circle.getAttribute('cy'))
+            const rect = svg.getBoundingClientRect()
+            const scaleX = rect.width / 300
+            const scaleY = rect.height / 300
+            tooltip.style.left = (cx * scaleX - 100) + 'px'
+            tooltip.style.top = (cy * scaleY - 45) + 'px'
+            tooltip.classList.add('visible')
+          }
+        })
+        node.addEventListener('mouseleave', () => {
+          edges.forEach(e => { e.classList.remove('highlighted'); e.style.opacity = '' })
+          nodes.forEach(n => { n.style.opacity = '' })
+          if (tooltip) tooltip.classList.remove('visible')
+        })
+      })
+    })()
+
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Scroll reveal via IntersectionObserver (below-fold only)
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => {
+      if (!el.closest('.hero')) observer.observe(el);
+    });
+
+    // ═══ HERO IGNITION SEQUENCE ═══
+
+    // Fallback: show everything if Motion CDN fails or reduced-motion
+    function showHeroImmediate() {
+      document.getElementById('heroMark').style.opacity = '1'
+      document.getElementById('heroMarkSvg').classList.add('mark-breathing')
+      document.getElementById('heroText').style.opacity = '1'
+      document.getElementById('heroLabel').style.cssText = 'opacity:1;transform:none;'
+      document.getElementById('heroH1').style.cssText = 'opacity:1;transform:none;'
+      document.getElementById('heroSub').style.cssText = 'opacity:1;transform:none;'
+      document.getElementById('heroTags').style.cssText = 'opacity:1;transform:none;'
+      document.getElementById('heroPos').style.cssText = 'opacity:1;transform:none;'
+      document.getElementById('heroForm').style.cssText = 'opacity:1;transform:none;'
+      document.querySelectorAll('.glow').forEach(g => g.style.opacity = '0.35')
+      document.getElementById('ignitionOrbs').style.display = 'none'
+    }
+
+    if (typeof Motion === 'undefined') { showHeroImmediate() } else {
+
+    const { animate, stagger } = Motion
+
+    function runIgnition() {
+      const isMobile = window.innerWidth < 768
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+
+      // ── Geometry ──
+      // Everything happens at dead center of the viewport.
+      // Three orbs enter along the ACE Mark's triangle angles:
+      //   -90° (straight up)   → Auth (purple) enters from top
+      //    30° (lower-right)   → Cap (lavender) enters from bottom-right
+      //   210° (lower-left)    → Exp (green) enters from bottom-left
+      // Entry and rest are on the SAME radial lines — perfectly symmetric.
+
+      const orbAuth = document.getElementById('orbAuth')
+      const orbCap = document.getElementById('orbCap')
+      const orbExp = document.getElementById('orbExp')
+
+      const orbSize = isMobile ? 35 : 50
+      const orbs = [orbAuth, orbCap, orbExp]
+      orbs.forEach(o => { o.style.width = orbSize + 'px'; o.style.height = orbSize + 'px' })
+
+      // All orbs are positioned at viewport center. All movement via transforms.
+      const cx = vw / 2 - orbSize / 2
+      const cy = vh / 2 - orbSize / 2
+      orbs.forEach(o => { o.style.left = cx + 'px'; o.style.top = cy + 'px' })
+
+      // Triangle angles (degrees) — matching ACE Mark vertices
+      // -90° = top, 30° = bottom-right, 150° = bottom-left (mirror of 30°)
+      const angles = [-90, 30, 150]
+      const toRad = deg => deg * Math.PI / 180
+
+      // Radii: how far from center at each stage
+      const entryR = Math.max(vw, vh) * 0.7   // start off-screen
+      const restR = isMobile ? Math.min(vw, vh) * 0.22 : Math.min(vw, vh) * 0.2  // hold triangle
+
+      // Compute x/y offsets for each orb at entry and rest
+      const entry = angles.map(a => ({ x: entryR * Math.cos(toRad(a)), y: entryR * Math.sin(toRad(a)) }))
+      const rest  = angles.map(a => ({ x: restR * Math.cos(toRad(a)),  y: restR * Math.sin(toRad(a)) }))
+
+      // ── Phase 1: Enter from Edges (0–2s) ──
+      // All three enter SIMULTANEOUSLY along their radial lines
+      const enterDuration = 1.8
+      const enterEase = [0.16, 1, 0.3, 1]
+
+      const orbEls = [orbAuth, orbCap, orbExp]
+      orbEls.forEach((orb, i) => {
+        animate(orb, {
+          opacity: [0, 0.85],
+          scale: [0.3, 1],
+          x: [entry[i].x, rest[i].x],
+          y: [entry[i].y, rest[i].y]
+        }, { duration: enterDuration, ease: enterEase })
+      })
+
+      // ── Phase 2: Convergence (2.5–3.8s) ──
+      // Hold at rest triangle for 0.7s, then all converge to center (0,0)
+      const convergeDelay = 2500
+      const convergeSpring = { duration: 1.2, type: 'spring', stiffness: 120, damping: 20 }
+
+      setTimeout(() => {
+        orbs.forEach(o => o.classList.add('orb-converging'))
+
+        // All three converge to center (0,0) — same spring, same timing
+        orbEls.forEach(orb => {
+          animate(orb, { x: 0, y: 0, scale: 0.3, opacity: 0.6 }, convergeSpring)
+        })
+      }, convergeDelay)
+
+      // ── Phase 2b: Breathing Pulse Bridge (3.8–5.2s) ──
+      // Merged orbs pulse like a heartbeat before transforming
+      setTimeout(() => {
+        // Pulse 1 — big swell
+        orbEls.forEach(orb => {
+          animate(orb, { scale: [0.3, 0.5], opacity: [0.6, 0.8] },
+            { duration: 0.4, ease: [0.16, 1, 0.3, 1] })
+        })
+        // Pulse 1 — contract
+        setTimeout(() => {
+          orbEls.forEach(orb => {
+            animate(orb, { scale: [0.5, 0.2], opacity: [0.8, 0.5] },
+              { duration: 0.4, ease: [0.4, 0, 0.2, 1] })
+          })
+        }, 400)
+        // Pulse 2 — smaller swell
+        setTimeout(() => {
+          orbEls.forEach(orb => {
+            animate(orb, { scale: [0.2, 0.35], opacity: [0.5, 0.7] },
+              { duration: 0.3, ease: [0.16, 1, 0.3, 1] })
+          })
+        }, 800)
+        // Pulse 2 — final contraction + bloom handoff
+        setTimeout(() => {
+          orbEls.forEach(orb => {
+            animate(orb, { scale: [0.35, 0.05], opacity: [0.7, 0] },
+              { duration: 0.4, ease: [0.4, 0, 0.2, 1] })
+          })
+          // White center point blooms 150ms before orbs fully vanish
+          const animMark = document.getElementById('animMark')
+          const animMarkSvg = document.getElementById('animMarkSvg')
+          const animCenterPoint = document.getElementById('animCenterPoint')
+          const animCenterGlow = document.getElementById('animCenterGlow')
+          // Start SVG small so center point matches orb size and position
+          animMarkSvg.style.transform = 'scale(0.2)'
+          animate(animMark, { opacity: [0, 1] }, { duration: 0.2 })
+          setTimeout(() => {
+            animate(animCenterPoint, { opacity: [0, 1] },
+              { duration: 0.3, ease: 'easeOut' })
+            animate(animCenterGlow, { opacity: [0, 0.9] },
+              { duration: 0.5, ease: 'easeOut', delay: 0.05 })
+            // Subtle growth — orb-sized dot swells slightly
+            animate(animMarkSvg, { scale: [0.2, 0.3] },
+              { duration: 0.4, ease: [0.16, 1, 0.3, 1] })
+          }, 150)
+        }, 1100)
+      }, 3800)
+
+      // ── Phase 3: Coalescence (5.2–6.7s) ──
+      // Triangle draws outward from the already-visible center point
+      setTimeout(() => {
+        const animMarkStroke = document.getElementById('animMarkStroke')
+        const animMarkFill = document.getElementById('animMarkFill')
+        const animMarkSvg = document.getElementById('animMarkSvg')
+
+        // Concave triangle draws outward from center via pathLength
+        setTimeout(() => {
+          animate(animMarkStroke, { opacity: [0, 0.9] }, { duration: 0.2 })
+          animate(animMarkStroke, { strokeDashoffset: [1, 0] },
+            { duration: 1.0, ease: [0.16, 1, 0.3, 1] })
+          animate(animMarkFill, { opacity: [0, 0.95] },
+            { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.5 })
+          animate(animMarkSvg, { scale: [0.3, 1] },
+            { duration: 1.2, type: 'spring', stiffness: 120, damping: 20 })
+          animate(animMarkStroke, { opacity: [0.9, 0] },
+            { duration: 0.5, ease: 'easeOut', delay: 1.0 })
+        }, 300)
+
+        // Shockwave ring
+        const shockwave = document.getElementById('shockwave')
+        animate(shockwave, {
+          scale: [0.05, 1],
+          opacity: [0.6, 0]
+        }, { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.3 })
+      }, 5200)
+
+      // ── Phase 4: FLIP glide to hero position + Text Cascade (6.8s+) ──
+      // animMark (fixed overlay) glides to where heroMark (flow) sits, then instant swap
+      const cascadeDelay = isMobile ? 6400 : 6800
+      setTimeout(() => {
+        const animMark = document.getElementById('animMark')
+        const heroMark = document.getElementById('heroMark')
+        const heroMarkSvg = document.getElementById('heroMarkSvg')
+        const heroText = document.getElementById('heroText')
+
+        // Measure where the flow-positioned heroMark sits on screen
+        const targetRect = heroMark.getBoundingClientRect()
+        const targetCX = targetRect.left + targetRect.width / 2
+        const targetCY = targetRect.top + targetRect.height / 2
+
+        // animMark is flexbox-centered in the viewport overlay
+        const currentCX = window.innerWidth / 2
+        const currentCY = window.innerHeight / 2
+
+        // Scale ratio: animMark SVG → heroMark SVG final size
+        const finalScale = isMobile ? 120 / 220 : 180 / 300
+
+        // Glide overlay mark to the flow mark's exact position
+        animate(animMark, {
+          y: [0, targetCY - currentCY],
+          x: [0, targetCX - currentCX],
+          scale: [1, finalScale]
+        }, { duration: 1.4, ease: [0.16, 1, 0.3, 1] })
+
+        // Seamless FLIP swap — overlay disappears, flow mark appears + pulse rings start
+        setTimeout(() => {
+          animMark.style.display = 'none'
+          heroMark.style.opacity = '1'
+          heroMarkSvg.classList.add('mark-breathing')
+          document.getElementById('ignitionOrbs').style.display = 'none'
+          startPulseRings()
+        }, 1500)
+
+        // Text cascade starts 0.6s into the glide
+        const textDelay = 0.6
+        setTimeout(() => { heroText.style.opacity = '1' }, textDelay * 1000)
+
+        const heroLabel = document.getElementById('heroLabel')
+        const heroH1 = document.getElementById('heroH1')
+        const heroSub = document.getElementById('heroSub')
+        const heroTags = document.getElementById('heroTags')
+        const heroForm = document.getElementById('heroForm')
+        const tagSpans = heroTags.querySelectorAll('span')
+
+        animate(heroLabel, { opacity: [0, 1], y: [30, 0] },
+          { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: textDelay })
+        animate(heroH1, { opacity: [0, 1], y: [40, 0] },
+          { duration: 0.8, type: 'spring', stiffness: 150, damping: 20, delay: textDelay + 0.15 })
+        animate(heroSub, { opacity: [0, 1], y: [30, 0] },
+          { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: textDelay + 0.4 })
+        animate(document.getElementById('heroPos'), { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: textDelay + 0.55 })
+        animate(heroTags, { opacity: [0, 1] }, { duration: 0.01, delay: textDelay + 0.7 })
+        animate(tagSpans, { opacity: [0, 1], y: [15, 0] },
+          { duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: stagger(0.08, { from: 'center', startDelay: textDelay + 0.7 }) })
+        animate(heroForm, { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: textDelay + 0.9 })
+      }, cascadeDelay)
+
+      // ── Phase 5: Ambient Alive + Drift (8.4s+) ──
+      const ambientDelay = isMobile ? 8000 : 8400
+      setTimeout(() => {
+        animate('.glow-1', { opacity: [0, 0.35] }, { duration: 2, ease: 'easeOut' })
+        animate('.glow-2', { opacity: [0, 0.35] }, { duration: 2, ease: 'easeOut', delay: 0.3 })
+        animate('.glow-3', { opacity: [0, 0.35] }, { duration: 2, ease: 'easeOut', delay: 0.6 })
+
+        // Start living background after orbs have faded in
+        setTimeout(() => {
+          startOrbDrift()
+          startMouseGlow()
+        }, 2000)
+      }, ambientDelay)
+    }
+
+    function startPulseRings() {
+      const { animate } = Motion
+      const rings = [
+        document.getElementById('pulseRing1'),
+        document.getElementById('pulseRing2'),
+        document.getElementById('pulseRing3')
+      ]
+      const cycleDuration = 5.4 // seconds per ring cycle
+      const staggerOffset = cycleDuration / 3 // each ring offset by 1/3
+
+      rings.forEach((ring, i) => {
+        const delay = i * staggerOffset
+        // Looping expand + fade
+        animate(ring, {
+          scale: [1, 3.5],
+          opacity: [0.4, 0]
+        }, {
+          duration: cycleDuration,
+          ease: [0.12, 0.8, 0.2, 1],
+          delay: delay,
+          repeat: Infinity
+        })
+      })
+    }
+
+    function startOrbDrift() {
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+
+      // Each orb drifts through randomized waypoints on a loop
+      // Different durations ensure they never sync
+      const orbConfigs = [
+        { el: '.glow-1', duration: 25, range: { x: vw * 0.15, y: vh * 0.12 } },
+        { el: '.glow-2', duration: 30, range: { x: vw * 0.12, y: vh * 0.15 } },
+        { el: '.glow-3', duration: 22, range: { x: vw * 0.14, y: vh * 0.10 } }
+      ]
+
+      orbConfigs.forEach(({ el, duration, range }) => {
+        function drift() {
+          const tx = (Math.random() - 0.5) * 2 * range.x
+          const ty = (Math.random() - 0.5) * 2 * range.y
+          const s = 0.9 + Math.random() * 0.2
+          const dur = duration * (0.8 + Math.random() * 0.4)
+
+          const anim = animate(el, { x: tx, y: ty, scale: s }, {
+            duration: dur,
+            ease: 'easeInOut'
+          })
+          // Loop: use .finished if available, fallback to setTimeout
+          if (anim.finished) {
+            anim.finished.then(drift)
+          } else {
+            setTimeout(drift, dur * 1000)
+          }
+        }
+        drift()
+      })
+    }
+
+    function startMouseGlow() {
+      const isMobile = window.innerWidth < 768
+      const mouseGlow = document.getElementById('mouseGlow')
+
+      if (isMobile) {
+        // Mobile: ambient pulse at viewport center
+        mouseGlow.style.top = (window.innerHeight / 2 - 300) + 'px'
+        mouseGlow.style.left = (window.innerWidth / 2 - 300) + 'px'
+        mouseGlow.style.opacity = '0.04'
+
+        function pulse() {
+          const a1 = animate(mouseGlow, {
+            scale: [0.8, 1.2],
+            opacity: [0.04, 0.08]
+          }, { duration: 6, ease: 'easeInOut' })
+          const next1 = () => {
+            const a2 = animate(mouseGlow, {
+              scale: [1.2, 0.8],
+              opacity: [0.08, 0.04]
+            }, { duration: 6, ease: 'easeInOut' })
+            if (a2.finished) a2.finished.then(pulse)
+            else setTimeout(pulse, 6000)
+          }
+          if (a1.finished) a1.finished.then(next1)
+          else setTimeout(next1, 6000)
+        }
+        pulse()
+        return
+      }
+
+      // Desktop: follow cursor with spring physics
+      let mouseX = window.innerWidth / 2
+      let mouseY = window.innerHeight / 2
+
+      mouseGlow.style.top = (mouseY - 300) + 'px'
+      mouseGlow.style.left = (mouseX - 300) + 'px'
+
+      document.addEventListener('mousemove', (e) => {
+        animate(mouseGlow, {
+          x: e.clientX - mouseX,
+          y: e.clientY - mouseY
+        }, { type: 'spring', stiffness: 50, damping: 30 })
+      })
+
+      // Fade in gently
+      animate(mouseGlow, { opacity: [0, 1] }, { duration: 1.5, ease: 'easeOut' })
+    }
+
+    // Launch — only play hero ignition once per session
+    window.addEventListener('load', () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+          sessionStorage.getItem('aceHeroPlayed')) {
+        showHeroImmediate()
+        startPulseRings()
+        return
+      }
+      sessionStorage.setItem('aceHeroPlayed', '1')
+      runIgnition()
+    })
+
+    } // end Motion guard
+  </script>
+
+  <!-- ═══ EMAIL FORM HANDLER ═══ -->
+  <script>
+    document.querySelectorAll('.email-form').forEach(form => {
+      form.removeAttribute('onsubmit');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input[type="email"]');
+        const btn = form.querySelector('button');
+        const email = input.value.trim();
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          input.style.borderColor = 'var(--expansion)';
+          return;
+        }
+
+        const origText = btn.textContent;
+        btn.textContent = '...';
+        btn.disabled = true;
+
+        try {
+          const source = form.closest('#video') ? 'paradigm-shift' : 'landing';
+          const res = await fetch('/api/fluentcrm/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source })
+          });
+
+          if (res.ok) {
+            btn.textContent = 'You\u2019re in';
+            btn.style.background = 'var(--capacity)';
+            btn.style.color = 'var(--bg)';
+            input.value = '';
+            input.disabled = true;
+          } else {
+            btn.textContent = 'Try again';
+            btn.style.background = 'var(--expansion)';
+            setTimeout(() => {
+              btn.textContent = origText;
+              btn.style.background = '';
+              btn.disabled = false;
+            }, 2000);
+          }
+        } catch {
+          btn.textContent = 'Try again';
+          setTimeout(() => {
+            btn.textContent = origText;
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 2000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

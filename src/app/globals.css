@@ -340,6 +340,79 @@ body.light::before {
 }
 
 /* ══════════════════════════════════════
+   TYPOGRAPHY-FIRST LANDING — Griflan Style
+   ══════════════════════════════════════ */
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineGrow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes staggerFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-up {
+  animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.reveal-up-d1 { animation-delay: 0.1s; }
+.reveal-up-d2 { animation-delay: 0.2s; }
+.reveal-up-d3 { animation-delay: 0.3s; }
+.reveal-up-d4 { animation-delay: 0.4s; }
+.reveal-up-d5 { animation-delay: 0.5s; }
+.reveal-up-d6 { animation-delay: 0.6s; }
+
+/* Hover color shifts for capabilities */
+.hover-triad {
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Thin separator */
+.sep {
+  height: 1px;
+  background: var(--border);
+  border: none;
+}
+
+/* Giant display type — tighter tracking at large sizes */
+.display-giant {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+/* Animated underline — Griflan style */
+.uline {
+  position: relative;
+  display: inline-block;
+}
+.uline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ══════════════════════════════════════
    SHARED POLISH — Both Modes
    ══════════════════════════════════════ */
 

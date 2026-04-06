@@ -42,6 +42,52 @@
       overflow-x: hidden;
     }
 
+    /* ═══ HERO TRUST LINE ═══ */
+    .hero-trust {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      opacity: 0.5;
+      margin-top: 1.6rem;
+    }
+
+    /* ═══ ROTATING QUOTES ═══ */
+    .hero-quotes {
+      margin-top: 4rem;
+      min-height: 6rem;
+      position: relative;
+      text-align: center;
+    }
+    .hero-quote-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .hero-quote-item.active {
+      opacity: 1;
+    }
+    .hero-quote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--text-mid);
+      margin-bottom: 0.8rem;
+    }
+    .hero-quote-attr {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      opacity: 0.5;
+    }
+
     /* ═══ SCROLLBAR ═══ */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -117,34 +163,58 @@
       .nav-links { display: none; }
     }
 
-    /* System Live pill */
-    .system-live-pill {
+    /* Nav CTA button */
+    .nav-cta {
       font-family: var(--mono);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #60d8a8;
-      display: flex;
+      color: var(--bg);
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
-      border: 1px solid rgba(96,216,168,0.2);
-      border-radius: 20px;
+      padding: 8px 18px;
+      border: none;
+      border-radius: 2px;
+      background: var(--authority);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .nav-cta:hover {
+      background: #d4b0ff;
+      transform: translateY(-1px);
+    }
+    @media (max-width: 768px) {
+      .nav-cta { font-size: 0.65rem; padding: 6px 12px; }
+    }
+
+    /* Alpha badge */
+    .alpha-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--capacity);
+      padding: 8px 20px;
+      border: 1px solid rgba(96,216,168,0.25);
+      border-radius: 6px;
       background: rgba(96,216,168,0.06);
     }
-    .system-live-dot {
-      width: 6px; height: 6px;
+    .alpha-badge-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #60d8a8;
-      box-shadow: 0 0 6px rgba(96,216,168,0.5);
+      background: var(--capacity);
+      box-shadow: 0 0 8px rgba(96,216,168,0.4);
       animation: livePulse 2s ease-in-out infinite;
     }
     @keyframes livePulse {
       0%, 100% { opacity: 0.6; box-shadow: 0 0 4px rgba(96,216,168,0.3); }
       50% { opacity: 1; box-shadow: 0 0 10px rgba(96,216,168,0.6); }
-    }
-    @media (max-width: 768px) {
-      .system-live-pill { font-size: 0.65rem; padding: 3px 8px; }
     }
 
     /* ═══ HERO ═══ */
@@ -224,6 +294,7 @@
       background: rgba(200, 160, 240, 0.04);
       border: 1px solid var(--border);
       border-right: none;
+      border-radius: 2px 0 0 2px;
       padding: 1.6rem 2rem;
       font-family: var(--sans);
       font-size: 1.4rem;
@@ -239,6 +310,7 @@
     .email-form button {
       background: var(--authority);
       border: 1px solid var(--authority);
+      border-radius: 0 2px 2px 0;
       padding: 1.6rem 3rem;
       font-family: var(--mono);
       font-size: 1.1rem;
@@ -1630,11 +1702,566 @@
       font-style: italic;
       margin-bottom: 2.5rem;
     }
+    .testimonial-attribution {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
+    .testimonial-avatar {
+      width: 5.2rem;
+      height: 5.2rem;
+      border-radius: 50%;
+      border: 2px solid rgba(200, 160, 240, 0.12);
+      outline: 1px solid rgba(10, 10, 15, 0.8);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--bg-subtle);
+      filter: grayscale(0.3) brightness(0.85);
+      transition: filter 0.4s ease;
+    }
+    .testimonial-avatar:hover {
+      filter: grayscale(0) brightness(1);
+    }
     .testimonial-attr {
       font-family: var(--mono);
       font-size: 1rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ═══ THE ARCHITECT ═══ */
+    .architect {
+      padding: 16rem 0;
+    }
+    .architect-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .architect-grid {
+        grid-template-columns: 1fr 1.2fr;
+        gap: 8rem;
+      }
+    }
+    .architect-photo-wrapper {
+      position: relative;
+      max-width: 400px;
+    }
+    @media (min-width: 768px) {
+      .architect-photo-wrapper { max-width: none; }
+    }
+    .architect-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: center 15%;
+      border-radius: 8px;
+      border: 1px solid rgba(200, 160, 240, 0.08);
+      filter: grayscale(0.2) brightness(0.9) contrast(1.05);
+      transition: filter 0.6s ease, border-color 0.6s ease;
+    }
+    .architect-photo:hover {
+      filter: grayscale(0) brightness(0.95) contrast(1);
+      border-color: rgba(200, 160, 240, 0.15);
+    }
+    .architect-photo-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140%;
+      height: 140%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(200, 160, 240, 0.08) 0%, rgba(96, 216, 168, 0.03) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    /* ═══ THE SCIENCE ═══ */
+    .science-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      margin-top: 6rem;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) {
+      .science-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1024px) {
+      .science-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .science-card {
+      padding: 4rem 3.5rem;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .science-institution {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .science-icon {
+      width: 3.6rem;
+      height: 3.6rem;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 160, 240, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: rgba(200, 160, 240, 0.03);
+    }
+    .science-icon svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+    .science-inst-name {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+    }
+    .science-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 2vw, 1.9rem);
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--text-mid);
+    }
+    .science-finding {
+      font-size: 1.35rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+    .science-researcher {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      opacity: 0.6;
+    }
+
+    /* ═══ FAQ ═══ */
+    .faq { padding: 12rem 0; }
+    .faq-list {
+      max-width: 72rem;
+      margin: 5rem auto 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .faq-item {
+      border-top: 1px solid var(--border);
+    }
+    .faq-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1.7rem;
+      font-weight: 400;
+      text-align: left;
+      padding: 2.4rem 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      transition: color 0.3s;
+    }
+    .faq-question:hover { color: var(--authority); }
+    .faq-question svg {
+      width: 1.6rem;
+      height: 1.6rem;
+      flex-shrink: 0;
+      color: var(--text-dim);
+      transition: transform 0.3s ease, color 0.3s;
+    }
+    .faq-item.open .faq-question svg {
+      transform: rotate(45deg);
+      color: var(--authority);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 30rem;
+    }
+    .faq-answer-inner {
+      padding-bottom: 2.8rem;
+      font-size: 1.55rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      line-height: 1.75;
+      max-width: 60rem;
+    }
+
+    /* ═══ MOBILE CHAT ═══ */
+    .mobile-chat { display: none; }
+    @media (max-width: 768px) {
+      .desktop-only { display: none !important; }
+      .mobile-chat {
+        display: block;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 3rem;
+      }
+      .mc-header {
+        background: rgba(8,10,18,0.95);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .mc-header-mark { width: 26px; height: 26px; }
+      .mc-header-name {
+        font-family: var(--sans);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .mc-header-status {
+        font-family: var(--mono);
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--capacity);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .mc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--capacity); box-shadow: 0 0 6px rgba(96,216,168,0.4); }
+      .mc-scroll {
+        height: 520px;
+        overflow-y: auto;
+        padding: 16px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        scroll-behavior: smooth;
+      }
+      .mc-scroll::-webkit-scrollbar { width: 0; }
+      .mc-msg {
+        max-width: 85%;
+        padding: 10px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        line-height: 1.5;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+      .mc-msg.show { opacity: 1; transform: none; }
+      .mc-msg-user {
+        align-self: flex-end;
+        background: linear-gradient(135deg, rgba(140,120,255,0.12), rgba(200,160,240,0.08));
+        border: 1px solid rgba(140,120,255,0.15);
+        color: var(--text);
+        border-bottom-right-radius: 4px;
+      }
+      .mc-msg-ace {
+        align-self: flex-start;
+        background: rgba(16,20,36,0.8);
+        border: 1px solid var(--border);
+        color: var(--text-mid);
+        border-bottom-left-radius: 4px;
+      }
+      .mc-msg-ace strong { color: var(--text); }
+      .mc-label {
+        text-align: center;
+        padding: 14px 0 6px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .mc-label.show { opacity: 1; }
+      .mc-label span {
+        font-family: var(--mono);
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--text-dim);
+      }
+      .mc-typing {
+        align-self: flex-start;
+        display: flex;
+        gap: 4px;
+        padding: 10px 14px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .mc-typing.show { opacity: 1; }
+      .mc-typing span {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: rgba(140,120,255,0.3);
+        animation: mcBounce 1.2s ease infinite;
+      }
+      .mc-typing span:nth-child(2) { animation-delay: 0.15s; }
+      .mc-typing span:nth-child(3) { animation-delay: 0.3s; }
+      @keyframes mcBounce {
+        0%, 100% { opacity: 0.3; transform: translateY(0); }
+        50% { opacity: 1; transform: translateY(-3px); }
+      }
+      .mc-agents {
+        display: flex; gap: 6px; flex-wrap: wrap; padding: 4px 0;
+        opacity: 0; transition: opacity 0.4s;
+      }
+      .mc-agents.show { opacity: 1; }
+      .mc-pill {
+        font-family: var(--mono);
+        font-size: 9px;
+        color: var(--text-mid);
+        background: rgba(16,20,36,0.8);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 5px 10px;
+        display: flex; align-items: center; gap: 5px;
+      }
+      .mc-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--capacity); }
+      .mc-artifact {
+        background: rgba(16,20,36,0.8);
+        border: 1px solid rgba(96,216,168,0.2);
+        border-radius: 10px;
+        padding: 10px 14px;
+        display: flex; align-items: center; gap: 10px;
+        opacity: 0; transition: opacity 0.4s;
+      }
+      .mc-artifact.show { opacity: 1; }
+      .mc-artifact-icon {
+        width: 32px; height: 32px; border-radius: 6px;
+        background: rgba(96,216,168,0.1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0;
+      }
+      .mc-artifact-name { font-size: 12px; color: var(--text); font-weight: 500; }
+      .mc-artifact-meta { font-family: var(--mono); font-size: 8px; color: var(--text-dim); margin-top: 1px; }
+      .mc-artifact-badge {
+        font-family: var(--mono); font-size: 8px;
+        color: var(--capacity); background: rgba(96,216,168,0.1);
+        padding: 2px 8px; border-radius: 4px; margin-left: auto;
+      }
+      .mc-coaching {
+        align-self: flex-start; max-width: 88%;
+        font-size: 13px; line-height: 1.55; font-style: italic;
+        color: var(--text-mid); padding: 12px 14px;
+        border-left: 2px solid var(--expansion);
+        background: rgba(224,128,160,0.04);
+        border-radius: 0 12px 12px 0;
+        opacity: 0; transition: opacity 0.4s;
+      }
+      .mc-coaching.show { opacity: 1; }
+      .mc-somatic {
+        display: flex; align-items: center; gap: 5px;
+        font-family: var(--mono); font-size: 8px;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        font-style: normal; padding-bottom: 4px;
+      }
+      .mc-s-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--expansion); animation: mcSPulse 2s ease infinite; }
+      @keyframes mcSPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+      .mc-summary {
+        display: flex; flex-direction: column; align-items: center;
+        padding: 24px 0 10px;
+        opacity: 0; transition: opacity 0.5s;
+      }
+      .mc-summary.show { opacity: 1; }
+      .mc-sum-header {
+        font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+        letter-spacing: 0.2em; color: var(--text-dim); margin-bottom: 4px;
+      }
+      .mc-sum-time {
+        font-family: var(--sans); font-size: 22px; font-weight: 300;
+        color: var(--text); margin-bottom: 16px;
+      }
+      .mc-sum-list { list-style: none; padding: 0; width: 100%; }
+      .mc-sum-item {
+        display: flex; align-items: baseline; gap: 8px;
+        padding: 5px 0; border-bottom: 1px solid var(--border);
+        font-size: 12px; line-height: 1.5;
+        opacity: 0; transform: translateY(6px);
+        transition: opacity 0.3s, transform 0.3s;
+      }
+      .mc-sum-item.show { opacity: 1; transform: none; }
+      .mc-sum-item:last-child { border-bottom: none; }
+      .mc-sum-verb {
+        font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+        letter-spacing: 0.08em; flex-shrink: 0; width: 68px;
+      }
+      .mc-sum-desc { color: var(--text-mid); }
+      .mc-sum-coherence {
+        display: flex; align-items: center; gap: 10px; margin-top: 14px;
+      }
+      .mc-sum-coh-label {
+        font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+        letter-spacing: 0.1em; color: var(--text-dim);
+      }
+      .mc-sum-coh-val {
+        font-family: var(--sans); font-size: 20px; font-weight: 300;
+        background: linear-gradient(135deg, #8878ff, #c8a0f0, #60d8a8);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .mc-sum-tagline {
+        font-family: var(--serif); font-size: 14px; font-style: italic;
+        color: var(--text-dim); margin-top: 14px;
+      }
+      .mc-input-bar {
+        border-top: 1px solid var(--border);
+        padding: 10px 14px;
+        display: flex; gap: 8px; align-items: center;
+        background: rgba(8,10,18,0.95);
+      }
+      .mc-input-field {
+        flex: 1; background: rgba(16,20,36,0.6);
+        border: 1px solid rgba(140,120,255,0.12);
+        border-radius: 18px; padding: 8px 14px;
+        color: var(--text-dim); font-size: 13px; font-family: var(--sans);
+      }
+      .mc-send-btn {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: rgba(200,160,240,0.1); border: 1px solid rgba(200,160,240,0.12);
+        color: var(--authority); display: flex; align-items: center; justify-content: center;
+        font-size: 14px; flex-shrink: 0;
+      }
+    }
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      /* Container */
+      .container { padding: 0 2.4rem; }
+
+      /* Sections */
+      section { padding: 8rem 0; }
+
+      /* Hero */
+      .hero-quotes { min-height: 8rem; margin-top: 3rem; }
+      .hero-quote-text { font-size: 1.5rem; }
+      .hero-trust { font-size: 0.8rem; }
+
+      /* Email forms */
+      .email-form {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .email-form input {
+        border-right: 1px solid var(--border);
+        border-radius: 2px 2px 0 0;
+        border-bottom: none;
+      }
+      .email-form button {
+        border-radius: 0 0 2px 2px;
+        padding: 1.4rem 2rem;
+      }
+
+      /* Alpha badge */
+      .alpha-badge { font-size: 0.7rem; padding: 6px 14px; }
+
+      /* Testimonials */
+      .testimonials { gap: 6rem; }
+      .testimonial-quote { font-size: 2rem; }
+      .testimonial-avatar { width: 4rem; height: 4rem; }
+
+      /* Science grid */
+      .science-grid { grid-template-columns: 1fr; }
+      .science-card { padding: 3rem 2.4rem; }
+      .science-quote { font-size: 1.5rem; }
+
+      /* Architect */
+      .architect { padding: 8rem 0; }
+      .architect-grid { gap: 4rem; }
+      .architect-photo-wrapper { max-width: 280px; margin: 0 auto; }
+      .architect-name { font-size: 3.2rem; }
+      .architect-stats { gap: 3rem; }
+
+      /* FAQ */
+      .faq { padding: 8rem 0; }
+      .faq-question { font-size: 1.5rem; padding: 2rem 0; }
+      .faq-answer-inner { font-size: 1.4rem; }
+
+      /* Mid-page CTA */
+      .mid-cta { padding: 6rem 0; }
+      .big-heading.size-md { font-size: clamp(2.4rem, 6vw, 3.6rem); }
+
+      /* Principles grid to 1 col on small mobile */
+      .principles-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 2rem; }
+      .hero-quotes { min-height: 10rem; }
+      .hero-quote-text { font-size: 1.4rem; }
+      .testimonial-quote { font-size: 1.8rem; }
+      .architect-photo-wrapper { max-width: 240px; }
+      .architect-stats { flex-direction: column; gap: 2rem; }
+      .science-card { padding: 2.4rem 2rem; }
+    }
+
+    /* ═══ SCROLL LOCK DURING IGNITION ═══ */
+    html.ignition-locked {
+      overflow: hidden;
+    }
+    html.ignition-locked body {
+      overflow: hidden;
+    }
+
+    .architect-content {}
+    .architect-name {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 5vw, 4.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+    }
+    .architect-title {
+      font-family: var(--mono);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--authority);
+      margin-bottom: 3.5rem;
+    }
+    .architect-text {
+      font-size: 1.7rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+    .architect-stats {
+      display: flex;
+      gap: 4rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .architect-stat-value {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+    .architect-stat-label {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
       color: var(--text-dim);
     }
 
@@ -1875,7 +2502,7 @@
         <li><a href="#video">Masterclass</a></li>
         <li><a href="#pricing">Apply</a></li>
       </ul>
-      <span class="system-live-pill"><span class="system-live-dot"></span> System Live</span>
+      <a href="#pricing" class="nav-cta">Request Access</a>
     </div>
   </nav>
 
@@ -1927,6 +2554,38 @@
           <input type="email" placeholder="your@email.com" />
           <button type="submit">Request Access</button>
         </form>
+        <p class="hero-trust" id="heroTrust" style="opacity:0;">No noise. Just signal.</p>
+
+        <div class="hero-quotes" id="heroQuotes" style="opacity:0;">
+          <div class="hero-quote-item active">
+            <p class="hero-quote-text">&ldquo;What took weeks and a whole team took 30 minutes.&rdquo;</p>
+            <span class="hero-quote-attr">Caryn &middot; ACE Community</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;The days of feeling overwhelmed and fragmented are over.&rdquo;</p>
+            <span class="hero-quote-attr">Aurora &middot; ACE Community</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;In one month, ACE has overdelivered on every expectation.&rdquo;</p>
+            <span class="hero-quote-attr">Marc &middot; Founding Member</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;This appears to be the ultimate second brain system.&rdquo;</p>
+            <span class="hero-quote-attr">Korrigon &middot; ACE Community</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;I think a few of us just came out of burnout on this call. Reboot.&rdquo;</p>
+            <span class="hero-quote-attr">Emma &middot; ACE Community</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;There are no limits to what is possible with ACE.&rdquo;</p>
+            <span class="hero-quote-attr">Marc &middot; Founding Member</span>
+          </div>
+          <div class="hero-quote-item">
+            <p class="hero-quote-text">&ldquo;How the system&rsquo;s integrating into my life is profound.&rdquo;</p>
+            <span class="hero-quote-attr">Joe &middot; Founding Member</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1936,12 +2595,15 @@
   <!-- ═══ COMMAND CENTER ═══ -->
   <section>
     <div class="container">
+      <div class="reveal" style="display:flex;justify-content:center;margin-bottom:3rem;">
+        <span class="alpha-badge"><span class="alpha-badge-dot"></span> Alpha Preview &middot; Desktop shipping April 2026</span>
+      </div>
       <p class="section-label reveal">The Interface</p>
       <h2 class="big-heading size-xl reveal reveal-d1">
         Your command center.<br />
         <span style="color: var(--text-dim)">Always on. Always aware.</span>
       </h2>
-      <div class="preview-frame reveal reveal-d2">
+      <div class="preview-frame reveal reveal-d2 desktop-only">
         <!-- Titlebar -->
         <div class="mock-titlebar">
           <div class="mock-dots"><span></span><span></span><span></span></div>
@@ -2202,12 +2864,27 @@
           </div>
         </div>
       </div>
-      <div class="reveal reveal-d3" style="display:flex;justify-content:center;margin-top:2.5rem;">
-        <span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--capacity);padding:8px 20px;border:1px solid rgba(96,216,168,0.25);border-radius:6px;background:rgba(96,216,168,0.06);">
-          <span style="width:7px;height:7px;border-radius:50%;background:var(--capacity);box-shadow:0 0 8px rgba(96,216,168,0.4);"></span>
-          Alpha Preview &middot; Desktop shipping April 2026
-        </span>
+
+      <!-- ═══ MOBILE CHAT (hidden on desktop) ═══ -->
+      <div class="mobile-chat reveal reveal-d2">
+        <div class="mc-header">
+          <svg class="mc-header-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs><radialGradient id="mcGrad" cx="40%" cy="38%" r="65%"><stop offset="0%" stop-color="#8878ff"/><stop offset="45%" stop-color="#c8a0f0"/><stop offset="100%" stop-color="#60d8a8"/></radialGradient></defs>
+            <path fill="url(#mcGrad)" d="M 50,16 Q 54.33,47.50 79.44,67 Q 50,55 20.56,67 Q 45.67,47.50 50,16 Z"/>
+            <circle cx="50" cy="50" r="10" fill="rgba(255,255,255,0.3)"/><circle cx="50" cy="49" r="3.5" fill="white"/>
+          </svg>
+          <div>
+            <div class="mc-header-name">ACE</div>
+            <div class="mc-header-status"><span class="mc-dot"></span> System Live</div>
+          </div>
+        </div>
+        <div class="mc-scroll" id="mcScroll"></div>
+        <div class="mc-input-bar">
+          <div class="mc-input-field">Ask ACE anything...</div>
+          <div class="mc-send-btn">↑</div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -2592,6 +3269,141 @@
     </div>
   </section>
 
+  <!-- ═══ THE SCIENCE ═══ -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal" style="color: var(--capacity);">The Science</p>
+      <h2 class="big-heading size-lg reveal reveal-d1" style="margin-bottom: 1.5rem;">
+        Built on research.<br/>
+        <span style="color: var(--text-dim);">Not productivity folklore.</span>
+      </h2>
+      <p class="reveal reveal-d2" style="font-size: 1.7rem; color: var(--text-mid); max-width: 60rem; font-weight: 300; line-height: 1.75;">
+        ACE integrates decades of peer-reviewed research in heart coherence, polyvagal theory, embodied cognition, human-AI collaboration, and complexity science into a single operating system.
+      </p>
+
+      <div class="science-grid">
+
+        <!-- Heart Coherence -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--capacity)" stroke-width="1.5" stroke-linecap="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">HeartMath Institute</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;Coherence is the state when the heart, mind and emotions are in energetic alignment and cooperation. It is a state that builds resiliency.&rdquo;
+          </p>
+          <p class="science-finding">Heart rhythm coherence, measured via HRV, reflects improved cognitive function, emotional stability, and autonomic balance.</p>
+          <span class="science-researcher">Dr. Rollin McCraty &middot; Frontiers in Psychology, 2014</span>
+        </div>
+
+        <!-- Polyvagal Theory -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--authority)" stroke-width="1.5" stroke-linecap="round">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10"/>
+                <path d="M12 8v4l3 3"/>
+                <circle cx="12" cy="12" r="2" fill="var(--authority)" opacity="0.4"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">Indiana University</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;When the autonomic state shifts, our capacity to be social, to think clearly, and to self-regulate shifts with it.&rdquo;
+          </p>
+          <p class="science-finding">Vagal tone directly governs executive function and adaptive decision-making. Regulation must precede performance.</p>
+          <span class="science-researcher">Dr. Stephen Porges &middot; Polyvagal Theory, 2011</span>
+        </div>
+
+        <!-- Embodied Cognition -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--expansion)" stroke-width="1.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+                <circle cx="12" cy="12" r="3" stroke="var(--expansion)" stroke-width="1" opacity="0.4"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">Barrow Neurological Institute</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;Interoception &mdash; the sense of the internal state of the body &mdash; is fundamentally involved in decision-making, emotional experience, and mental health.&rdquo;
+          </p>
+          <p class="science-finding">Accurate body-state awareness predicts better decisions and emotional regulation. The body is not peripheral to cognition &mdash; it&rsquo;s central.</p>
+          <span class="science-researcher">Dr. A.D. Craig &middot; Nature Reviews Neuroscience, 2009</span>
+        </div>
+
+        <!-- Human-AI Collaboration -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--authority)" stroke-width="1.5" stroke-linecap="round">
+                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                <path d="M9 9h6v6H9z" fill="var(--authority)" opacity="0.15"/>
+                <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M20 9h3M1 15h3M20 15h3"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">MIT Center for Collective Intelligence</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;The most effective use of AI is not to replace human judgment but to augment it &mdash; reducing cognitive load so humans can allocate attention to problems that require wisdom and creativity.&rdquo;
+          </p>
+          <p class="science-finding">Human-AI collaboration outperforms either alone when AI offloads cognitive overhead while preserving human authority.</p>
+          <span class="science-researcher">Dr. Thomas Malone &middot; Superminds, 2018</span>
+        </div>
+
+        <!-- Complexity Science -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--capacity)" stroke-width="1.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="3"/>
+                <circle cx="12" cy="12" r="7" opacity="0.4"/>
+                <circle cx="12" cy="12" r="10" opacity="0.2"/>
+                <circle cx="5" cy="5" r="1.5" fill="var(--capacity)" opacity="0.5"/>
+                <circle cx="19" cy="8" r="1.5" fill="var(--capacity)" opacity="0.5"/>
+                <circle cx="7" cy="19" r="1.5" fill="var(--capacity)" opacity="0.5"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">Santa Fe Institute</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;Coherence in a complex system is not uniformity &mdash; it is the dynamic alignment of parts such that local actions serve the global pattern.&rdquo;
+          </p>
+          <p class="science-finding">Peak performance emerges from coherence &mdash; the alignment of autonomous components around shared patterns, enabling stability and adaptability.</p>
+          <span class="science-researcher">Dr. Stuart Kauffman &middot; At Home in the Universe, 1995</span>
+        </div>
+
+        <!-- Agentic AI -->
+        <div class="science-card reveal">
+          <div class="science-institution">
+            <div class="science-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--authority)"/>
+                <path d="M2 17l10 5 10-5" stroke="var(--authority)" opacity="0.6"/>
+                <path d="M2 12l10 5 10-5" stroke="var(--authority)" opacity="0.3"/>
+              </svg>
+            </div>
+            <span class="science-inst-name">Stanford &middot; AI Fund</span>
+          </div>
+          <p class="science-quote">
+            &ldquo;AI agentic workflows will drive massive progress &mdash; possibly even more than the next generation of foundation models. An agentic workflow has AI iterating, building, and refining autonomously rather than generating a response in one shot.&rdquo;
+          </p>
+          <p class="science-finding">The shift from AI-as-assistant to AI-as-agent marks the next paradigm. Systems that act, not just respond, are the future of human-AI collaboration.</p>
+          <span class="science-researcher">Dr. Andrew Ng &middot; Sequoia Capital AI Ascent, 2024</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
   <!-- ═══ THE BUILD ═══ -->
   <section>
     <div class="container">
@@ -2712,25 +3524,165 @@
   <!-- ═══ TESTIMONIALS ═══ -->
   <section>
     <div class="container">
+      <p class="section-label reveal" style="color: var(--capacity);">From the Founding Cohort</p>
       <div class="testimonials">
         <div class="reveal" style="max-width: 80rem;">
           <p class="testimonial-quote">
             &ldquo;ACE has overdelivered on every expectation I could have had. In one month, it has allowed me to create more meaningful, valuable content across five major projects than I could have ever imagined.&rdquo;
           </p>
-          <span class="testimonial-attr">Marc Cooper &middot; Founding Member &middot; 18 days in</span>
+          <div class="testimonial-attribution">
+            <!-- Drop marc.jpg into public/ -->
+            <img class="testimonial-avatar" src="/marc.jpg" alt="Marc Cooper" onerror="this.style.display='none'" />
+            <span class="testimonial-attr">Marc Cooper &middot; Founding Member &middot; 18 days in</span>
+          </div>
         </div>
         <div class="reveal" style="max-width: 80rem; margin-left: auto;">
           <p class="testimonial-quote">
             &ldquo;Day one I ran /start, understood the loop, and just kept going. By day three we had a live dashboard. The Triad isn&rsquo;t abstract anymore. I can feel the difference between an authority day and a capacity day.&rdquo;
           </p>
-          <span class="testimonial-attr">Craig Young &middot; Founding Member &middot; 3 days in</span>
+          <div class="testimonial-attribution">
+            <!-- Drop craig.jpg into public/ -->
+            <img class="testimonial-avatar" src="/craig.jpg" alt="Craig Young" onerror="this.style.display='none'" />
+            <span class="testimonial-attr">Craig Young &middot; Founding Member &middot; 3 days in</span>
+          </div>
         </div>
         <div class="reveal" style="max-width: 80rem;">
           <p class="testimonial-quote">
             &ldquo;My normal habits and ways I distract myself are almost non-existent, because I have this pathway now. It&rsquo;s just this real velocity of being able to put it together, package it, and start serving the world. It&rsquo;s only been a week &mdash; how the system&rsquo;s integrating into my life is profound.&rdquo;
           </p>
-          <span class="testimonial-attr">Joe Hawley &middot; Founding Member &middot; 1 week in</span>
+          <div class="testimonial-attribution">
+            <!-- Drop joe.jpg into public/ -->
+            <img class="testimonial-avatar" src="/joe.jpg" alt="Joe Hawley" onerror="this.style.display='none'" />
+            <span class="testimonial-attr">Joe Hawley &middot; Founding Member &middot; 1 week in</span>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ MID-PAGE CTA ═══ -->
+  <section class="mid-cta" style="text-align: center;">
+    <div class="container">
+      <h2 class="big-heading size-md reveal" style="margin-bottom: 1.2rem;">Ready?</h2>
+      <p class="reveal reveal-d1" style="font-size: 1.6rem; color: var(--text-dim); font-weight: 300; margin-bottom: 3rem;">Request access and we'll be in touch.</p>
+      <form class="email-form reveal reveal-d2" onsubmit="return false" style="margin: 0 auto;">
+        <input type="email" placeholder="your@email.com" />
+        <button type="submit">Request Access</button>
+      </form>
+      <p class="hero-trust reveal reveal-d3" style="opacity: 0.5;">No noise. Just signal.</p>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ THE ARCHITECT ═══ -->
+  <section class="architect">
+    <div class="container">
+      <div class="architect-grid">
+        <div class="architect-photo-wrapper reveal">
+          <div class="architect-photo-glow"></div>
+          <!-- Drop nikhil.jpg into public/ (portrait orientation, 3:4 ratio) -->
+          <img class="architect-photo" src="/nikhil.jpg" alt="Nikhil Kale" onerror="this.parentElement.style.display='none'" />
+        </div>
+        <div class="architect-content">
+          <p class="section-label reveal" style="color: var(--authority);">The Architect</p>
+          <h2 class="architect-name reveal reveal-d1">Nikhil Kale</h2>
+          <p class="architect-title reveal reveal-d2">Creator of ACE</p>
+          <p class="architect-text reveal reveal-d3">
+            I built ACE because I needed it. Not as a product &mdash; as a survival mechanism. I was running multiple ventures, coaching clients, building technology, and slowly fragmenting under the weight of my own ambition.
+          </p>
+          <p class="architect-text reveal reveal-d3">
+            Every system I tried asked me to become less of myself. Simpler goals. Fewer projects. Pick a lane. I refused. Instead, I built an engine that could hold all of it &mdash; and keep me coherent while I did.
+          </p>
+          <p class="architect-text reveal reveal-d3">
+            ACE is what emerged. It&rsquo;s not a productivity tool. It&rsquo;s the infrastructure for people who won&rsquo;t split themselves into fragments to fit the world.
+          </p>
+          <div class="architect-stats reveal reveal-d4">
+            <div>
+              <div class="architect-stat-value">9</div>
+              <div class="architect-stat-label">Founding clients</div>
+            </div>
+            <div>
+              <div class="architect-stat-value">30</div>
+              <div class="architect-stat-label">Days to first cohort sold out</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep" />
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="faq">
+    <div class="container">
+      <p class="section-label reveal" style="color: var(--text-dim);">Questions</p>
+      <h2 class="big-heading size-lg reveal reveal-d1">Before you decide.</h2>
+      <div class="faq-list">
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What exactly is ACE?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">ACE is a personal operating system powered by AI. It lives on your machine, learns your voice, tracks your commitments, coaches you through resistance, and builds what you imagine &mdash; all from a single command line. Think of it as a second brain with a nervous system.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Who is this for?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Founders, coaches, and builders running multiple projects who refuse to choose between depth and speed. If you&rsquo;ve outgrown productivity apps but aren&rsquo;t ready to hire a team of five, ACE is the infrastructure layer between you and everything you&rsquo;re building.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What does it cost?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">The founding rate is $2,997. That includes your full custom build, 1:1 onboarding, and lifetime access &mdash; including every update, new skill, and system evolution as ACE grows. No subscriptions to ACE. No recurring fees. You own your system. The AI layer runs on a Claude Max subscription ($100/month) which we&rsquo;ll walk you through on your call.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Is my data private?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Completely. ACE runs local-first on your machine. Every piece of your system &mdash; your journal, your decisions, your patterns, your intelligence &mdash; lives as plain Markdown files that you own and can read, edit, or move anywhere. No lock-in. No proprietary formats. No cloud dependency. If you ever leave ACE, you take everything with you. Sovereignty isn&rsquo;t a feature. It&rsquo;s the architecture.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Do I need to be technical?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">No. You need to be willing to go deep, not write code. The system meets you where you are. Some founding members are developers. Others are coaches, creatives, and executives who had never opened a terminal before ACE.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What happens after I request access?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">You&rsquo;ll receive a short email sequence over the next few days. When you&rsquo;re ready, you&rsquo;ll fill out a brief application and book a 30-minute call with me. That call is a real conversation &mdash; not a pitch. We&rsquo;ll figure out together whether ACE is the right fit.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -3933,11 +4885,175 @@
         startPulseRings()
         return
       }
+
+      // Lock scroll during ignition — unlock after text cascade completes
+      document.documentElement.classList.add('ignition-locked')
+      window.scrollTo(0, 0)
+
+      const isMobile = window.innerWidth < 768
+      const unlockDelay = isMobile ? 8800 : 9200
+      setTimeout(() => {
+        document.documentElement.classList.remove('ignition-locked')
+      }, unlockDelay)
+
       sessionStorage.setItem('aceHeroPlayed', '1')
       runIgnition()
     })
 
     } // end Motion guard
+  </script>
+
+  <!-- ═══ MOBILE CHAT ANIMATION ═══ -->
+  <script>
+  (function() {
+    if (window.innerWidth > 768) return
+    const chat = document.getElementById('mcScroll')
+    if (!chat) return
+
+    const scenes = [
+      { type: 'label', text: '6:00 AM \u00B7 Morning' },
+      { type: 'ace', html: 'Good morning. Energy is high. Calendar shows a clear build window until 11.<br><br>One thing matters today: <strong>close the Aurora partnership deck.</strong>' },
+      { type: 'user', text: "That\u2019s the one. Let\u2019s lock it in." },
+      { type: 'label', text: 'Intention Set' },
+      { type: 'user', text: 'I want to close the Aurora deal this week. Everything I build today serves that.' },
+      { type: 'typing', duration: 1200 },
+      { type: 'ace', html: '<strong>Locked in.</strong> I see the Aurora partnership deck is due Thursday. Want me to build it now? I can pull last week\u2019s revenue data and match your brand system.' },
+      { type: 'user', text: 'Yes. 12 slides, our voice. Include the revenue projections.' },
+      { type: 'label', text: 'Agents Deployed' },
+      { type: 'typing', duration: 800 },
+      { type: 'ace', html: '<strong>Launching 3 agents.</strong> Research, Design, and Data \u2014 running in parallel.' },
+      { type: 'agents' },
+      { type: 'ace', html: 'Aurora positioning mapped \u2014 6 differentiators. Revenue pulled \u2014 3 quarters. Deck compiled \u2014 12 slides.' },
+      { type: 'artifact' },
+      { type: 'label', text: '2:00 PM \u00B7 Capacity Signal' },
+      { type: 'ace', html: '<div class="mc-somatic"><span class="mc-s-dot"></span> <span style="color:var(--expansion)">Capacity signal detected</span></div>' },
+      { type: 'ace', html: "I\u2019ve noticed a pattern. This is the third time this month you\u2019ve pushed past your capacity window without a break." },
+      { type: 'coaching', text: "You\u2019ve been in execute mode for 3 hours straight. Before the next build \u2014 what are you avoiding by staying busy?" },
+      { type: 'user', text: '...honestly, the investor email. I keep putting it off.' },
+      { type: 'typing', duration: 1000 },
+      { type: 'ace', html: "That tracks. Avoidance spikes around external evaluation \u2014 three times this month. The pattern is consistent." },
+      { type: 'label', text: 'Regulation' },
+      { type: 'ace', html: "Grounded. Intensity down to 28%.<br><br>Sarah moved your Thursday meeting to Friday. I\u2019ve already adjusted the deck timeline." },
+      { type: 'user', text: "OK let\u2019s do the investor email." },
+      { type: 'typing', duration: 1400 },
+      { type: 'ace', html: "Done. Drafted in your voice, three paragraphs. Direct, no hedging.<br><br><strong>12 minutes.</strong> The thing you were avoiding." },
+      { type: 'summary' },
+    ]
+
+    function addEl(cls, html) {
+      const el = document.createElement('div')
+      el.className = cls
+      el.innerHTML = html || ''
+      chat.appendChild(el)
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')))
+      chat.scrollTop = chat.scrollHeight
+      return el
+    }
+
+    function wait(ms) { return new Promise(r => setTimeout(r, ms)) }
+
+    async function play() {
+      await wait(1500)
+      for (const s of scenes) {
+        if (s.type === 'label') {
+          addEl('mc-label', '<span>' + s.text + '</span>')
+          await wait(600)
+        } else if (s.type === 'user') {
+          addEl('mc-msg mc-msg-user', s.text)
+          await wait(900)
+        } else if (s.type === 'ace') {
+          addEl('mc-msg mc-msg-ace', s.html)
+          await wait(1100)
+        } else if (s.type === 'typing') {
+          const t = addEl('mc-typing', '<span></span><span></span><span></span>')
+          await wait(s.duration || 1000)
+          t.remove()
+        } else if (s.type === 'agents') {
+          addEl('mc-agents',
+            '<span class="mc-pill"><span class="mc-pill-dot"></span> Research</span>' +
+            '<span class="mc-pill"><span class="mc-pill-dot"></span> Design</span>' +
+            '<span class="mc-pill"><span class="mc-pill-dot"></span> Data</span>')
+          await wait(1200)
+        } else if (s.type === 'artifact') {
+          addEl('mc-artifact',
+            '<div class="mc-artifact-icon">\uD83D\uDCC4</div>' +
+            '<div><div class="mc-artifact-name">aurora-brand-deck.pdf</div>' +
+            '<div class="mc-artifact-meta">12 slides \u00B7 Brand + Revenue</div></div>' +
+            '<span class="mc-artifact-badge">Saved</span>')
+          await wait(1400)
+        } else if (s.type === 'coaching') {
+          addEl('mc-coaching', '<div class="mc-somatic"><span class="mc-s-dot"></span> <span style="color:var(--expansion)">Coaching</span></div>' + s.text)
+          await wait(1800)
+        } else if (s.type === 'summary') {
+          const items = [
+            { verb: 'Intention', desc: 'Close Aurora deal this week', color: '#c8a0f0' },
+            { verb: 'Built', desc: 'Aurora brand deck \u2014 12 slides', color: '#60d8a8' },
+            { verb: 'Built', desc: 'Follow-up sequence \u2014 3 emails', color: '#60d8a8' },
+            { verb: 'Processed', desc: '14 emails triaged, 3 replied', color: '#70b0e0' },
+            { verb: 'Scheduled', desc: '2 meetings booked', color: '#70b0e0' },
+            { verb: 'Coached', desc: 'Avoidance pattern identified', color: '#e080a0' },
+            { verb: 'Regulated', desc: 'Coherence restored', color: '#e080a0' },
+            { verb: 'Resolved', desc: 'Investor email \u2014 12 min', color: '#c8a0f0' },
+          ]
+          let listHTML = ''
+          items.forEach(it => {
+            listHTML += '<li class="mc-sum-item"><span class="mc-sum-verb" style="color:' + it.color + '">' + it.verb + '</span><span class="mc-sum-desc">' + it.desc + '</span></li>'
+          })
+          const block = addEl('mc-summary',
+            '<div class="mc-sum-header">Session Complete</div>' +
+            '<div class="mc-sum-time">3 hours</div>' +
+            '<ul class="mc-sum-list">' + listHTML + '</ul>' +
+            '<div class="mc-sum-coherence"><span class="mc-sum-coh-label">Coherence</span><span class="mc-sum-coh-val">0.87 \u2192 0.93</span></div>' +
+            '<div class="mc-sum-tagline">One system. Total coherence.</div>')
+          await wait(600)
+          const lis = block.querySelectorAll('.mc-sum-item')
+          for (let i = 0; i < lis.length; i++) {
+            lis[i].classList.add('show')
+            await wait(250)
+          }
+        }
+      }
+    }
+
+    // Start when element scrolls into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          play()
+          observer.disconnect()
+        }
+      })
+    }, { threshold: 0.3 })
+    observer.observe(chat.parentElement)
+  })()
+  </script>
+
+  <!-- ═══ ROTATING HERO QUOTES ═══ -->
+  <script>
+    (function() {
+      const quotesWrap = document.getElementById('heroQuotes')
+      const trustLine = document.getElementById('heroTrust')
+      if (!quotesWrap) return
+
+      // Fade in after hero animation settles
+      const played = sessionStorage.getItem('aceHeroPlayed')
+      const showDelay = played ? 800 : 10000
+      setTimeout(() => {
+        quotesWrap.style.transition = 'opacity 1s ease'
+        quotesWrap.style.opacity = '1'
+        trustLine.style.transition = 'opacity 1s ease'
+        trustLine.style.opacity = '1'
+      }, showDelay)
+
+      // Rotate quotes every 5 seconds
+      const items = quotesWrap.querySelectorAll('.hero-quote-item')
+      let current = 0
+      setInterval(() => {
+        items[current].classList.remove('active')
+        current = (current + 1) % items.length
+        items[current].classList.add('active')
+      }, 5000)
+    })()
   </script>
 
   <!-- ═══ EMAIL FORM HANDLER ═══ -->
